@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import ThemeProviders from "@/util/themeProvider";
+import { StoreProvider } from "@/redux/util/StoreProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
+            <StoreProvider>
         <AntdRegistry><ThemeProviders>{children}</ThemeProviders></AntdRegistry>
+        </StoreProvider>
       </body>
     </html>
   );

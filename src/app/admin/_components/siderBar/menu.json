@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "text": "Content management",
+    "items": [
+      {
+        "id": 1,
+        "menu": "Dashboard",
+        "icon": "LayoutGrid",
+        "base": "/admin/dashboard",
+        "route": "/admin/dashboard"
+      },
+      {
+        "id": 2,
+        "menu": "Appointments",
+        "icon": "CalendarCheck",
+        "base": "/admin/appointments",
+        "route": "/admin/appointments?page=1&limit=10"
+      },
+      {
+        "id": 3,
+        "menu": "Patients",
+        "icon": "FileUser",
+        "base": "/admin/patients",
+        "route": "/admin/patients?page=1&limit=10"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "text": "Settings",
+    "items": [
+      {
+        "id": 4,
+        "menu": "Enquiries",
+        "icon": "MessagesSquare",
+        "base": "/admin/enquiries",
+        "route": "/admin/enquiries?page=1&limit=10"
+      },
+      {
+        "id": 5,
+        "menu": "Users",
+        "icon": "UsersRound",
+        "base": "/admin/users",
+        "route": "/admin/users?page=1&limit=10"
+      },
+      {
+        "id": 6,
+        "menu": "Settings",
+        "icon": "Settings",
+        "base": "/admin/settings",
+        "route": "/admin/settings"
+      }
+    ]
+  }
+]

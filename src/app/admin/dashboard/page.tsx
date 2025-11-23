@@ -1,3 +1,5 @@
+import DashboardContainer from "./pageContainer";
+
 export default function Home() {
-  return <div>Home</div>;
+  return <DashboardContainer />;
 }

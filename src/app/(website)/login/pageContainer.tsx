@@ -2,8 +2,10 @@
 import Image from "next/image";
 import { Button, Form, Input } from "antd";
 import { ImageLoader } from "@/util/imageLoader";
+import { useRouter } from "next/navigation";
 
 export default function LoginContainer() {
+  const navigation = useRouter();
   return (
     <div className="w-full h-[75vh] md:h-screen flex border-b border-b-gray-100">
       <div className="hidden sm:block w-1/2 h-[75vh] md:h-screen bg-[url('/bg2.webp')] bg-cover bg-center"></div>
@@ -29,7 +31,12 @@ export default function LoginContainer() {
             <Form.Item>
               <Input placeholder="Enter password" />
             </Form.Item>
-            <Button type="primary" size="large" block>
+            <Button
+              type="primary"
+              size="large"
+              block
+              onClick={() => navigation.replace("/admin/dashboard")}
+            >
               Sign In
             </Button>
           </Form>
