@@ -1,3 +1,6 @@
+
+import HomeContainer from "./home/pageContainer";
+
 export default function WebsiteHome() {
-  return <div>Website Home</div>;
+  return <HomeContainer/>;
 }
