@@ -23,7 +23,7 @@ export default function HomeContainer() {
           escalator that is going up. Your effort is magnified! Pranic Feng Shui
           allows you to make your life better."
         </div>
-        <div className="text-black text-xl font-extrabold align-text-right mt-10">
+        <div className="text-black text-xl font-extrabold text-right mt-2">
           - Master Choa Kok Sui
         </div>
       </div>
