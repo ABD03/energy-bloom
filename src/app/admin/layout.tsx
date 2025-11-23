@@ -30,7 +30,7 @@ export default function RootLayout({
         </Layout.Sider>
         <Layout>
           <Layout.Content>
-            <div>{children}</div>
+            <div className="dashboard-Content">{children}</div>
           </Layout.Content>
         </Layout>
       </Layout>

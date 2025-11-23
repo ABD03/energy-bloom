@@ -23,6 +23,13 @@
         "icon": "FileUser",
         "base": "/admin/patients",
         "route": "/admin/patients?page=1&limit=10"
+      },
+      {
+        "id": 4,
+        "menu": "Doctors",
+        "icon": "SquareUserRound",
+        "base": "/admin/doctors",
+        "route": "/admin/doctors?page=1&limit=10"
       }
     ]
   },

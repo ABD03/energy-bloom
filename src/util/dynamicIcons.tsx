@@ -6,7 +6,10 @@ import {
   FileUser,
   CalendarCheck,
   LayoutGrid,
-  MessagesSquare
+  MessagesSquare,
+  SquareUserRound,
+  List,
+  ClockFading
 } from "lucide-react";
 
 type IconName =
@@ -16,7 +19,10 @@ type IconName =
   | "FileUser"
   | "CalendarCheck"
   | "LayoutGrid"
-  | "MessagesSquare";
+  | "MessagesSquare"
+  | "SquareUserRound"
+  | "List"
+  |"ClockFading";
 
 interface DynamicIconProps {
   name: IconName;
@@ -31,7 +37,10 @@ const icons: Record<IconName, React.ComponentType<any>> = {
   FileUser,
   CalendarCheck,
   LayoutGrid,
-  MessagesSquare
+  MessagesSquare,
+  SquareUserRound,
+  List,
+  ClockFading
 };
 
 function DynamicIcon({ name, size = 20, color = "gray" }: DynamicIconProps) {

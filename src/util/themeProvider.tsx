@@ -20,7 +20,7 @@ function AntdThemeWrapper({ children }: { children: React.ReactNode }) {
   const [themes, setTheme] = useState({
     colorPrimary: "#824ff8",
     fontFamily: "Inter, sans-serif",
-    borderRadius:3
+    borderRadius:4
   
   });
   const [antdMode, setAntdMode] = useState<"light" | "dark">("light");
@@ -32,7 +32,7 @@ function AntdThemeWrapper({ children }: { children: React.ReactNode }) {
     setTheme({
       colorPrimary: rootStyles.getPropertyValue("--primary").trim(),
       fontFamily: rootStyles.getPropertyValue("--font-family").trim(),
-      borderRadius:3
+      borderRadius:4
     });
   }, [theme]);
 
