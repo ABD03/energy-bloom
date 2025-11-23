@@ -38,21 +38,21 @@
     "text": "Settings",
     "items": [
       {
-        "id": 4,
+        "id": 5,
         "menu": "Enquiries",
         "icon": "MessagesSquare",
         "base": "/admin/enquiries",
         "route": "/admin/enquiries?page=1&limit=10"
       },
       {
-        "id": 5,
+        "id": 6,
         "menu": "Users",
         "icon": "UsersRound",
         "base": "/admin/users",
         "route": "/admin/users?page=1&limit=10"
       },
       {
-        "id": 6,
+        "id": 7,
         "menu": "Settings",
         "icon": "Settings",
         "base": "/admin/settings",
