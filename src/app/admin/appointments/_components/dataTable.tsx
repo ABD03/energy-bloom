@@ -69,7 +69,12 @@ function DataTable(props: any) {
       width: 50,
       render: (item: any, record: any) => (
         <div className="dashboard-table-action">
-          <Button size="small" type="default" className="text-xs!">
+          <Button
+            size="small"
+            type="default"
+            className="text-xs!"
+            onClick={() => props?.onClick()}
+          >
             <BadgeCheck size={13} className="text-green-500" />
             Attend
           </Button>
@@ -83,7 +88,7 @@ function DataTable(props: any) {
   ];
 
   return (
-    <Card size="small" bodyStyle={{padding:0}}>
+    <Card size="small" bodyStyle={{ padding: 0 }}>
       <Table
         size="small"
         dataSource={props?.data}
