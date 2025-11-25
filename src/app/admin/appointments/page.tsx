@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "antd";
 import { Plus } from "lucide-react";
 
@@ -11,10 +12,11 @@ import FormModal from "./_components/formModal";
 import Data from "./data.json";
 
 export default function AppointmentsContainer() {
+  const [visible, setVisible] = useState(false);
   return (
     <div>
       <PageHeader showBack title="Appointments" icon={"CalendarCheck"}>
-        <Button type="primary">
+        <Button type="primary" onClick={() => setVisible(true)}>
           <span className="desktop-button-text">New Appointment </span>
           <Plus size={20} />
         </Button>
@@ -23,7 +25,9 @@ export default function AppointmentsContainer() {
         <Filters />
         <DataTable data={Data} />
       </div>
-      <FormModal />
+      {visible ? (
+        <FormModal visible={visible} onCancel={() => setVisible(false)} />
+      ) : null}
     </div>
   );
 }

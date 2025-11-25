@@ -36,6 +36,12 @@ function AntdThemeWrapper({ children }: { children: React.ReactNode }) {
           Notification: {
             padding: 2,
           },
+          Form:{
+            labelFontSize:13,
+            verticalLabelMargin:2,
+            verticalLabelPadding:0,
+            itemMarginBottom:15
+          }
         },
       }}
     >
