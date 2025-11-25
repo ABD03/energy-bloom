@@ -2,23 +2,14 @@
 import "./styles.scss";
 import { Layout } from "antd";
 import SiderBar from "./_components/siderBar";
-import { Inter } from "next/font/google";
-
- const inter = Inter({
-    subsets: ["latin"],
-    variable: "--font-inter",
-  });
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
- 
-  
   return (
-    <main lang="en" className={inter.variable}>
+    <main lang="en">
       <Layout>
         <Layout.Sider
           breakpoint="lg"
@@ -26,7 +17,7 @@ export default function RootLayout({
           width={230}
           style={{ height: "100vh" }}
         >
-          <SiderBar/>
+          <SiderBar />
         </Layout.Sider>
         <Layout>
           <Layout.Content>

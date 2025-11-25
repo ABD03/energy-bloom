@@ -9,6 +9,8 @@ import { StoreProvider } from "@/redux/util/StoreProvider";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+    fallback: ["system-ui", "sans-serif"],
+ weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {

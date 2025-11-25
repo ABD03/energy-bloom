@@ -7,6 +7,7 @@ $light: var(--light);
   height: 100vh;
   position: relative;
   overflow: hidden;
+  background-color: rgb(252, 249, 255);
 }
 
 .dashboard-box {
@@ -107,6 +108,10 @@ $light: var(--light);
     font-size: 14px;
   }
 
+  & .icon {
+    color: rgb(139, 139, 139);
+  }
+
   &:hover {
     background-color: $light;
     color: var(--primary);
@@ -115,6 +120,9 @@ $light: var(--light);
   &.active {
     background-color: $primary;
     color: #fff;
+    & .icon {
+      color: #fff;
+    }
   }
 }
 
@@ -131,6 +139,7 @@ $light: var(--light);
 .dashboard-PageHeader-box1 {
   display: flex;
   align-items: center;
+  gap: 5px;
   .title {
     background-color: #fff;
     border: 1px solid $border-color;
@@ -193,6 +202,7 @@ $light: var(--light);
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
 }
 
@@ -369,8 +379,8 @@ $light: var(--light);
   justify-content: center;
 }
 
-.admin-tab-label{
-   display: flex;
+.admin-tab-label {
+  display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;

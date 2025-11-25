@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "phone": "123-456-7890",
+    "date": "2023-06-01",
+    "time": "10:00",
+    "status": "pending"
+  },
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "phone": "123-456-7890",
+    "date": "2023-06-02",
+    "time": "11:00",
+    "status": "attended"
+  },
+  {
+    "id": 3,
+    "name": "John Smith",
+    "phone": "123-456-7890",
+    "date": "2023-06-03",
+    "time": "12:00",
+    "status": "canceled"
+  },
+  {
+    "id": 4,
+    "name": "Bob White",
+    "phone": "123-456-7890",
+    "date": "2023-06-03",
+    "time": "12:00",
+    "status": "pending"
+  },
+  {
+    "id": 5,
+    "name": "Fred Smith",
+    "phone": "123-456-7890",
+    "date": "2023-06-03",
+    "time": "12:00",
+    "status": "pending"
+  },
+  {
+    "id": 6,
+    "name": "Usman Ahmed",
+    "phone": "123-456-7890",
+    "date": "2023-06-03",
+    "time": "12:00",
+    "status": "pending"
+  }
+]

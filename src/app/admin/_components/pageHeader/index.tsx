@@ -15,7 +15,7 @@ export default function PageHeader(props: any) {
       ) : null}
       <div className="dashboard-PageHeader-box1">
         <div className="title">
-          <DynamicIcon size={13} name={props?.icon} />
+          <DynamicIcon size={18} name={props?.icon} />
           <div className="title-text">{props?.title}</div>
         </div>
       </div>

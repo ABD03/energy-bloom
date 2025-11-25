@@ -16,8 +16,8 @@ export default function Item(props: any) {
     >
      
       <div className="flex-1">{props?.item?.menu}</div>
-       <div>
-        <DynamicIcon size={20} name={props?.item?.icon} />
+       <div className="icon">
+        <DynamicIcon size={18} name={props?.item?.icon} />
       </div>
     </div>
   );

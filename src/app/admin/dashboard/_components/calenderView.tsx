@@ -80,7 +80,6 @@ const App: React.FC = () => {
     <Card
       title="New Appointments"
       size="small"
-      style={{ margin: 10 }}
       extra={<a>Refresh</a>}
     >
       <Calendar cellRender={cellRender} />

@@ -4,16 +4,18 @@ import DynamicIcon from "@/util/dynamicIcons";
 
 const StatusCard = (props: any) => {
   return (
-    <Card size="small" style={{ margin: 10 }}>
+    <Card size="small">
       <Statistic
-        title={props?.title}
-        value={props?.total}
-        style={{ fontWeight: "semibold" }}
-        prefix={
-          <div style={{ width: "100%", marginRight:20,}}>
-            <DynamicIcon size={20} name={props?.icon} />
+        title={
+          <div className="flex gap-2 align-center">
+            <div className="text-(--primary) bg-gray-200 p-1 rounded">
+              <DynamicIcon size={20} name={props?.icon} />
+            </div>
+            {props?.title}
           </div>
         }
+        value={props?.total}
+        style={{ fontWeight: "semibold" }}
       />
     </Card>
   );

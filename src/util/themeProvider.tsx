@@ -19,22 +19,10 @@ function AntdThemeWrapper({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
   const [themes, setTheme] = useState({
     colorPrimary: "#824ff8",
-    fontFamily: "Inter, sans-serif",
-    borderRadius:4
-  
+    fontFamily: "var(--font-inter)",
+    borderRadius: 6,
   });
   const [antdMode, setAntdMode] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    if (theme === "dark") setAntdMode("dark");
-    else setAntdMode("light");
-    const rootStyles = getComputedStyle(document.documentElement);
-    setTheme({
-      colorPrimary: rootStyles.getPropertyValue("--primary").trim(),
-      fontFamily: rootStyles.getPropertyValue("--font-family").trim(),
-      borderRadius:4
-    });
-  }, [theme]);
 
   return (
     <ConfigProvider
