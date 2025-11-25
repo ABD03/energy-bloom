@@ -36,7 +36,7 @@ function AttendModal(props: any) {
           title="Patient"
           extra={
             <Button type="link" size="small">
-              Details <ExternalLink size={15}/>
+              Details <ExternalLink size={15} />
             </Button>
           }
           style={{ marginBottom: 15 }}
@@ -46,14 +46,13 @@ function AttendModal(props: any) {
               <Avatar />
             </div>
             <div>
-              <div className="font-bold">
-                Marko louise - <Tag variant="outlined">Male</Tag>
+              <div className="font-bold text-lg">
+                Marko louise - <Tag variant="outlined">Male/18</Tag>
               </div>
               <div>mark@gmail.com</div>
             </div>
           </div>
         </Card>
-
         <Form.Item label="Attending doctor">
           <Select placeholder="Select Doctor">
             <Select.Option value="1">Abdul Riyas</Select.Option>

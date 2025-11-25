@@ -38,7 +38,7 @@ function FormModal(props: any) {
           <TimePicker style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item label="Notes">
-          <Input.TextArea />
+          <Input.TextArea rows={5}/>
         </Form.Item>
         <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-5">
           <Form.Item>
