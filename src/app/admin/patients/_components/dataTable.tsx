@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
-import { Pagination, Table, Tag, Card, Button } from "antd";
-import { BadgeCheck, ExternalLink, CircleX } from "lucide-react";
+import { Pagination, Table, Tag, Card, Button, Avatar } from "antd";
+import { BadgeCheck, ExternalLink } from "lucide-react";
 
 function DataTable(props: any) {
   const navigation = useRouter();
@@ -11,25 +11,19 @@ function DataTable(props: any) {
     navigation.push(`?${params.toString()}`);
   };
   const columns = [
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      width: 100,
-      render: (item: any) => <div>{item}</div>,
-    },
-    {
-      title: "time",
-      dataIndex: "time",
-      key: "time",
-      width: 100,
-      render: (item: any) => <div>{item}</div>,
+     {
+      title: "",
+      dataIndex: "image",
+      key: "image",
+      Width: 10,
+      render: (item: any) => (
+        <Avatar size="small" src={item} />
+      ),
     },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: 300,
       ellipsis: true,
       render: (item: any) => (
         <div className="font-semibold flex gap-4 align-center">
@@ -38,10 +32,32 @@ function DataTable(props: any) {
       ),
     },
     {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+      width: 20,
+      ellipsis: true,
+      render: (item: any) => <div>{item}</div>,
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      width: 20,
+      ellipsis: true,
+      render: (item: any) => <div>{item}</div>,
+    },
+    {
       title: "Contact Number",
       dataIndex: "phone",
       key: "phone",
-      width: 200,
+      ellipsis: true,
+      render: (item: any) => <div>{item}</div>,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       ellipsis: true,
       render: (item: any) => <div>{item}</div>,
     },
@@ -52,18 +68,24 @@ function DataTable(props: any) {
       width: 10,
       render: (item: any) => (
         <Tag
-         variant="outlined"
+          variant="outlined"
           color={
-            item === "pending"
-              ? "orange"
-              : item === "canceled"
-              ? "red"
-              : "green"
+            item === "active"
+              ? "green"
+              :"red"
           }
         >
           {item}
         </Tag>
       ),
+    },
+    {
+      title: "Registered on",
+      dataIndex: "date",
+      key: "date",
+      width: 100,
+      ellipsis: true,
+      render: (item: any) => <div>{item}</div>,
     },
     {
       title: "Action",
@@ -72,16 +94,12 @@ function DataTable(props: any) {
         <div className="dashboard-table-action">
           <Button
             size="small"
-            type="default"
+            type="primary"
             className="text-xs!"
             onClick={() => props?.onClick()}
           >
-            <BadgeCheck size={13} className="text-green-500" />
-            Attend
-          </Button>
-          <Button size="small" danger className="text-xs!">
-            <CircleX size={13} />
-            Cancel
+            <BadgeCheck size={13}/>
+            Details
           </Button>
         </div>
       ),

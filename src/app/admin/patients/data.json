@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "name": "John Smith",
+    "phone": "123-456-7890",
+    "email": "K1iQ7@example.com",
+    "age": 30,
+    "gender": "male",
+    "status": "active",
+    "date": "2023-06-01",
+    "image": "https://i.pravatar.cc/150?img=1"
+  },
+  {
+    "id": 2,
+    "name": "Emily Johnson",
+    "phone": "987-654-3210",
+    "email": "emilyj@example.com",
+    "age": 25,
+    "gender": "female",
+    "status": "inactive",
+    "date": "2023-06-05",
+    "image": "https://i.pravatar.cc/150?img=2"
+  },
+  {
+    "id": 3,
+    "name": "Michael Brown",
+    "phone": "555-123-4567",
+    "email": "mikeb@example.com",
+    "age": 42,
+    "gender": "male",
+    "status": "active",
+    "date": "2023-07-10",
+    "image": "https://i.pravatar.cc/150?img=3"
+  },
+  {
+    "id": 4,
+    "name": "Sophia Davis",
+    "phone": "444-987-6523",
+    "email": "sophia.d@example.com",
+    "age": 28,
+    "gender": "female",
+    "status": "pending",
+    "date": "2023-08-15",
+    "image": "https://i.pravatar.cc/150?img=4"
+  },
+  {
+    "id": 5,
+    "name": "Daniel Wilson",
+    "phone": "789-555-2314",
+    "email": "danwil@example.com",
+    "age": 35,
+    "gender": "male",
+    "status": "active",
+    "date": "2023-09-01",
+    "image": "https://i.pravatar.cc/150?img=5"
+  },
+  {
+    "id": 6,
+    "name": "Olivia Martinez",
+    "phone": "321-789-4444",
+    "email": "olivia.m@example.com",
+    "age": 31,
+    "gender": "female",
+    "status": "inactive",
+    "date": "2023-09-20",
+    "image": "https://i.pravatar.cc/150?img=6"
+  },
+  {
+    "id": 7,
+    "name": "James Anderson",
+    "phone": "888-234-9900",
+    "email": "j.anderson@example.com",
+    "age": 27,
+    "gender": "male",
+    "status": "pending",
+    "date": "2023-10-02",
+    "image": "https://i.pravatar.cc/150?img=7"
+  },
+  {
+    "id": 8,
+    "name": "Ava Thompson",
+    "phone": "999-111-2222",
+    "email": "ava.t@example.com",
+    "age": 22,
+    "gender": "female",
+    "status": "active",
+    "date": "2023-10-12",
+    "image": "https://i.pravatar.cc/150?img=8"
+  },
+  {
+    "id": 9,
+    "name": "William Lopez",
+    "phone": "222-333-4444",
+    "email": "will.lopez@example.com",
+    "age": 40,
+    "gender": "male",
+    "status": "inactive",
+    "date": "2023-11-01",
+    "image": "https://i.pravatar.cc/150?img=9"
+  },
+  {
+    "id": 10,
+    "name": "Isabella White",
+    "phone": "777-888-9999",
+    "email": "isab.white@example.com",
+    "age": 29,
+    "gender": "female",
+    "status": "active",
+    "date": "2023-11-18",
+    "image": "https://i.pravatar.cc/150?img=10"
+  }
+]

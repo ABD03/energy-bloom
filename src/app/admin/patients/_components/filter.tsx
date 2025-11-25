@@ -1,7 +1,6 @@
 import { useCallback } from "react";
-import { Button, DatePicker, Form, Input, Segmented } from "antd";
+import { Button, Form, Input, Segmented, Select } from "antd";
 import { debounce } from "lodash";
-import moment from "moment";
 import { useRouter } from "next/navigation";
 import { Search, CircleX } from "lucide-react";
 
@@ -19,11 +18,10 @@ const Filters = (props: any) => {
       } else {
         params.delete("search");
       }
-      if (value?.date) {
-        const date = moment(value?.date?.$d).format("YYYY-MM-DD");
-        params.set("date", date?.toString());
+      if (value?.gender) {
+        params.set("gender", value?.gender);
       } else {
-        params.delete("date");
+        params.delete("gender");
       }
       if (value?.status) {
         params.set("status", value?.status.toString());
@@ -66,11 +64,14 @@ const Filters = (props: any) => {
           </Form.Item>
         </div>
         <div style={{ minWidth: 150 }}>
-          <Form.Item noStyle name={"date"}>
-            <DatePicker placeholder="Date" allowClear style={{ width: 150 }} />
+          <Form.Item noStyle name={"gender"}>
+            <Select style={{ width: 150 }} placeholder="Filter Gender">
+              <Select.Option value={"male"}>Male</Select.Option>
+              <Select.Option value={"female"}>Female</Select.Option>
+            </Select>
           </Form.Item>
         </div>
-        {props?.query || props?.date || props?.status ? (
+        {props?.query || props?.gender || props?.status ? (
           <Form.Item noStyle>
             <Button
               icon={<CircleX size={15} />}
@@ -88,16 +89,16 @@ const Filters = (props: any) => {
           <Segmented<string>
             options={[
               {
-                label: "Pending",
-                value: "pending",
+                label: "All",
+                value: "",
               },
               {
-                label: "Attended",
-                value: "attended",
+                label: "Active",
+                value: "active",
               },
               {
-                label: "Canceled",
-                value: "canceled",
+                label: "Inactive",
+                value: "inactive",
               },
             ]}
           />
