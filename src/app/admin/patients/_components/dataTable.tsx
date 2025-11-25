@@ -26,7 +26,7 @@ function DataTable(props: any) {
       key: "name",
       ellipsis: true,
       render: (item: any) => (
-        <div className="font-semibold flex gap-4 align-center">
+        <div className="font-semibold flex gap-4 align-center"  onClick={() => navigation.push(`/admin/patients/${item}`)}>
           {item} <ExternalLink size={15} color="var(--primary)" />
         </div>
       ),
@@ -96,7 +96,7 @@ function DataTable(props: any) {
             size="small"
             type="primary"
             className="text-xs!"
-            onClick={() => props?.onClick()}
+            onClick={() => navigation.push(`/admin/patients/${record?.id}`)}
           >
             <BadgeCheck size={13}/>
             Details

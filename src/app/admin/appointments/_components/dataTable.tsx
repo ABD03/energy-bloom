@@ -32,7 +32,10 @@ function DataTable(props: any) {
       width: 300,
       ellipsis: true,
       render: (item: any) => (
-        <div className="font-semibold flex gap-4 align-center">
+        <div
+          className="font-semibold flex gap-4 align-center"
+          onClick={() => navigation.push(`/admin/patients/${item}`)}
+        >
           {item} <ExternalLink size={15} color="var(--primary)" />
         </div>
       ),
@@ -52,7 +55,7 @@ function DataTable(props: any) {
       width: 10,
       render: (item: any) => (
         <Tag
-         variant="outlined"
+          variant="outlined"
           color={
             item === "pending"
               ? "orange"

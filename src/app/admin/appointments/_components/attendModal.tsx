@@ -15,8 +15,15 @@ import {
 } from "antd";
 import { FileUp } from "lucide-react";
 import { ExternalLink } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 function AttendModal(props: any) {
+  const navigation = useRouter();
+
+  const details = () => {
+    props.onCancel();
+    navigation.push(`/admin/patients/121212`);
+  };
   return (
     <Modal
       maskClosable={false}
@@ -35,7 +42,7 @@ function AttendModal(props: any) {
           size="small"
           title="Patient"
           extra={
-            <Button type="link" size="small">
+            <Button type="link" size="small" onClick={() => details()}>
               Details <ExternalLink size={15} />
             </Button>
           }
