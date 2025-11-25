@@ -1,0 +1,83 @@
+[
+  {
+    "id": 2,
+    "date": "2023-06-03",
+    "time": "11:45 PM",
+    "status": "pending",
+    "doctor": "",
+    "desc": "",
+    "files": []
+  },
+  {
+    "id": 1,
+    "date": "2023-06-01",
+    "time": "10:00 PM",
+    "status": "attended",
+    "doctor": "Dr. Arjun Menon, MBBS, MD",
+    "desc": "Patient visited for fever and sore throat. Prescription provided.",
+    "files": [
+      { "id": 1, "name": "X-ray" },
+      { "id": 2, "name": "Blood Report" }
+    ]
+  },
+  {
+    "id": 3,
+    "date": "2023-06-04",
+    "time": "09:30 PM",
+    "status": "canceled",
+    "doctor": "Dr. Vivek Rani, MD Pediatrics",
+    "desc": "Appointment canceled due to personal reasons.",
+    "files": []
+  },
+  {
+    "id": 4,
+    "date": "2023-06-06",
+    "time": "16:00 PM",
+    "status": "attended",
+    "doctor": "Dr. Hassan Noor, MBBS",
+    "desc": "Follow-up visit for diabetes management.",
+    "files": [
+      { "id": 1, "name": "Sugar Test" }
+    ]
+  },
+  {
+    "id": 6,
+    "date": "2023-06-08",
+    "time": "15:20 PM",
+    "status": "canceled",
+    "doctor": "Dr. Neha Suresh, MBBS",
+    "desc": "Appointment canceled by the clinic due to doctor unavailability.",
+    "files": []
+  },
+  {
+    "id": 7,
+    "date": "2023-06-10",
+    "time": "12:00 AM",
+    "status": "attended",
+    "doctor": "Dr. Vivek Rani, MD Pediatrics",
+    "desc": "Routine child vaccination completed.",
+    "files": [
+      { "id": 1, "name": "Vaccination Card" }
+    ]
+  },
+  {
+    "id": 9,
+    "date": "2023-06-13",
+    "time": "08:45 PM",
+    "status": "canceled",
+    "doctor": "Dr. Arjun Menon, MBBS, MD",
+    "desc": "Patient canceled due to travel.",
+    "files": []
+  },
+  {
+    "id": 10,
+    "date": "2023-06-14",
+    "time": "10:50 PM",
+    "status": "attended",
+    "doctor": "Dr. Neha Suresh, MBBS",
+    "desc": "Patient visited for stomach pain; medication advised.",
+    "files": [
+      { "id": 1, "name": "Ultrasound Report" }
+    ]
+  }
+]
