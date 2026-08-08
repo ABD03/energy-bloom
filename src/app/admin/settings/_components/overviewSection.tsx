@@ -147,40 +147,7 @@ export default function OverviewSection({ data }: { data?: any }) {
           </div>
         }
       />
-      <InfoRow
-        icon={PiBracketsCurly}
-        label="Feed Path ( support RSS 2.0 / Atom 1.0 / Google News / MSN / Apple News / DailyHunt / JioNews/ Feedly / Inoreader )"
-        value={
-          <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-            {domain}/feed.xml
-          </code>
-        }
-        action={
-          <div className="flex gap-2">
-            <Button
-              className="p-2!"
-              onClick={() => {
-                navigator.clipboard.writeText(`${domain}/feed.xml`);
-                message.success("Copied");
-              }}
-            >
-              <IoCopyOutline size={16} className="text-green-500" />
-            </Button>
-            <Button
-              className="p-2!"
-              onClick={() =>
-                window.open(
-                  `${domain}/feed.xml`,
-                  "_blank",
-                  "noopener noreferrer",
-                )
-              }
-            >
-              <FiExternalLink size={16} />
-            </Button>
-          </div>
-        }
-      />
+
       <InfoRow
         icon={PiBracketsCurly}
         label="Robots.txt"
@@ -273,40 +240,6 @@ export default function OverviewSection({ data }: { data?: any }) {
               onClick={() =>
                 window.open(
                   `${domain}/manifest.json`,
-                  "_blank",
-                  "noopener noreferrer",
-                )
-              }
-            >
-              <FiExternalLink size={16} />
-            </Button>
-          </div>
-        }
-      />
-      <InfoRow
-        icon={PiBracketsCurly}
-        label="Ads.txt"
-        value={
-          <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-            {domain}/ads.txt
-          </code>
-        }
-        action={
-          <div className="flex gap-2">
-            <Button
-              className="p-2!"
-              onClick={() => {
-                navigator.clipboard.writeText(`${domain}/ads.txt`);
-                message.success("Copied");
-              }}
-            >
-              <IoCopyOutline size={16} className="text-green-500" />
-            </Button>
-            <Button
-              className="p-2!"
-              onClick={() =>
-                window.open(
-                  `${domain}/ads.txt`,
                   "_blank",
                   "noopener noreferrer",
                 )

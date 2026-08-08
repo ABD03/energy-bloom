@@ -42,7 +42,7 @@ export const API = {
   USER_STATS: "website/user/stats",
   //SETTINGS
   GET_SETTINGS: "website/settings",
-  //MASTERDATA (categories + tags)
+  //MASTERDATA (pages)
   GET_MASTERDATA: "website/masterdata",
   //CONTACT
   POST_CONTACT: "website/contact",

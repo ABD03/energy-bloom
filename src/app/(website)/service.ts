@@ -28,6 +28,6 @@ export const getMasterData = async () => {
     return json;
   } catch (err) {
     console.log("GetMasterData error", err);
-    return { status: false, data: { categories: [], tags: [] } };
+    return { status: false, data: { pages: [] } };
   }
 };

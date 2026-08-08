@@ -18,7 +18,7 @@ async function list() {
       console.log("err", err);
       resolve({
         status: false,
-        data: { categories: [], tags: [], pages: [] },
+        data: { pages: [] },
         message: "something went wrong",
       });
     }
