@@ -58,7 +58,7 @@ export default function Step1({ onDone }: Props) {
       form={form}
       layout="vertical"
       onFinish={onFinish}
-      initialValues={{ primaryColor: "#d81c1c" }}
+      initialValues={{ primaryColor: "#6104cc" }}
     >
       <BasicFields />
       <AwsS3Fields />

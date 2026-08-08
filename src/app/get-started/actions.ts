@@ -48,7 +48,7 @@ async function updatePrimaryColor(color: string) {
 
 export async function getExistingConfig() {
   const cssPath = path.join(process.cwd(), "src/app/globals.css");
-  let primaryColor = "#d81c1c";
+  let primaryColor = "#6104cc";
   try {
     const css = await readFile(cssPath, "utf8");
     const m = css.match(/--color-primary:\s*([^;]+);/);

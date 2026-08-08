@@ -39,7 +39,7 @@ function AntdThemeWrapper({ children }: { children: React.ReactNode }) {
           ? antdTheme.darkAlgorithm
           : antdTheme.defaultAlgorithm,
         token: {
-          colorPrimary: "#d81c1c",
+          colorPrimary: "#6104cc",
           fontFamily: "var(--font-kumbh)",
           fontSizeLG: 14,
           borderRadius: 8,

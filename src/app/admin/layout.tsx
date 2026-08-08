@@ -6,7 +6,7 @@ import SiderBar from "./_components/siderBar";
 
 function LayoutWrapper({ children }: Readonly<{ children: React.ReactNode }>) {
   const [themes, setTheme] = useState({
-    colorPrimary: "#D32F2F",
+    colorPrimary: "#6104cc",
     fontFamily: "var(--font-plus-jakarta-sans)",
     borderRadius: 8,
   });

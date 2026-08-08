@@ -401,7 +401,7 @@ export const settingsSections: Record<string, SectionConfig[]> = {
           label: "Manifest.json",
           type: "code",
           rows: 16,
-          placeholder: `{\n  "name": "My App",\n  "short_name": "App",\n  "description": "...",\n  "start_url": "/",\n  "display": "standalone",\n  "background_color": "#ffffff",\n  "theme_color": "#d81c1c"\n}`,
+          placeholder: `{\n  "name": "My App",\n  "short_name": "App",\n  "description": "...",\n  "start_url": "/",\n  "display": "standalone",\n  "background_color": "#ffffff",\n  "theme_color": "#6104cc"\n}`,
         },
       ],
     },
