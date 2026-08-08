@@ -7,6 +7,9 @@ import { BiImages } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { VscFeedback } from "react-icons/vsc";
 import { LiaDatabaseSolid } from "react-icons/lia";
+import { LuTicketSlash } from "react-icons/lu";
+import { PiUsersThree } from "react-icons/pi";
+import { FaUserDoctor } from "react-icons/fa6";
 
 function DynamicIcon(props: any) {
   type IconName =
@@ -17,7 +20,10 @@ function DynamicIcon(props: any) {
     | "RiPagesLine"
     | "IoSettingsOutline"
     | "VscFeedback"
-    | "LiaDatabaseSolid";
+    | "LiaDatabaseSolid"
+    | "LuTicketSlash"
+    | "PiUsersThree"
+    | "FaUserDoctor";
 
   interface IconProps {
     iconName: IconName;
@@ -34,6 +40,9 @@ function DynamicIcon(props: any) {
       IoSettingsOutline: IoSettingsOutline,
       VscFeedback: VscFeedback,
       LiaDatabaseSolid: LiaDatabaseSolid,
+      LuTicketSlash: LuTicketSlash,
+      PiUsersThree: PiUsersThree,
+      FaUserDoctor: FaUserDoctor,
     };
     if (!icons.hasOwnProperty(iconName)) {
       console.warn(

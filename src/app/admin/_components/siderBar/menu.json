@@ -11,25 +11,25 @@
         "route": "/admin/overview"
       },
       {
+        "id": 2,
+        "menu": "Appointments",
+        "icon": "LuTicketSlash",
+        "base": "/admin/appointments",
+        "route": "/admin/appointments"
+      },
+         {
         "id": 3,
-        "menu": "Master Data",
-        "icon": "LiaDatabaseSolid",
-        "base": "/admin/masterdata",
-        "route": "/admin/masterdata?active=category&page=1&limit=10"
+        "menu": "Patients",
+        "icon": "PiUsersThree",
+        "base": "/admin/patients",
+        "route": "/admin/patients"
       },
-      {
+          {
         "id": 4,
-        "menu": "Media gallery",
-        "icon": "BiImages",
-        "base": "/admin/gallery",
-        "route": "/admin/gallery?page=1&limit=18"
-      },
-      {
-        "id": 5,
-        "menu": "Static pages",
-        "icon": "RiPagesLine",
-        "base": "/admin/staticpage",
-        "route": "/admin/staticpage?page=1&limit=10"
+        "menu": "Doctors",
+        "icon": "FaUserDoctor",
+        "base": "/admin/doctors",
+        "route": "/admin/doctors"
       }
     ]
   },
@@ -37,7 +37,22 @@
     "id": 1,
     "text": "Settings",
     "items": [
+        {
+        "id": 5,
+        "menu": "Media gallery",
+        "icon": "BiImages",
+        "base": "/admin/gallery",
+        "route": "/admin/gallery?page=1&limit=18"
+      },
       {
+        "id": 6,
+        "menu": "Static pages",
+        "icon": "RiPagesLine",
+        "base": "/admin/staticpage",
+        "route": "/admin/staticpage?page=1&limit=10"
+      },
+      {
+        
         "id": 7,
         "menu": "Users",
         "icon": "FiUsers",

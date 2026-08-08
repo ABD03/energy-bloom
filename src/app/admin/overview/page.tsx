@@ -120,28 +120,10 @@ export default function OverView() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-1">
             <div className="col-span-2 sm:col-span-1">
-              <div className="font-semibold text-base mb-1">Today Views</div>
+              <div className="font-semibold text-base mb-1">New Bookings</div>
               <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold mb-1">
-                  {" "}
                   {comparison?.views?.today || 0}
-                </div>
-                <div>
-                  {comparison?.views?.diff !== undefined && (
-                    <Tag
-                      color={
-                        comparison?.views?.trend === "positive"
-                          ? "green"
-                          : comparison?.views?.trend === "negative"
-                            ? "red"
-                            : "default"
-                      }
-                    >
-                      {comparison?.views?.diff > 0 ? "+" : ""}
-                      {comparison?.views?.diff} ({comparison?.views?.percentage}
-                      %)
-                    </Tag>
-                  )}
                 </div>
               </div>
               <div className="text-[12px] text-gray-500">
@@ -150,9 +132,27 @@ export default function OverView() {
             </div>
             <StaticCard
               loading={loading}
+              title={"Appointments"}
+              value={counts?.contacts || 0}
+              icon={"LuTicketSlash"}
+            />
+            <StaticCard
+              loading={loading}
+              title={"Patients"}
+              value={counts?.contacts || 0}
+              icon={"PiUsersThree"}
+            />
+            <StaticCard
+              loading={loading}
+              title={"Doctors"}
+              value={counts?.contacts || 0}
+              icon={"FaUserDoctor"}
+            />
+            <StaticCard
+              loading={loading}
               title={"Enquiry"}
               value={counts?.contacts || 0}
-              icon={"TiTabsOutline"}
+              icon={"VscFeedback"}
             />
           </div>
           <div className="flex gap-4 overflow-x-auto pt-4 scrollbar-hide">
