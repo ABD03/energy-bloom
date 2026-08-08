@@ -1,0 +1,22 @@
+[
+  { "code": "en", "label": "English", "locale": "en-US", "og_locale": "en_US" },
+  { "code": "ml", "label": "Malayalam", "locale": "ml-IN", "og_locale": "ml_IN" },
+  { "code": "hi", "label": "Hindi", "locale": "hi-IN", "og_locale": "hi_IN" },
+  { "code": "ta", "label": "Tamil", "locale": "ta-IN", "og_locale": "ta_IN" },
+  { "code": "te", "label": "Telugu", "locale": "te-IN", "og_locale": "te_IN" },
+  { "code": "kn", "label": "Kannada", "locale": "kn-IN", "og_locale": "kn_IN" },
+  { "code": "mr", "label": "Marathi", "locale": "mr-IN", "og_locale": "mr_IN" },
+  { "code": "bn", "label": "Bengali", "locale": "bn-IN", "og_locale": "bn_IN" },
+  { "code": "gu", "label": "Gujarati", "locale": "gu-IN", "og_locale": "gu_IN" },
+  { "code": "pa", "label": "Punjabi", "locale": "pa-IN", "og_locale": "pa_IN" },
+  { "code": "ur", "label": "Urdu", "locale": "ur-PK", "og_locale": "ur_PK" },
+  { "code": "ar", "label": "Arabic", "locale": "ar-AE", "og_locale": "ar_AE" },
+  { "code": "fr", "label": "French", "locale": "fr-FR", "og_locale": "fr_FR" },
+  { "code": "de", "label": "German", "locale": "de-DE", "og_locale": "de_DE" },
+  { "code": "es", "label": "Spanish", "locale": "es-ES", "og_locale": "es_ES" },
+  { "code": "pt", "label": "Portuguese", "locale": "pt-PT", "og_locale": "pt_PT" },
+  { "code": "ru", "label": "Russian", "locale": "ru-RU", "og_locale": "ru_RU" },
+  { "code": "zh", "label": "Chinese", "locale": "zh-CN", "og_locale": "zh_CN" },
+  { "code": "ja", "label": "Japanese", "locale": "ja-JP", "og_locale": "ja_JP" },
+  { "code": "ko", "label": "Korean", "locale": "ko-KR", "og_locale": "ko_KR" }
+]

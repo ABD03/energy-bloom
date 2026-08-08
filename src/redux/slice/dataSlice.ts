@@ -8,8 +8,11 @@ const DataSlice = createSlice({
     setSettings: (state, action) => {
       state.settings = action.payload;
     },
+    updateSettings: (state: any, action) => {
+      state.settings.settings = action.payload;
+    },
   },
 });
 
-export const { setSettings } = DataSlice.actions;
+export const { setSettings, updateSettings } = DataSlice.actions;
 export default DataSlice.reducer;

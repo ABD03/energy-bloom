@@ -15,12 +15,14 @@ import Slices from "../slice";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 
 const persistConfig: any = {
-  key: "metbeatnews.com",
+  key: process.env.NEXT_PUBLIC_NAME || "app",
   storage,
-  whitelist: ["Auth", "Visits"],
+  whitelist: ["Auth", "Visits", "Data"],
   transforms: [
     encryptTransform({
-      secretKey: process.env.NEXT_PUBLIC_ENCRYPT_KEY || "secretKey",
+      secretKey:
+        process.env.NEXT_PUBLIC_ENCRYPT_KEY ||
+        "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM",
       onError: function (error) {},
     }),
   ],
@@ -31,6 +33,7 @@ const persistedReducer = persistReducer(persistConfig, Slices);
 const middleWareConfigs = {
   serializableCheck: {
     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    ignoredPaths: ["Visits.current"],
   },
 };
 

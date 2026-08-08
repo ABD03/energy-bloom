@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import useIsClient from "@/util/useClient";
+import useIsClient from "@/utils/useClient";
 
 interface Props {
   readonly children: ReactNode;

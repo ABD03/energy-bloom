@@ -1,6 +1,5 @@
 
-import HomeContainer from "./home/pageContainer";
 
-export default function WebsiteHome() {
-  return <HomeContainer/>;
+export default async function Website() {
+  return <div className="min-h-screen"></div>;
 }

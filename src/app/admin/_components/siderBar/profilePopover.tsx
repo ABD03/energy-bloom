@@ -1,15 +1,21 @@
-import { Badge, Button, Modal } from "antd";
+import { Badge, message, Modal } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/util/hooks";
-import { LogOut, ShieldUser, UserPen } from "lucide-react";
+import { MdLogout } from "react-icons/md";
+import { HiOutlineUserCircle } from "react-icons/hi";
 
-import { ImageLoader } from "@/util/imageLoader";
+import { ImageLoader } from "@/utils/common";
 import { logout } from "@/redux/slice/userSlice";
+import { useAppDispatch } from "@/redux/util/hooks";
+
+import { ViewImage } from "@/utils/viewImage";
+import { GET } from "@/utils/apiCalls";
+import { API } from "@/config/apis";
 
 export default function ProfilePopover(props: any) {
   const navigation = useRouter();
   const dispatch = useAppDispatch();
+
   const logouts = () => {
     Modal.confirm({
       title: "Are you sure you want to logout?",
@@ -23,71 +29,71 @@ export default function ProfilePopover(props: any) {
         danger: true,
       },
       onOk() {
-        dispatch(logout({}));
-        navigation.push("/");
+        logoutNow();
       },
     });
   };
+
+  const logoutNow = async () => {
+    try {
+      const response: any = await GET(
+        `${API.LOGOUT}?id=${props?.item?.user?._id}`,
+        null,
+      );
+      if (response?.status) {
+        document.cookie = "token=; path=/; max-age=0";
+        dispatch(logout({}));
+        navigation.push("/");
+        message.success("Logout successfully");
+      } else {
+        message.error("Something went wrong");
+      }
+    } catch (err) {
+      console.log(err);
+      message.error("Something went wrong");
+    }
+  };
+
   return (
-    <div style={{ width: 200, textAlign: "center" }}>
-      <br />
+    <div className="w-53 text-center pt-4">
       <Badge color="green" dot={true}>
         <Image
           alt="profile"
           width={0}
           height={0}
-          style={{
-            borderRadius: "100%",
-            objectFit: "cover",
-            width: 50,
-            height: 50,
-          }}
-          src={"/placeholder.png"}
+          src={ViewImage(props?.item?.user?.image)}
           loader={ImageLoader}
+          className="w-15 h-15 object-cover rounded-4xl!"
         />
       </Badge>
-      <div>
+      <div className=" pb-4">
         <div>
-          <div style={{ fontWeight: "bold", fontSize: 16 }}>
-            {props?.item?.user?.name}
+          <div className="font-semibold text-[16px]">
+            {props?.item?.user?.name || "Admin"}
           </div>
-          <div className="mb-2">{props?.item?.user?.email}</div>
+          <div className="mb-2 text-gray-500 text-[12px]">
+            {props?.item?.user?.email || "admin@gmail.com"}
+          </div>
         </div>
       </div>
-
-      <Button
-        block
-        size="small"
-        style={{ borderRadius: 100, fontSize: 12 }}
+      <div
+        className="flex items-center gap-2 bg-sky-100 p-1.5 px-2 rounded-lg mb-2 text-blue-800 cursor-pointer"
         onClick={() => navigation.push("/profile")}
       >
-        <UserPen color="green" size={15} />
-        Manage your account
-      </Button>
-      {props?.item?.user?.type === "editor" ? (
-        <Button
-          block
-          size="small"
-          type="primary"
-          ghost
-          style={{ borderRadius: 100, fontSize: 12, marginTop: 10 }}
-          onClick={() => navigation.push("/admin/dashboard")}
-        >
-          <ShieldUser size={15} />
-          Open Admin Panel
-        </Button>
-      ) : null}
-      <Button
-        block
-        size="small"
-        style={{ borderRadius: 100, fontSize: 12, marginTop: 10 }}
-        ghost
-        danger
+        <div>
+          <HiOutlineUserCircle size={17} />
+        </div>
+        <div className="font-medium text-[13px]">View Profile</div>
+      </div>
+      <div
+        className="flex items-center gap-2 bg-red-100 p-1.5 px-2 rounded-lg text-red-500 cursor-pointer"
         onClick={() => logouts()}
       >
-        <LogOut size={15} />
-        Logout
-      </Button>
+        <div>
+          <MdLogout size={15} />
+        </div>
+        <div className="font-medium text-[13px]">Logout</div>
+      </div>
     </div>
   );
 }
