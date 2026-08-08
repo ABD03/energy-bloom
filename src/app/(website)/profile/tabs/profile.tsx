@@ -10,7 +10,6 @@ import { HiUser } from "react-icons/hi2";
 
 import ProfileForm from "../_components/profileForm";
 import DeleteForm from "../_components/deleteForm";
-import PublishCenter from "../_components/publishCenter";
 
 import { useAppDispatch } from "@/redux/util/hooks";
 import { logout as logoutAction } from "@/redux/slice/userSlice";
@@ -23,7 +22,6 @@ export default function Profile({ Auth }: any) {
   const user = Auth?.user || {};
   const [editing, setEditing] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
-  const isEditor = user?.type === "editor";
 
   const handleLogout = async () => {
     setLogoutLoading(true);
@@ -58,7 +56,6 @@ export default function Profile({ Auth }: any) {
 
   return (
     <div className="w-full pb-10 sm:mt-4">
-      {isEditor && <PublishCenter user={user} />}
       <Card
         title="Profile Information"
         size="small"

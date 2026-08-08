@@ -48,8 +48,7 @@ async function list(req: any) {
         views: getCompare(todayViews, yesterdayViews),
       };
 
-      const [subscriber, contacts, pages, files, users] = await Promise.all([
-        Users.countDocuments({ type: "subscriber" }),
+      const [contacts, pages, files, users] = await Promise.all([
         Contacts.countDocuments(),
         Pages.countDocuments(),
         Media.countDocuments(),
@@ -64,7 +63,6 @@ async function list(req: any) {
           yesterday: yesterday,
           comparison: comparison,
           counts: {
-            subscriber,
             contacts,
             pages,
             files,

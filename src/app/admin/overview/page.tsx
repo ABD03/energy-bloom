@@ -10,7 +10,6 @@ import PageHeader from "../_components/pageHeader";
 import Chart from "./_components/chart";
 import Chart2 from "./_components/chart2";
 import StaticCard from "./_components/cards";
-import Trending from "./_components/trending";
 
 import DynamicIcon from "@/utils/dynamicIcons";
 import { API } from "@/config/apis";
@@ -25,13 +24,11 @@ export default function OverView() {
   const [todays, setTodays] = useState<any>({});
   const [comparison, setComparison] = useState<any>({});
   const [graphData, setGraphData] = useState([]);
-  const [trending, setTrending] = useState([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       getData();
       getChart();
-      getTrending();
     }
   }, []);
 
@@ -39,7 +36,6 @@ export default function OverView() {
     setLoading1(true);
     getData();
     getChart();
-    getTrending();
   };
 
   const getData = async () => {
@@ -83,24 +79,6 @@ export default function OverView() {
       message.error("Oops.something gone wrong.");
     } finally {
       setLoading1(false);
-    }
-  };
-
-  const getTrending = async () => {
-    try {
-      setLoading2(true);
-      let date = new Date().toISOString();
-      let URL = `${API.OVERVIEW_TRENDING}?date=${date}`;
-      let response: any = await GET(URL, null);
-      if (response?.status) {
-        setTrending(response?.data);
-      } else {
-        setTrending([]);
-      }
-      setLoading2(false);
-    } catch (err) {
-      message.error("Oops.something gone wrong.");
-      setLoading2(false);
     }
   };
 
@@ -170,19 +148,6 @@ export default function OverView() {
                 {dayjs().format("lll")}
               </div>
             </div>
-
-            <StaticCard
-              loading={loading}
-              title={"Contents"}
-              value={counts?.content || 0}
-              icon={"FiEdit"}
-            />
-            <StaticCard
-              loading={loading}
-              title={"Subscribers"}
-              value={counts?.subscriber || 0}
-              icon={"PiUsersThree"}
-            />
             <StaticCard
               loading={loading}
               title={"Enquiry"}
@@ -220,9 +185,6 @@ export default function OverView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4  p-4">
           <Chart data={graphData || []} loading={loading1} />
           <Chart2 data={todays} loading={loading1} />
-        </div>
-        <div className="p-4">
-          <Trending data={trending} loading={loading2} />
         </div>
       </div>
     </div>

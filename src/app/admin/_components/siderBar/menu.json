@@ -38,13 +38,6 @@
     "text": "Settings",
     "items": [
       {
-        "id": 6,
-        "menu": "Subscribers",
-        "icon": "PiUsersThree",
-        "base": "/admin/subscribers",
-        "route": "/admin/subscribers?page=1&limit=10"
-      },
-      {
         "id": 7,
         "menu": "Users",
         "icon": "FiUsers",

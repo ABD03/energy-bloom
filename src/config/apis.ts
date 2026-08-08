@@ -10,7 +10,6 @@ export const API = {
   //dashboard
   OVERVIEW: "admin/overview",
   OVERVIEW_CHART: "admin/overview/chart",
-  OVERVIEW_TRENDING: "admin/overview/trending",
   //Users
   USERS: "admin/users",
   USERS_PICKER: "admin/users/picker",
@@ -39,7 +38,6 @@ export const API = {
   //USER
   GET_USER: "website/user",
   UPDATE_USER: "website/user",
-  USER_STATS: "website/user/stats",
   //SETTINGS
   GET_SETTINGS: "website/settings",
   //MASTERDATA (pages)
