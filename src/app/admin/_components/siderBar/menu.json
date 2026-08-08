@@ -11,13 +11,6 @@
         "route": "/admin/overview"
       },
       {
-        "id": 2,
-        "menu": "Contents",
-        "icon": "FiEdit",
-        "base": "/admin/contents",
-        "route": "/admin/contents?page=1&limit=10"
-      },
-      {
         "id": 3,
         "menu": "Master Data",
         "icon": "LiaDatabaseSolid",

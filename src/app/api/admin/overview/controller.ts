@@ -2,11 +2,8 @@
 import Statics from "../../statistics/modal";
 import Users from "../users/modal";
 import Contacts from "../contact/modal";
-import Categories from "../category/modal";
 import Media from "../media/modal";
-import Content from "../content/modal";
 import Pages from "../pages/modal";
-import Tags from "../tags/modal";
 
 function getCompare(today: number, yesterday: number) {
   const diff = today - yesterday;
@@ -51,21 +48,9 @@ async function list(req: any) {
         views: getCompare(todayViews, yesterdayViews),
       };
 
-      const [
-        content,
-        subscriber,
-        contacts,
-        categories,
-        tags,
-        pages,
-        files,
-        users,
-      ] = await Promise.all([
-        Content.countDocuments(),
+      const [subscriber, contacts, pages, files, users] = await Promise.all([
         Users.countDocuments({ type: "subscriber" }),
         Contacts.countDocuments(),
-        Categories.countDocuments(),
-        Tags.countDocuments(),
         Pages.countDocuments(),
         Media.countDocuments(),
         Users.countDocuments({ type: "editor" }),
@@ -79,11 +64,8 @@ async function list(req: any) {
           yesterday: yesterday,
           comparison: comparison,
           counts: {
-            content,
             subscriber,
             contacts,
-            categories,
-            tags,
             pages,
             files,
             users,

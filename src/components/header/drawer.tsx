@@ -3,7 +3,6 @@ import { useTheme } from "next-themes";
 import moment from "moment";
 import { Avatar, Button, Drawer } from "antd";
 import { IoHelpCircleOutline, IoMoon, IoSunny } from "react-icons/io5";
-import { MdKeyboardArrowRight } from "react-icons/md";
 import { HiOutlineUser } from "react-icons/hi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import {
@@ -47,7 +46,6 @@ type CategoryItem = {
 
 const MobileDrawer = (props: any) => {
   const { theme, setTheme } = useTheme();
-  const categories: CategoryItem[] = props?.categories || [];
   const pages: PageItem[] = props?.pages || [];
   const user = props?.Auth?.user || {};
   const settings = props?.settings?.app || {};
@@ -127,34 +125,6 @@ const MobileDrawer = (props: any) => {
             </div>
           </Link>
         ) : null}
-
-        <div className="mt-1 pt-6 border-t border-slate-500/20">
-          <div className="text-[11px] uppercase tracking-wider text-gray-500 font-semibold mb-1">
-            Explore
-          </div>
-          {categories.length > 0 && (
-            <ul className="">
-              {categories.map((cat) => {
-                return (
-                  <li key={cat._id} className="py-3">
-                    <Link
-                      href={`/more?category=${encodeURIComponent(cat.value)}`}
-                      className="w-full flex items-center justify-between text-left text-(--foreground)!"
-                      style={{
-                        textDecoration: "none",
-                      }}
-                    >
-                      <span className="text-[15px] font-semibold">
-                        {cat.value}
-                      </span>
-                      <MdKeyboardArrowRight size={20} />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
         {pages.length > 0 && (
           <div className="mt-1 pt-6 border-t border-slate-500/20">
             <div className="text-[11px] uppercase tracking-wider text-gray-500 font-semibold mb-3">

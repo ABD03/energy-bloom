@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const tag: any = searchParams.get("tag");
     if (url || tag) {
       if (tag) {
-        revalidateTag(`${tag}`,"max");
+        revalidateTag(`${tag}`);
         return NextResponse.json({
           status: true,
           message: "Tag revalidated successfully",

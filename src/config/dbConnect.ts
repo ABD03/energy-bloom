@@ -7,9 +7,6 @@ import Media from "@/app/api/admin/media/modal";
 import Settings from "@/app/api/admin/settings/modal";
 import Contacts from "@/app/api/admin/contact/modal";
 import Pages from "@/app/api/admin/pages/modal";
-import Categories from "@/app/api/admin/category/modal";
-import Tags from "@/app/api/admin/tags/modal";
-import Content from "@/app/api/admin/content/modal";
 
 const DATABASE_URI: any = process.env.DATABASE_URI;
 
@@ -41,9 +38,6 @@ async function connectDB() {
     Settings.init();
     Contacts.init();
     Pages.init();
-    Categories.init();
-    Tags.init();
-    Content.init();
     return cached.conn;
   } catch (err) {
     console.log("DB-ERROR == == == == == == == == == == ==", err);

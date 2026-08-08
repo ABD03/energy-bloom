@@ -40,7 +40,6 @@ const Footer = (props: any) => {
   const settings = props?.settings?.app || {};
   const contact = props?.settings?.contact || {};
   const editor = props?.settings?.default_editor || {};
-  const categories = props?.masterdata?.data?.categories || [];
   const pages = props?.masterdata?.data?.pages || [];
 
   const [scrollHeight, setScrollHeight] = useState(0);
@@ -93,26 +92,6 @@ const Footer = (props: any) => {
             )}
           </div>
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider mb-4">
-              Categories
-            </h3>
-            {categories.length > 0 && (
-              <ul className="space-y-2.5 text-gray-500">
-                {categories.map((cat: any) => (
-                  <li
-                    key={cat._id ?? cat.value}
-                    className="flex items-center gap-2.5 hover:text-primary "
-                  >
-                    <Link
-                      href={`/more?category=${encodeURIComponent(cat.value)}`}
-                      className="text-sm"
-                    >
-                      {cat.value}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
 
           {/* Pages */}

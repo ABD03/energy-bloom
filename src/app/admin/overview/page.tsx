@@ -193,16 +193,6 @@ export default function OverView() {
           <div className="flex gap-4 overflow-x-auto pt-4 scrollbar-hide">
             {[
               {
-                icon: "LiaDatabaseSolid",
-                label: "Categories",
-                value: counts?.categories || 0,
-              },
-              {
-                icon: "IoPricetagsOutline",
-                label: "Tags",
-                value: counts?.tags || 0,
-              },
-              {
                 icon: "RiPagesLine",
                 label: "Pages",
                 value: counts?.pages || 0,

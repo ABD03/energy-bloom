@@ -9,7 +9,7 @@ type SeededUser = {
   password: string;
   role: string;
   type: "editor" | "subscriber";
-  access: string[];
+  access: number[];
   verify: boolean;
   status: boolean;
 };
@@ -22,7 +22,7 @@ const DEFAULTS: SeededUser[] = [
     password: "admin@123",
     role: "admin",
     type: "editor",
-    access: ["*"],
+    access: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
     verify: true,
     status: true,
   },
@@ -42,7 +42,10 @@ const DEFAULTS: SeededUser[] = [
 export async function seedUsers(conn: Connection) {
   const Users =
     conn.models.users ||
-    conn.model("users", new mongoose.Schema({}, { strict: false, timestamps: true }));
+    conn.model(
+      "users",
+      new mongoose.Schema({}, { strict: false, timestamps: true }),
+    );
 
   const results: { email: string; created: boolean }[] = [];
   let adminId: any = null;

@@ -1,17 +1,10 @@
 "use server";
-import Categories from "@/app/api/admin/category/modal";
 import Pages from "@/app/api/admin/pages/modal";
 
 async function list() {
   return new Promise(async (resolve) => {
     try {
-      const [categories, pages] = await Promise.all([
-        Categories.find(
-          { status: true },
-          { _id: 1, value: 1, image: 1, position: 1 }
-        )
-          .sort({ position: 1, createdAt: -1 })
-          .lean(),
+      const [pages] = await Promise.all([
         Pages.find({ status: true }, { _id: 1, name: 1, permalink: 1 })
           .sort({ createdAt: -1 })
           .lean(),
@@ -19,7 +12,7 @@ async function list() {
       resolve({
         status: true,
         message: "masterdata",
-        data: { categories, pages },
+        data: { pages },
       });
     } catch (err) {
       console.log("err", err);

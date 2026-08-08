@@ -73,7 +73,7 @@ async function picker(req: any) {
       var data = await Users.find(filter, { name: 1 }).lean();
       resolve({
         status: true,
-        message: "all Categories",
+        message: "all users",
         data: data,
       });
     } catch (err) {

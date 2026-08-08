@@ -18,26 +18,13 @@ export const API = {
   MEDIA: "admin/media",
   MEDIA_UPLOAD: "admin/media/upload",
   MEDIA_S3: "admin/media/s3upload",
-  //Category
-  CATEGORY: "admin/category",
-  CATEGORY_PICKER: "admin/category/picker",
-  //Tag
-  TAG: "admin/tags",
-  TAG_PICKER: "admin/tags/picker",
   //Static pages
   PAGES: "admin/pages",
   PAGES_DETAILS: "admin/pages/details",
-  //Content
-  CONTENT: "admin/content",
-  CONTENT_DETAILS: "admin/content/details",
   //Contact
   CONTACT: "admin/contact",
   //Settings
   SETTINGS: "admin/settings",
-  //Adds
-  ADDS: "admin/ads",
-  //Widgets
-  WIDGETS: "admin/widgets",
 
   //------------WEBSITE APIS-----------------
 
@@ -57,16 +44,8 @@ export const API = {
   GET_SETTINGS: "website/settings",
   //MASTERDATA (categories + tags)
   GET_MASTERDATA: "website/masterdata",
-  //HOMEPAGE CONTENTS
-  GET_CONTENT_FILTERS: "website/filters",
-  //CONTENT DETAILS
-  GET_CONTENT_DETAILS: "website/content/details",
-  LOG_CONTENT_VIEW: "website/content/viewed",
   //CONTACT
   POST_CONTACT: "website/contact",
   //PAGES
   GET_PAGE_DETAILS: "website/pages/details",
-  //SEO
-  GET_SEO_INDEX: "seodata/index",
-  GET_SEO_FEED: "seodata/feeds",
 };

@@ -25,8 +25,7 @@ export default async function RootLayout({
       <HeadScripts scripts={settings?.data?.scripts} />
       <main
         style={{
-          fontFamily:
-            'var(--font-kumbh), system-ui, sans-serif',
+          fontFamily: "var(--font-kumbh), system-ui, sans-serif",
         }}
       >
         <ThemeProvider>
