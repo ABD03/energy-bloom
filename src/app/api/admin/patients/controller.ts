@@ -12,6 +12,7 @@ async function list(req: any) {
     const filter: any = {};
     if (query) {
       filter.$or = [
+        { patientId: { $regex: query, $options: "i" } },
         { name: { $regex: query, $options: "i" } },
         { email: { $regex: query, $options: "i" } },
         { phone: { $regex: query, $options: "i" } },
@@ -39,6 +40,16 @@ async function list(req: any) {
   }
 }
 
+async function nextPatientId() {
+  const last = await Patients.findOne({ patientId: { $regex: /^P\d+$/ } })
+    .sort({ patientId: -1 })
+    .collation({ locale: "en_US", numericOrdering: true })
+    .select("patientId")
+    .lean<{ patientId?: string }>();
+  const n = last?.patientId ? parseInt(last.patientId.slice(1), 10) : 0;
+  return `P${String(n + 1).padStart(2, "0")}`;
+}
+
 async function add(req: any) {
   try {
     if (req.email) {
@@ -48,6 +59,7 @@ async function add(req: any) {
       }
     }
     const patient = new Patients();
+    patient.patientId = await nextPatientId();
     if (req.createdBy) patient.createdBy = req.createdBy;
     patient.name = req.name;
     patient.email = req.email;
@@ -112,4 +124,33 @@ async function deleted(req: any) {
   }
 }
 
-export { list, add, update, deleted };
+async function picker(req: any) {
+  try {
+    const query = req.get("search") || "";
+    const filter: any = { status: true };
+    if (query) {
+      filter.$or = [
+        { patientId: { $regex: query, $options: "i" } },
+        { name: { $regex: query, $options: "i" } },
+        { phone: { $regex: query, $options: "i" } },
+        { email: { $regex: query, $options: "i" } },
+      ];
+    }
+    const data = await Patients.find(filter, {
+      patientId: 1,
+      name: 1,
+      phone: 1,
+      email: 1,
+      image: 1,
+    })
+      .sort({ name: 1 })
+      .limit(50)
+      .lean();
+    return { status: true, data, message: "patients" };
+  } catch (err) {
+    console.log("patients picker err", err);
+    return { status: false, data: [], message: "something went wrong" };
+  }
+}
+
+export { list, add, update, deleted, picker };

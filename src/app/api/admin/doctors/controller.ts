@@ -12,6 +12,7 @@ async function list(req: any) {
     const filter: any = {};
     if (query) {
       filter.$or = [
+        { doctorId: { $regex: query, $options: "i" } },
         { name: { $regex: query, $options: "i" } },
         { email: { $regex: query, $options: "i" } },
         { specialization: { $regex: query, $options: "i" } },
@@ -41,6 +42,16 @@ async function list(req: any) {
   }
 }
 
+async function nextDoctorId() {
+  const last = await Doctors.findOne({ doctorId: { $regex: /^D\d+$/ } })
+    .sort({ doctorId: -1 })
+    .collation({ locale: "en_US", numericOrdering: true })
+    .select("doctorId")
+    .lean<{ doctorId?: string }>();
+  const n = last?.doctorId ? parseInt(last.doctorId.slice(1), 10) : 0;
+  return `D${String(n + 1).padStart(2, "0")}`;
+}
+
 async function add(req: any) {
   try {
     if (req.email) {
@@ -50,6 +61,7 @@ async function add(req: any) {
       }
     }
     const doctor = new Doctors();
+    doctor.doctorId = await nextDoctorId();
     if (req.createdBy) doctor.createdBy = req.createdBy;
     doctor.name = req.name;
     doctor.email = req.email;
@@ -120,4 +132,33 @@ async function deleted(req: any) {
   }
 }
 
-export { list, add, update, deleted };
+async function picker(req: any) {
+  try {
+    const query = req.get("search") || "";
+    const filter: any = { status: true };
+    if (query) {
+      filter.$or = [
+        { doctorId: { $regex: query, $options: "i" } },
+        { name: { $regex: query, $options: "i" } },
+        { specialization: { $regex: query, $options: "i" } },
+      ];
+    }
+    const data = await Doctors.find(filter, {
+      doctorId: 1,
+      name: 1,
+      specialization: 1,
+      image: 1,
+      consultationFee: 1,
+      slots: 1,
+    })
+      .sort({ name: 1 })
+      .limit(50)
+      .lean();
+    return { status: true, data, message: "doctors" };
+  } catch (err) {
+    console.log("doctors picker err", err);
+    return { status: false, data: [], message: "something went wrong" };
+  }
+}
+
+export { list, add, update, deleted, picker };

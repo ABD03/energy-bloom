@@ -41,6 +41,15 @@ function DataTable(props: any) {
       ),
     },
     {
+      title: "ID",
+      dataIndex: "patientId",
+      key: "patientId",
+      width: 80,
+      render: (item: any) => (
+        <div className="font-mono text-[12px]">{item || "-"}</div>
+      ),
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name",

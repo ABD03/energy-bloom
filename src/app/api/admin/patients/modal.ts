@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const patientSchema = new Schema(
   {
+    patientId: { type: String, unique: true, sparse: true, index: true },
     name: { type: String, required: true },
     email: { type: String, unique: true, sparse: true },
     phone: { type: String, required: true },

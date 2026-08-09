@@ -99,19 +99,19 @@ export default function OverView() {
             <StaticCard
               loading={loading}
               title={"Appointments"}
-              value={counts?.contacts || 0}
+              value={counts?.appointments || 0}
               icon={"LuTicketSlash"}
             />
             <StaticCard
               loading={loading}
               title={"Patients"}
-              value={counts?.contacts || 0}
+              value={counts?.patients || 0}
               icon={"PiUsersThree"}
             />
             <StaticCard
               loading={loading}
               title={"Doctors"}
-              value={counts?.contacts || 0}
+              value={counts?.doctors || 0}
               icon={"FaUserDoctor"}
             />
             <StaticCard

@@ -15,6 +15,7 @@ const slotSchema = new Schema(
 
 const doctorSchema = new Schema(
   {
+    doctorId: { type: String, unique: true, sparse: true, index: true },
     name: { type: String, required: true },
     email: { type: String, unique: true, sparse: true },
     phone: String,

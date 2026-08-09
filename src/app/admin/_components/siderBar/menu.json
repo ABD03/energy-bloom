@@ -15,7 +15,7 @@
         "menu": "Appointments",
         "icon": "LuTicketSlash",
         "base": "/admin/appointments",
-        "route": "/admin/appointments"
+        "route": "/admin/appointments?page=1&limit=10"
       },
          {
         "id": 3,

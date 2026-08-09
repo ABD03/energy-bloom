@@ -1,11 +1,17 @@
 import { dayjs } from "@/utils/common";
 import { useRouter } from "next/navigation";
-import { Button, Pagination, Popconfirm, Table, Tag, Image } from "antd";
+import { Button, Pagination, Popconfirm, Table, Tag } from "antd";
 import { IoTrashOutline } from "react-icons/io5";
 import { MdOutlineEditNote } from "react-icons/md";
 
 import Empty from "../../_components/empty";
-import { ViewImage } from "@/utils/viewImage";
+
+const STATUS_COLORS: Record<string, string> = {
+  upcoming: "blue",
+  attended: "green",
+  expired: "gold",
+  cancelled: "red",
+};
 
 function DataTable(props: any) {
   const navigation = useRouter();
@@ -19,88 +25,91 @@ function DataTable(props: any) {
 
   const columns = [
     {
-      title: "",
-      dataIndex: "image",
-      key: "image",
-      width: 20,
+      title: "Token",
+      dataIndex: "token",
+      key: "token",
+      width: 70,
       render: (item: any) => (
-        <Image
-          src={ViewImage(item)}
-          preview={ViewImage(item)}
-          width={30}
-          height={30}
-          className="rounded-full!"
-        />
+        <div className="font-mono text-[12px]">
+          {item ? `T${String(item).padStart(2, "0")}` : "-"}
+        </div>
       ),
     },
     {
-      title: "ID",
-      dataIndex: "doctorId",
-      key: "doctorId",
-      width: 80,
+      title: "Patient",
+      dataIndex: "patient",
+      key: "patient",
+      width: 200,
       render: (item: any) => (
-        <div className="font-mono text-[12px]">{item || "-"}</div>
+        <div>
+          <div className="font-semibold text-[13px]">
+            {item?.name || "-"}
+          </div>
+          <div className="text-[11px] text-gray-500">{item?.phone}</div>
+        </div>
       ),
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: 220,
+      title: "Doctor",
+      dataIndex: "doctor",
+      key: "doctor",
+      width: 200,
       render: (item: any) => (
-        <div className="font-semibold text-[14px]">{item}</div>
+        <div>
+          <div className="font-semibold text-[13px]">
+            {item?.name || "-"}
+          </div>
+          <div className="text-[11px] text-gray-500">
+            {item?.specialization}
+          </div>
+        </div>
       ),
     },
     {
-      title: "Specialization",
-      dataIndex: "specialization",
-      key: "specialization",
-      render: (item: any) => <div>{item || "-"}</div>,
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      width: 140,
+      render: (item: any) => (
+        <div className="text-[12px]">
+          {item ? dayjs(item).format("ll") : "-"}
+        </div>
+      ),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      render: (item: any) => <div>{item || "-"}</div>,
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-      render: (item: any) => <div>{item || "-"}</div>,
-    },
-    {
-      title: "Experience",
-      dataIndex: "experienceYears",
-      key: "experienceYears",
-      width: 110,
-      render: (item: any) => <div>{item ? `${item} yrs` : "-"}</div>,
+      title: "Slot",
+      dataIndex: "slot",
+      key: "slot",
+      width: 140,
+      render: (item: any) =>
+        item?.startTime ? (
+          <div className="text-[12px]">
+            {item?.day} {item.startTime}–{item.endTime}
+          </div>
+        ) : (
+          <span className="text-gray-400">—</span>
+        ),
     },
     {
       title: "Fee",
-      dataIndex: "consultationFee",
-      key: "consultationFee",
+      dataIndex: "fee",
+      key: "fee",
       width: 90,
       render: (item: any) => <div>{item ?? "-"}</div>,
-    },
-    {
-      title: "Slots",
-      dataIndex: "slots",
-      key: "slots",
-      width: 90,
-      render: (item: any) => <Tag>{Array.isArray(item) ? item.length : 0}</Tag>,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      width: 100,
+      width: 110,
       render: (item: any) => (
-        <Tag color={item ? "green" : "red"}>{item ? "active" : "Blocked"}</Tag>
+        <Tag color={STATUS_COLORS[item] || "default"} className="capitalize">
+          {item}
+        </Tag>
       ),
     },
     {
-      title: "Created At",
+      title: "Created",
       dataIndex: "createdAt",
       key: "createdAt",
       width: 110,
@@ -121,8 +130,8 @@ function DataTable(props: any) {
             <MdOutlineEditNote size={20} />
           </Button>
           <Popconfirm
-            title="Delete the doctor"
-            description="Are you sure to delete this doctor?"
+            title="Delete the appointment"
+            description="Are you sure to delete this appointment?"
             onConfirm={() => props?.onDelete(record)}
             okText="Yes"
             cancelText="No"
