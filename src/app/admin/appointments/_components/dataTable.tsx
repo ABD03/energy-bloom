@@ -42,7 +42,7 @@ function DataTable(props: any) {
       key: "patient",
       width: 200,
       render: (item: any) => (
-        <Link href={`/admin/patients/details/${item?._id}`}>
+        <Link href={`/admin/patients/details?id=${item?._id}`}>
           <div className="font-semibold text-[14px]">{item?.name || "-"}</div>
           <div className="text-[11px] text-gray-500">{item?.phone}</div>
         </Link>
@@ -121,10 +121,9 @@ function DataTable(props: any) {
         <div className="flex items-center justify-end gap-2">
           <Button
             size="small"
-            onClick={() => props?.onEdit(record)}
             className="p-2! bg-green-500!"
             type="primary"
-            href={`/admin/patients/details/${record?.patient?._id}`}
+            href={`/admin/patients/details?id=${record?.patient?._id}`}
           >
             Attend
           </Button>

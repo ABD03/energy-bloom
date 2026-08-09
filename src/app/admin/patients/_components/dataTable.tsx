@@ -116,6 +116,13 @@ function DataTable(props: any) {
         <div className="flex items-center justify-end gap-2">
           <Button
             size="small"
+            className="p-2!"
+            href={`/admin/patients/details?id=${record?._id}`}
+          >
+            Details
+          </Button>
+          <Button
+            size="small"
             onClick={() => props?.onEdit(record)}
             className="p-1!"
           >

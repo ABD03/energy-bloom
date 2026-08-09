@@ -124,6 +124,19 @@ async function deleted(req: any) {
   }
 }
 
+async function details(req: any) {
+  try {
+    const id = req.get("id");
+    if (!id) return { status: false, data: {}, message: "id required" };
+    const data = await Patients.findById(id).lean();
+    if (!data) return { status: false, data: {}, message: "Patient not found" };
+    return { status: true, data, message: "patient" };
+  } catch (err) {
+    console.log("patients details err", err);
+    return { status: false, data: {}, message: "something went wrong" };
+  }
+}
+
 async function picker(req: any) {
   try {
     const query = req.get("search") || "";
@@ -153,4 +166,4 @@ async function picker(req: any) {
   }
 }
 
-export { list, add, update, deleted, picker };
+export { list, add, update, deleted, picker, details };

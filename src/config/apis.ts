@@ -18,6 +18,7 @@ export const API = {
   //Patients
   PATIENTS: "admin/patients",
   PATIENTS_PICKER: "admin/patients/picker",
+  PATIENTS_DETAILS: "admin/patients/details",
   //Appointments
   APPOINTMENTS: "admin/appointments",
   //images
