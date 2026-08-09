@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { IoSearchOutline, IoCloseCircleOutline } from "react-icons/io5";
 
+import DoctorPicker from "../../doctors/_components/doctorPicker";
+
 const Filters = (props: any) => {
   const navigation = useRouter();
   const [form] = Form.useForm();
@@ -20,16 +22,23 @@ const Filters = (props: any) => {
         params.set("date", date.toString());
       }
       if (value?.status) params.set("status", value.status.toString());
+      if (value?.doctor) params.set("doctor", value.doctor.toString());
       navigation.push(`?${params.toString()}`);
     }, 500),
     [],
   );
 
   const clearFilter = () => {
-    form.setFieldsValue({ query: null, status: null, date: null });
+    form.setFieldsValue({
+      query: null,
+      status: "upcoming",
+      date: null,
+      doctor: null,
+    });
     const params = new URLSearchParams();
     params.set("page", "1");
     params.set("limit", "10");
+    params.set("status", "upcoming");
     navigation.replace(`?${params.toString()}`);
   };
 
@@ -40,6 +49,7 @@ const Filters = (props: any) => {
         query: props?.query,
         status: props?.status,
         date: props?.date ? dayjs(props?.date, "YYYY-MM-DD") : null,
+        doctor: props?.doctor || undefined,
       }}
       onValuesChange={(_: any, values: any) => onValuesChange(values)}
     >
@@ -54,12 +64,20 @@ const Filters = (props: any) => {
             />
           </Form.Item>
         </div>
+        <div className="w-62.5">
+          <Form.Item noStyle name={"doctor"}>
+            <DoctorPicker
+              initial={props?.doctorInitial}
+              placeholder="Filter doctor"
+            />
+          </Form.Item>
+        </div>
         <div className="w-37.5">
           <Form.Item noStyle name={"date"}>
             <DatePicker placeholder="Date" allowClear className="w-37.5!" />
           </Form.Item>
         </div>
-        {props?.query || props?.status || props?.date ? (
+        {props?.query || props?.date || props?.doctor ? (
           <Form.Item noStyle>
             <Button
               icon={<IoCloseCircleOutline size={15} />}

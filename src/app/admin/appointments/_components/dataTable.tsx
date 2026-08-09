@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { Button, Pagination, Popconfirm, Table, Tag } from "antd";
 import { IoTrashOutline } from "react-icons/io5";
 import { MdOutlineEditNote } from "react-icons/md";
+import Link from "next/link";
 
 import Empty from "../../_components/empty";
 
@@ -41,12 +42,10 @@ function DataTable(props: any) {
       key: "patient",
       width: 200,
       render: (item: any) => (
-        <div>
-          <div className="font-semibold text-[13px]">
-            {item?.name || "-"}
-          </div>
+        <Link href={`/admin/patients/details/${item?._id}`}>
+          <div className="font-semibold text-[14px]">{item?.name || "-"}</div>
           <div className="text-[11px] text-gray-500">{item?.phone}</div>
-        </div>
+        </Link>
       ),
     },
     {
@@ -56,9 +55,7 @@ function DataTable(props: any) {
       width: 200,
       render: (item: any) => (
         <div>
-          <div className="font-semibold text-[13px]">
-            {item?.name || "-"}
-          </div>
+          <div className="font-semibold text-[13px]">{item?.name || "-"}</div>
           <div className="text-[11px] text-gray-500">
             {item?.specialization}
           </div>
@@ -122,6 +119,15 @@ function DataTable(props: any) {
       width: 100,
       render: (_: any, record: any) => (
         <div className="flex items-center justify-end gap-2">
+          <Button
+            size="small"
+            onClick={() => props?.onEdit(record)}
+            className="p-2! bg-green-500!"
+            type="primary"
+            href={`/admin/patients/details/${record?.patient?._id}`}
+          >
+            Attend
+          </Button>
           <Button
             size="small"
             onClick={() => props?.onEdit(record)}

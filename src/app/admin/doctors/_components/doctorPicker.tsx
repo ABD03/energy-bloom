@@ -61,6 +61,7 @@ function DoctorPicker({
       filterOption={false}
       loading={loading}
       onSearch={setSearch}
+      style={{width:"100%"}}
       onChange={(id) => {
         onChange?.(id);
         onSelect?.(items.find((d) => d._id === id) || null);

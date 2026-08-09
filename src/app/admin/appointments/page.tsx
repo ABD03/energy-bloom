@@ -23,7 +23,8 @@ export default function Appointments() {
   const take = searchParams.get("limit") || 10;
   const query = searchParams.get("search") || "";
   const date = searchParams.get("date") || "";
-  const status = searchParams.get("status") || "";
+  const status = searchParams.get("status") ?? "upcoming";
+  const doctor = searchParams.get("doctor") || "";
 
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(false);
@@ -55,6 +56,7 @@ export default function Appointments() {
       if (query) qp.set("search", query);
       if (date) qp.set("date", date);
       if (status) qp.set("status", status);
+      if (doctor) qp.set("doctor", doctor);
       const URL = `${API.APPOINTMENTS}?${qp.toString()}`;
       const response: any = await GET(URL, null);
       if (response?.status) {
@@ -109,7 +111,7 @@ export default function Appointments() {
         </Button>
       </PageHeader>
       <div className="h-[92vh] overflow-y-auto overflow-x-hidden pb-[7vh]">
-        <Filters query={query} date={date} status={status} />
+        <Filters query={query} date={date} status={status} doctor={doctor} />
         {loading ? (
           <Loading />
         ) : (
