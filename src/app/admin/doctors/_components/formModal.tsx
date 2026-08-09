@@ -10,6 +10,7 @@ import {
   Select,
   Switch,
 } from "antd";
+import { FaRegSave } from "react-icons/fa";
 
 import FilePicker from "../../_components/filePicker";
 import SlotsList from "./slotsList";
@@ -65,7 +66,7 @@ function FormModal(props: any) {
 
   return (
     <Drawer
-      title={`${props?.data?._id ? "Edit" : "Create new"} doctor`}
+      title={`${props?.data?._id ? "Edit" : "New"} doctor`}
       onClose={props?.onCancel}
       open={props.visible}
       placement="right"
@@ -73,6 +74,21 @@ function FormModal(props: any) {
       styles={{
         body: { padding: 20 },
       }}
+      footer={
+        <div className="flex items-center justify-end gap-2 py-1">
+          <Button size="large" onClick={() => props.onCancel()} danger>
+            Close
+          </Button>
+          <Button
+            size="large"
+            type="primary"
+            loading={isLoading}
+            onClick={() => form.submit()}
+          >
+            <FaRegSave/> Save
+          </Button>
+        </div>
+      }
     >
       <Form
         form={form}
@@ -101,13 +117,17 @@ function FormModal(props: any) {
             <Input />
           </Form.Item>
           <Form.Item
+            label={"Phone"}
+            name={"phone"}
+            rules={[{ required: true, message: "Required" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label={"Email"}
             name={"email"}
             rules={[{ type: "email", message: "Enter a valid email" }]}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item label={"Phone"} name={"phone"}>
             <Input />
           </Form.Item>
           <Form.Item label={"Gender"} name={"gender"}>
@@ -154,28 +174,9 @@ function FormModal(props: any) {
         <SlotsList value={slots} onChange={setSlots} />
 
         <br />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-          <div>
-            <Form.Item name="status" noStyle valuePropName="checked">
-              <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
-            </Form.Item>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-            <Button size="large" block onClick={() => props.onCancel()} danger>
-              Close
-            </Button>
-            <Button
-              size="large"
-              htmlType="submit"
-              block
-              type="primary"
-              loading={isLoading}
-            >
-              Done
-            </Button>
-          </div>
-        </div>
-        <br />
+        <Form.Item label="Status" name="status" valuePropName="checked">
+          <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
+        </Form.Item>
       </Form>
     </Drawer>
   );

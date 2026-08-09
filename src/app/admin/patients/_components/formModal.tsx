@@ -1,46 +1,53 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Drawer, Form, Input, message, Switch } from "antd";
-import { FaRegSave } from "react-icons/fa";
+import {
+  Button,
+  DatePicker,
+  Drawer,
+  Form,
+  Input,
+  message,
+  Select,
+  Switch,
+} from "antd";
 
-import Access from "./access";
 import FilePicker from "../../_components/filePicker";
+import { FaRegSave } from "react-icons/fa";
 
 import { API } from "@/config/apis";
 import { POST, PUT } from "@/utils/apiCalls";
+import { dayjs } from "@/utils/common";
+
+const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(
+  (v) => ({ label: v, value: v }),
+);
 
 function FormModal(props: any) {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [image_url, setImage_url] = useState(props?.data?.image);
 
-  const [access, setAccess] = useState<any>(
-    props?.data?.access?.length ? props?.data?.access : [1],
-  );
-
   const submit = async (value: any) => {
     try {
       setIsLoading(true);
-      let obj = {
+      const obj: any = {
         createdBy: props?.user?._id,
         _id: props?.data?._id,
-        username: value?.username,
-        password: value?.password,
         name: value?.name,
         email: value?.email,
         phone: value?.phone,
+        gender: value?.gender,
+        dob: value?.dob ? value.dob.toISOString() : null,
         image: image_url,
-        role: value?.role,
+        bloodGroup: value?.bloodGroup,
+        address: value?.address,
         status: value?.status,
-        bio: value?.bio,
-        type: "editor",
-        access: access,
       };
-      let METHOD = props?.data?._id ? PUT : POST;
-      let response: any = await METHOD(API.USERS, obj);
+      const METHOD = props?.data?._id ? PUT : POST;
+      const response: any = await METHOD(API.PATIENTS, obj);
       if (response?.status) {
         message.success(
-          `User ${props?.data?._id ? "updated" : "created"} successfully`,
+          `Patient ${props?.data?._id ? "updated" : "created"} successfully`,
         );
         props?.onchange();
         props?.onCancel();
@@ -55,33 +62,14 @@ function FormModal(props: any) {
     }
   };
 
-  const addAccess = (value: any) => {
-    try {
-      let arr: any = [...access];
-      let check = arr.findIndex((item: any) => item === value?.id);
-      if (check >= 0) {
-        arr.splice(check, 1);
-        setAccess(arr);
-      } else {
-        arr = Array.from(new Set([...arr, value?.id]));
-        setAccess(arr);
-      }
-      setTimeout(() => {}, 10);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <Drawer
-      title={`${props?.data?._id ? "Edit" : "Create new"} user`}
+      title={`${props?.data?._id ? "Edit" : "New"} patient`}
       onClose={props?.onCancel}
       open={props.visible}
       placement="right"
       width={670}
-      styles={{
-        body: { padding: 20 },
-      }}
+      styles={{ body: { padding: 20 } }}
       footer={
         <div className="flex items-center justify-end gap-2 py-1">
           <Button size="large" onClick={() => props.onCancel()} danger>
@@ -93,7 +81,7 @@ function FormModal(props: any) {
             loading={isLoading}
             onClick={() => form.submit()}
           >
-            <FaRegSave /> Save
+            <FaRegSave/> Save
           </Button>
         </div>
       }
@@ -102,26 +90,19 @@ function FormModal(props: any) {
         form={form}
         layout="vertical"
         onFinish={submit}
-        style={{ marginTop: 20, marginBottom: -30 }}
         initialValues={{
           name: props?.data?.name,
-          username: props?.data?.username,
           email: props?.data?.email,
           phone: props?.data?.phone,
-          role: props?.data?.role,
+          gender: props?.data?.gender,
+          dob: props?.data?.dob ? dayjs(props?.data?.dob) : null,
+          bloodGroup: props?.data?.bloodGroup,
+          address: props?.data?.address,
           image: props?.data?.image,
-          bio: props?.data?.bio,
-          status: props?.data?.status ? props?.data?.status : null,
+          status: props?.data?.status ?? true,
         }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mb-2">
-          <Form.Item
-            label={"Username"}
-            name={"username"}
-            rules={[{ required: true, message: "Required" }]}
-          >
-            <Input />
-          </Form.Item>
           <Form.Item
             label={"Full Name"}
             name={"name"}
@@ -130,44 +111,44 @@ function FormModal(props: any) {
             <Input />
           </Form.Item>
           <Form.Item
-            label={"Email"}
-            name={"email"}
-            rules={[
-              { required: true, message: "Required" },
-              { type: "email", message: "Enter a valid email" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
             label={"Phone"}
             name={"phone"}
             rules={[{ required: true, message: "Required" }]}
           >
-            <Input type={"number"} />
-          </Form.Item>
-          <Form.Item label={"Role"} name={"role"}>
             <Input />
           </Form.Item>
           <Form.Item
-            label={"Password"}
-            name={"password"}
-            rules={[
-              {
-                required: props?.data?._id ? false : true,
-                message: "Required",
-              },
-            ]}
+            label={"Email"}
+            name={"email"}
+            rules={[{ type: "email", message: "Enter a valid email" }]}
           >
-            <Input.Password />
+            <Input />
           </Form.Item>
-          <Form.Item label={"About"} name={"bio"}>
-            <Input.TextArea rows={4} placeholder="About" />
+          <Form.Item label={"Gender"} name={"gender"}>
+            <Select
+              allowClear
+              options={[
+                { label: "Male", value: "male" },
+                { label: "Female", value: "female" },
+                { label: "Other", value: "other" },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label={"Date of Birth"} name={"dob"}>
+            <DatePicker className="w-full!" />
+          </Form.Item>
+          <Form.Item label={"Blood Group"} name={"bloodGroup"}>
+            <Select allowClear options={BLOOD_GROUPS} />
+          </Form.Item>
+          <Form.Item
+            label={"Address"}
+            name={"address"}
+          >
+            <Input.TextArea rows={4} />
           </Form.Item>
           <Form.Item
             label={"Profile Image"}
             name={"image"}
-            rules={[{ required: true, message: "Required" }]}
           >
             <FilePicker
               url={image_url}
@@ -178,13 +159,7 @@ function FormModal(props: any) {
             />
           </Form.Item>
         </div>
-        <Access
-          value={access}
-          select={(value: any) => setAccess(value)}
-          selectAll={(value: any) => setAccess(value)}
-        />
 
-        <br />
         <Form.Item label="Status" name="status" valuePropName="checked">
           <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
         </Form.Item>

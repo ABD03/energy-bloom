@@ -22,7 +22,7 @@
         "menu": "Patients",
         "icon": "PiUsersThree",
         "base": "/admin/patients",
-        "route": "/admin/patients"
+        "route": "/admin/patients?page=1&limit=10"
       },
           {
         "id": 4,
