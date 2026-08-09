@@ -7,8 +7,6 @@ import { IoSync } from "react-icons/io5";
 import { dayjs } from "@/utils/common";
 
 import PageHeader from "../_components/pageHeader";
-import Chart from "./_components/chart";
-import Chart2 from "./_components/chart2";
 import StaticCard from "./_components/cards";
 
 import DynamicIcon from "@/utils/dynamicIcons";
@@ -21,21 +19,16 @@ export default function OverView() {
   const [loading2, setLoading2] = useState(true);
 
   const [counts, setCounts] = useState<any>({});
-  const [todays, setTodays] = useState<any>({});
-  const [comparison, setComparison] = useState<any>({});
-  const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       getData();
-      getChart();
     }
   }, []);
 
   const reloadData = () => {
     setLoading1(true);
     getData();
-    getChart();
   };
 
   const getData = async () => {
@@ -45,8 +38,6 @@ export default function OverView() {
       let response: any = await GET(URL, null);
       if (response?.status) {
         setCounts(response?.data?.counts);
-        setTodays(response?.data?.today);
-        setComparison(response?.data?.comparison);
       } else {
         message.error("oops.something gone wrong.");
       }
@@ -54,31 +45,6 @@ export default function OverView() {
       message.error("oops.something gone wrong.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getChart = async () => {
-    try {
-      let date = new Date().toISOString();
-      let URL = `${API.OVERVIEW_CHART}?date=${date}`;
-      let response: any = await GET(URL, null);
-      if (response?.status) {
-        let data: any = [
-          { day: dayjs().subtract(1, "day").format("YYYY-MM-DD"), views: 0 },
-        ];
-        if (response?.data?.length === 1) {
-          data = data.concat(response?.data);
-        } else {
-          data = response?.data;
-        }
-        setGraphData(data);
-      } else {
-        message.error("Oops.something gone wrong.");
-      }
-    } catch (err) {
-      message.error("Oops.something gone wrong.");
-    } finally {
-      setLoading1(false);
     }
   };
 
@@ -123,7 +89,7 @@ export default function OverView() {
               <div className="font-semibold text-base mb-1">New Bookings</div>
               <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold mb-1">
-                  {comparison?.views?.today || 0}
+                  Bookings
                 </div>
               </div>
               <div className="text-[12px] text-gray-500">
@@ -181,10 +147,6 @@ export default function OverView() {
               </div>
             ))}
           </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4  p-4">
-          <Chart data={graphData || []} loading={loading1} />
-          <Chart2 data={todays} loading={loading1} />
         </div>
       </div>
     </div>

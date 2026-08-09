@@ -9,7 +9,6 @@ export const API = {
   REVALIDATE: "admin/revalidate",
   //dashboard
   OVERVIEW: "admin/overview",
-  OVERVIEW_CHART: "admin/overview/chart",
   //Users
   USERS: "admin/users",
   USERS_PICKER: "admin/users/picker",
