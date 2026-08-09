@@ -29,7 +29,7 @@
         "menu": "Doctors",
         "icon": "FaUserDoctor",
         "base": "/admin/doctors",
-        "route": "/admin/doctors"
+        "route": "/admin/doctors?page=1&limit=10"
       }
     ]
   },

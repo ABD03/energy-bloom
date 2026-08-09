@@ -1,9 +1,18 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Drawer, Form, Input, message, Switch } from "antd";
-import Access from "./access";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Select,
+  Switch,
+} from "antd";
 
 import FilePicker from "../../_components/filePicker";
+import SlotsList from "./slotsList";
 
 import { API } from "@/config/apis";
 import { POST, PUT } from "@/utils/apiCalls";
@@ -12,34 +21,34 @@ function FormModal(props: any) {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [image_url, setImage_url] = useState(props?.data?.image);
-
-  const [access, setAccess] = useState<any>(
-    props?.data?.access?.length ? props?.data?.access : [1],
+  const [slots, setSlots] = useState<any[]>(
+    Array.isArray(props?.data?.slots) ? props.data.slots : [],
   );
 
   const submit = async (value: any) => {
     try {
       setIsLoading(true);
-      let obj = {
+      const obj: any = {
         createdBy: props?.user?._id,
         _id: props?.data?._id,
-        username: value?.username,
-        password: value?.password,
         name: value?.name,
         email: value?.email,
         phone: value?.phone,
+        gender: value?.gender,
         image: image_url,
-        role: value?.role,
-        status: value?.status,
+        specialization: value?.specialization,
+        qualification: value?.qualification,
+        experienceYears: value?.experienceYears,
+        consultationFee: value?.consultationFee,
         bio: value?.bio,
-        type: "editor",
-        access: access,
+        status: value?.status,
+        slots,
       };
-      let METHOD = props?.data?._id ? PUT : POST;
-      let response: any = await METHOD(API.USERS, obj);
+      const METHOD = props?.data?._id ? PUT : POST;
+      const response: any = await METHOD(API.DOCTORS, obj);
       if (response?.status) {
         message.success(
-          `User ${props?.data?._id ? "updated" : "created"} successfully`,
+          `Doctor ${props?.data?._id ? "updated" : "created"} successfully`,
         );
         props?.onchange();
         props?.onCancel();
@@ -54,26 +63,9 @@ function FormModal(props: any) {
     }
   };
 
-  const addAccess = (value: any) => {
-    try {
-      let arr: any = [...access];
-      let check = arr.findIndex((item: any) => item === value?.id);
-      if (check >= 0) {
-        arr.splice(check, 1);
-        setAccess(arr);
-      } else {
-        arr = Array.from(new Set([...arr, value?.id]));
-        setAccess(arr);
-      }
-      setTimeout(() => {}, 10);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <Drawer
-      title={`${props?.data?._id ? "Edit" : "Create new"} user`}
+      title={`${props?.data?._id ? "Edit" : "Create new"} doctor`}
       onClose={props?.onCancel}
       open={props.visible}
       placement="right"
@@ -86,26 +78,21 @@ function FormModal(props: any) {
         form={form}
         layout="vertical"
         onFinish={submit}
-        style={{ marginTop: 20, marginBottom: -30 }}
         initialValues={{
           name: props?.data?.name,
-          username: props?.data?.username,
           email: props?.data?.email,
           phone: props?.data?.phone,
-          role: props?.data?.role,
-          image: props?.data?.image,
+          gender: props?.data?.gender,
+          specialization: props?.data?.specialization,
+          qualification: props?.data?.qualification,
+          experienceYears: props?.data?.experienceYears,
+          consultationFee: props?.data?.consultationFee,
           bio: props?.data?.bio,
-          status: props?.data?.status ? props?.data?.status : null,
+          image: props?.data?.image,
+          status: props?.data?.status ?? true,
         }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mb-2">
-          <Form.Item
-            label={"Username"}
-            name={"username"}
-            rules={[{ required: true, message: "Required" }]}
-          >
-            <Input />
-          </Form.Item>
           <Form.Item
             label={"Full Name"}
             name={"name"}
@@ -116,42 +103,43 @@ function FormModal(props: any) {
           <Form.Item
             label={"Email"}
             name={"email"}
-            rules={[
-              { required: true, message: "Required" },
-              { type: "email", message: "Enter a valid email" },
-            ]}
+            rules={[{ type: "email", message: "Enter a valid email" }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label={"Phone"}
-            name={"phone"}
-            rules={[{ required: true, message: "Required" }]}
-          >
-            <Input type={"number"} />
-          </Form.Item>
-          <Form.Item label={"Role"} name={"role"}>
+          <Form.Item label={"Phone"} name={"phone"}>
             <Input />
           </Form.Item>
-          <Form.Item
-            label={"Password"}
-            name={"password"}
-            rules={[
-              {
-                required: props?.data?._id ? false : true,
-                message: "Required",
-              },
-            ]}
-          >
-            <Input.Password />
+          <Form.Item label={"Gender"} name={"gender"}>
+            <Select
+              allowClear
+              options={[
+                { label: "Male", value: "male" },
+                { label: "Female", value: "female" },
+                { label: "Other", value: "other" },
+              ]}
+            />
           </Form.Item>
-          <Form.Item label={"About"} name={"bio"}>
+          <Form.Item label={"Specialization"} name={"specialization"}>
+            <Input />
+          </Form.Item>
+          <Form.Item label={"Qualification"} name={"qualification"}>
+            <Input placeholder="MBBS, MD" />
+          </Form.Item>
+          <Form.Item label={"Experience (years)"} name={"experienceYears"}>
+            <InputNumber min={0} className="w-full!" />
+          </Form.Item>
+          <Form.Item label={"Consultation Fee"} name={"consultationFee"}>
+            <InputNumber min={0} className="w-full!" />
+          </Form.Item>
+
+          <Form.Item label={"About"} name={"bio"} className="md:col-span-1">
             <Input.TextArea rows={4} placeholder="About" />
           </Form.Item>
           <Form.Item
             label={"Profile Image"}
             name={"image"}
-            rules={[{ required: true, message: "Required" }]}
+            className="md:col-span-1"
           >
             <FilePicker
               url={image_url}
@@ -162,11 +150,8 @@ function FormModal(props: any) {
             />
           </Form.Item>
         </div>
-        <Access
-          value={access}
-          select={(value: any) => setAccess(value)}
-          selectAll={(value: any) => setAccess(value)}
-        />
+
+        <SlotsList value={slots} onChange={setSlots} />
 
         <br />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">

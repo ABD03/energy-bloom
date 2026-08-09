@@ -12,6 +12,8 @@ export const API = {
   //Users
   USERS: "admin/users",
   USERS_PICKER: "admin/users/picker",
+  //Doctors
+  DOCTORS: "admin/doctors",
   //images
   MEDIA: "admin/media",
   MEDIA_UPLOAD: "admin/media/upload",
