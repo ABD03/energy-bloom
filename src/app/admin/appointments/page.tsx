@@ -12,6 +12,7 @@ import Loading from "../_components/loading";
 import Filters from "./_components/filters";
 import DataTable from "./_components/dataTable";
 import FormModal from "./_components/formModal";
+import AttendModal from "../patients/details/formModal";
 
 import { DELETE, GET } from "@/utils/apiCalls";
 import { UseAppSelector } from "@/redux/util/hooks";
@@ -35,6 +36,7 @@ export default function Appointments() {
 
   const [formModal, setFormModal] = useState<any>(false);
   const [selectedItem, setSelectedItem] = useState<any>({});
+  const [attendItem, setAttendItem] = useState<any>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -121,6 +123,7 @@ export default function Appointments() {
             loading={loading2}
             onEdit={(data: any) => editItem(data)}
             onDelete={(id: any) => deleteItem(id)}
+            onAttend={(a: any) => setAttendItem(a)}
           />
         )}
         {formModal ? (
@@ -129,6 +132,14 @@ export default function Appointments() {
             data={selectedItem}
             visible={formModal}
             onCancel={() => editItem({})}
+            onchange={() => getData()}
+          />
+        ) : null}
+        {attendItem ? (
+          <AttendModal
+            data={attendItem}
+            visible={!!attendItem}
+            onCancel={() => setAttendItem(null)}
             onchange={() => getData()}
           />
         ) : null}

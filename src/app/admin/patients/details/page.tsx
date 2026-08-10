@@ -2,12 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Avatar, Descriptions, message, Tag } from "antd";
+import { Avatar, Button, Descriptions, message, Tabs, Tag } from "antd";
+import { IoMdAdd } from "react-icons/io";
 
 import PageHeader from "../../_components/pageHeader";
 import Loading from "../../_components/loading";
 import Empty from "../../_components/empty";
-import DataTable from "../../appointments/_components/dataTable";
+import TimelineTab from "./timeline";
+import HistoryTab from "./history";
+import FormModal from "./formModal";
+import AppointmentFormModal from "../../appointments/_components/formModal";
+import { UseAppSelector } from "@/redux/util/hooks";
 
 import { API } from "@/config/apis";
 import { GET } from "@/utils/apiCalls";
@@ -29,6 +34,9 @@ export default function PatientDetails() {
   const [patient, setPatient] = useState<any>(null);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [meta, setMeta] = useState<any>({});
+  const [attendItem, setAttendItem] = useState<any>(null);
+  const [newAppt, setNewAppt] = useState(false);
+  const Auth = UseAppSelector((state: any) => state?.Auth);
 
   useEffect(() => {
     if (id) load();
@@ -122,23 +130,58 @@ export default function PatientDetails() {
               </div>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between mb-2 px-1">
-                <div className="font-semibold text-base">
-                  Appointment history
-                </div>
-                <div className="text-[12px] text-gray-500">
-                  {meta?.total || 0} total
-                </div>
-              </div>
-              <DataTable
-                data={appointments}
-                meta={meta}
-                loading={false}
-                onEdit={() => {}}
-                onDelete={() => {}}
+            <Tabs
+              defaultActiveKey="timeline"
+              tabBarExtraContent={
+                <Button
+                  type="primary"
+                  onClick={() => setNewAppt(true)}
+                  className="p-2!"
+                >
+                  <IoMdAdd size={20} />
+                </Button>
+              }
+              items={[
+                {
+                  key: "timeline",
+                  label: `Timeline (${meta?.total || 0})`,
+                  children: (
+                    <TimelineTab
+                      data={appointments}
+                      onAttend={(a) => setAttendItem(a)}
+                    />
+                  ),
+                },
+                {
+                  key: "history",
+                  label: "History",
+                  children: (
+                    <HistoryTab
+                      data={appointments}
+                      loading={false}
+                      onAttend={(a) => setAttendItem(a)}
+                    />
+                  ),
+                },
+              ]}
+            />
+            {attendItem ? (
+              <FormModal
+                data={attendItem}
+                visible={!!attendItem}
+                onCancel={() => setAttendItem(null)}
+                onchange={() => load()}
               />
-            </div>
+            ) : null}
+            {newAppt ? (
+              <AppointmentFormModal
+                user={Auth?.user}
+                data={{ patient }}
+                visible={newAppt}
+                onCancel={() => setNewAppt(false)}
+                onchange={() => load()}
+              />
+            ) : null}
           </div>
         )}
       </div>

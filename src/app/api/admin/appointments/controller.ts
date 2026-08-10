@@ -149,6 +149,10 @@ async function update(req: any) {
     }
     if (typeof req.fee === "number") appt.fee = req.fee;
     appt.notes = req.notes;
+    if (req.briefing !== undefined) appt.briefing = req.briefing;
+    if (req.remark !== undefined) appt.remark = req.remark;
+    if (Array.isArray(req.attachments)) appt.attachments = req.attachments;
+    if (Array.isArray(req.feedback)) appt.feedback = req.feedback;
     if (req.status) appt.status = req.status;
     await appt.save();
     return { status: true, data: appt, message: "Appointment updated" };
