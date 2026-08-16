@@ -94,7 +94,7 @@ const Filters = (props: any) => {
         <Form.Item noStyle name={"status"}>
           <Segmented<string>
             options={[
-              { label: "All", value: "" },
+              { label: "All", value: "all" },
               { label: "Upcoming", value: "upcoming" },
               { label: "Attended", value: "attended" },
               { label: "Expired", value: "expired" },

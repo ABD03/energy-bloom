@@ -29,7 +29,7 @@ function DataTable(props: any) {
       title: "Token",
       dataIndex: "token",
       key: "token",
-      width: 70,
+      width: 50,
       render: (item: any) => (
         <div className="font-mono text-[12px]">
           {item ? `T${String(item).padStart(2, "0")}` : "-"}

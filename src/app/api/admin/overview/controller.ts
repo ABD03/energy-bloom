@@ -21,6 +21,7 @@ async function list(req: any) {
         patients,
         appointments,
         upcoming,
+        attended,
         faqs,
         reviews,
       ] = await Promise.all([
@@ -32,6 +33,7 @@ async function list(req: any) {
         Patients.countDocuments(),
         Appointments.countDocuments(),
         Appointments.countDocuments({ status: "upcoming" }),
+        Appointments.countDocuments({ status: "attended" }),
         Faqs.countDocuments(),
         Reviews.countDocuments(),
       ]);
@@ -49,6 +51,7 @@ async function list(req: any) {
             patients,
             appointments,
             upcoming,
+            attended,
             faqs,
             reviews,
           },

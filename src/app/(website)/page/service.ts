@@ -6,6 +6,7 @@ export const getPageDetails = async (permalink: string) => {
       `${API.BASE}/api/${API.GET_PAGE_DETAILS}?permalink=${encodeURIComponent(permalink)}`,
       {
         method: "GET",
+        cache: "force-cache",
         headers: { Accept: "application/json" },
         next: { tags: ["refresh"] },
       },

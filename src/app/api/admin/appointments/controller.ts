@@ -13,7 +13,7 @@ async function list(req: any) {
     const patientId = req.get("patient") || null;
 
     const filter: any = {};
-    if (status) filter.status = status;
+    if (status && status !== "all") filter.status = status;
     if (doctorId) filter.doctor = doctorId;
     if (patientId) filter.patient = patientId;
     if (date) {
@@ -176,4 +176,58 @@ async function deleted(req: any) {
   }
 }
 
-export { list, add, update, deleted };
+async function calendar(req: any) {
+  try {
+    const month = req.get("month");
+    const tz = req.get("tz") || "UTC";
+    const base = month ? new Date(`${month}-01T00:00:00`) : new Date();
+    const start = new Date(base.getFullYear(), base.getMonth(), 1);
+    const end = new Date(base.getFullYear(), base.getMonth() + 1, 1);
+    const DAY = 24 * 60 * 60 * 1000;
+    const startExp = new Date(start.getTime() - DAY);
+    const endExp = new Date(end.getTime() + DAY);
+    const monthKey = `${base.getFullYear()}-${String(base.getMonth() + 1).padStart(2, "0")}`;
+
+    const rows = await Appointments.aggregate([
+      { $match: { date: { $gte: startExp, $lt: endExp } } },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$date",
+              timezone: tz,
+            },
+          },
+          count: { $sum: 1 },
+          upcoming: {
+            $sum: { $cond: [{ $eq: ["$status", "upcoming"] }, 1, 0] },
+          },
+          attended: {
+            $sum: { $cond: [{ $eq: ["$status", "attended"] }, 1, 0] },
+          },
+          cancelled: {
+            $sum: { $cond: [{ $eq: ["$status", "cancelled"] }, 1, 0] },
+          },
+        },
+      },
+    ]);
+
+    const map: Record<string, any> = {};
+    for (const r of rows) {
+      if (!String(r._id).startsWith(monthKey)) continue;
+      map[r._id] = {
+        count: r.count,
+        upcoming: r.upcoming,
+        attended: r.attended,
+        cancelled: r.cancelled,
+      };
+    }
+    return { status: true, data: map, message: "calendar" };
+  } catch (err) {
+    console.log("appointments calendar err", err);
+    return { status: false, data: {}, message: "something went wrong" };
+  }
+}
+
+export { list, add, update, deleted, calendar };

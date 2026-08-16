@@ -6,6 +6,7 @@ export const getSettings = async () => {
   try {
     const response = await fetch(`${BASE}${API.GET_SETTINGS}`, {
       method: "GET",
+      cache: "force-cache",
       headers: { Accept: "application/json" },
       next: { tags: ["settings", "refresh"] },
     });
@@ -21,6 +22,7 @@ export const getMasterData = async () => {
   try {
     const response = await fetch(`${BASE}${API.GET_MASTERDATA}`, {
       method: "GET",
+      cache: "force-cache",
       headers: { Accept: "application/json" },
       next: { tags: ["masterdata", "refresh"] },
     });

@@ -8,6 +8,8 @@ import { dayjs } from "@/utils/common";
 
 import PageHeader from "../_components/pageHeader";
 import StaticCard from "./_components/cards";
+import CalendarView from "./_components/calender";
+import ApptChart from "./_components/apptChart";
 
 import DynamicIcon from "@/utils/dynamicIcons";
 import { API } from "@/config/apis";
@@ -98,8 +100,8 @@ export default function OverView() {
             </div>
             <StaticCard
               loading={loading}
-              title={"Appointments"}
-              value={counts?.appointments || 0}
+              title={"Attended"}
+              value={counts?.attended || 0}
               icon={"LuTicketSlash"}
             />
             <StaticCard
@@ -121,7 +123,7 @@ export default function OverView() {
               icon={"VscFeedback"}
             />
           </div>
-          <div className="flex gap-4 overflow-x-auto pt-4 scrollbar-hide">
+          <div className="flex gap-4 overflow-x-auto pt-4 scrollbar-hide mb-4">
             {[
               {
                 icon: "RiPagesLine",
@@ -156,6 +158,11 @@ export default function OverView() {
                 </span>
               </div>
             ))}
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <ApptChart />
+            <CalendarView />
           </div>
         </div>
       </div>

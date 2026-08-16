@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const ORIGIN = process.env.NEXT_PUBLIC_WEBSITE_URL || "*";
+
 const securityHeaders = [
   {
     key: "Strict-Transport-Security",
@@ -11,31 +13,30 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
   },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-DNS-Prefetch-Control", value: "on" },
 ];
 
 const nextConfig = {
   reactStrictMode: false,
+  poweredByHeader: false,
   serverExternalPackages: ["mongoose", "bcryptjs", "@aws-sdk/client-s3"],
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "3mb",
-    },
-  },
   compress: true,
   async headers() {
     return [
       {
         source: "/api/:path*",
         headers: [
-          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Access-Control-Allow-Origin", value: ORIGIN },
+          { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Methods",
-            value: "GET, POST, PUT, DELETE",
+            value: "GET, POST, PUT, DELETE, OPTIONS",
           },
           {
             key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Accept",
+            value: "Content-Type, Accept, Authorization",
           },
+          { key: "Vary", value: "Origin" },
         ],
       },
       {
@@ -59,15 +60,6 @@ const nextConfig = {
             value: "public, s-maxage=300, stale-while-revalidate=3600",
           },
         ],
-      },
-    ];
-  },
-  async redirects() {
-    return [
-      {
-        source: "/:path*/amp",
-        destination: "/:path*",
-        permanent: true,
       },
     ];
   },

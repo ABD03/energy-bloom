@@ -21,6 +21,7 @@ export const API = {
   PATIENTS_DETAILS: "admin/patients/details",
   //Appointments
   APPOINTMENTS: "admin/appointments",
+  APPOINTMENTS_CALENDAR: "admin/appointments/calendar",
   //FAQs
   FAQS: "admin/faqs",
   //Reviews

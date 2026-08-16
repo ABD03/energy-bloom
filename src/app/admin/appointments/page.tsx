@@ -57,7 +57,7 @@ export default function Appointments() {
       qp.set("limit", String(take));
       if (query) qp.set("search", query);
       if (date) qp.set("date", date);
-      if (status) qp.set("status", status);
+      if (status && status !== "all") qp.set("status", status);
       if (doctor) qp.set("doctor", doctor);
       const URL = `${API.APPOINTMENTS}?${qp.toString()}`;
       const response: any = await GET(URL, null);
