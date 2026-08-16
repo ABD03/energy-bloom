@@ -52,6 +52,20 @@
         "route": "/admin/staticpage?page=1&limit=10"
       },
       {
+        "id": 10,
+        "menu": "FAQs",
+        "icon": "MdOutlineQuestionAnswer",
+        "base": "/admin/faqs",
+        "route": "/admin/faqs?page=1&limit=10"
+      },
+      {
+        "id": 11,
+        "menu": "Reviews",
+        "icon": "MdOutlineRateReview",
+        "base": "/admin/reviews",
+        "route": "/admin/reviews?page=1&limit=10"
+      },
+      {
         
         "id": 7,
         "menu": "Users",

@@ -6,6 +6,8 @@ import Pages from "../pages/modal";
 import Doctors from "../doctors/modal";
 import Patients from "../patients/modal";
 import Appointments from "../appointments/modal";
+import Faqs from "../faqs/modal";
+import Reviews from "../reviews/modal";
 
 async function list(req: any) {
   return new Promise(async (resolve, reject) => {
@@ -18,6 +20,9 @@ async function list(req: any) {
         doctors,
         patients,
         appointments,
+        upcoming,
+        faqs,
+        reviews,
       ] = await Promise.all([
         Contacts.countDocuments(),
         Pages.countDocuments(),
@@ -26,6 +31,9 @@ async function list(req: any) {
         Doctors.countDocuments(),
         Patients.countDocuments(),
         Appointments.countDocuments(),
+        Appointments.countDocuments({ status: "upcoming" }),
+        Faqs.countDocuments(),
+        Reviews.countDocuments(),
       ]);
 
       resolve({
@@ -40,6 +48,9 @@ async function list(req: any) {
             doctors,
             patients,
             appointments,
+            upcoming,
+            faqs,
+            reviews,
           },
         },
       });

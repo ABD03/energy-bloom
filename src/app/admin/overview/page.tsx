@@ -89,7 +89,7 @@ export default function OverView() {
               <div className="font-semibold text-base mb-1">New Bookings</div>
               <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold mb-1">
-                  Bookings
+                  {counts?.upcoming || 0}
                 </div>
               </div>
               <div className="text-[12px] text-gray-500">
@@ -130,6 +130,16 @@ export default function OverView() {
               },
               { icon: "BiImages", label: "Files", value: counts?.files || 0 },
               { icon: "FiUsers", label: "Users", value: counts?.users || 0 },
+              {
+                icon: "MdOutlineQuestionAnswer",
+                label: "FAQs",
+                value: counts?.faqs || 0,
+              },
+              {
+                icon: "MdOutlineRateReview",
+                label: "Reviews",
+                value: counts?.reviews || 0,
+              },
             ].map((item) => (
               <div
                 key={item.label}
