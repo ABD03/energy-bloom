@@ -41,7 +41,9 @@ function TimelineTab({
         <div className="flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-mono text-[12px] text-gray-500">
-              {appt?.token ? `T${String(appt.token).padStart(2, "0")}` : ""}
+              {appt?.token
+                ? `${dayjs(appt?.date).format("DDMM")}/${String(appt.token).padStart(2, "0")}`
+                : ""}
             </span>
             <span className="font-semibold text-[13px]">
               {appt?.doctor?.name || "Doctor"}

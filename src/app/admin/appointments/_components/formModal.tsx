@@ -8,7 +8,6 @@ import {
   Input,
   InputNumber,
   message,
-  Select,
 } from "antd";
 import { FaRegSave } from "react-icons/fa";
 
@@ -17,6 +16,7 @@ import { POST, PUT } from "@/utils/apiCalls";
 import { dayjs } from "@/utils/common";
 import PatientPicker from "../../patients/_components/patientPicker";
 import DoctorPicker from "../../doctors/_components/doctorPicker";
+import SlotPicker, { Slot } from "../../doctors/_components/slotPicker";
 
 const DAY_MAP = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
@@ -27,20 +27,7 @@ function FormModal(props: any) {
   const [selectedDoctor, setSelectedDoctor] = useState<any>(
     props?.data?.doctor || null,
   );
-  const [selectedSlotIdx, setSelectedSlotIdx] = useState<number | null>(
-    (() => {
-      const s = props?.data?.slot;
-      const slots = props?.data?.doctor?.slots || [];
-      if (!s?.startTime) return null;
-      const idx = slots.findIndex(
-        (x: any) =>
-          x.day === s.day &&
-          x.startTime === s.startTime &&
-          x.endTime === s.endTime,
-      );
-      return idx >= 0 ? idx : null;
-    })(),
-  );
+  const [slot, setSlot] = useState<Slot | null>(props?.data?.slot || null);
 
   const doctorSlots: any[] = useMemo(
     () => (Array.isArray(selectedDoctor?.slots) ? selectedDoctor.slots : []),
@@ -49,7 +36,7 @@ function FormModal(props: any) {
 
   const onDoctorSelect = (doc: any) => {
     setSelectedDoctor(doc || null);
-    setSelectedSlotIdx(null);
+    setSlot(null);
     form.setFieldsValue({ fee: doc?.consultationFee ?? 0 });
   };
 
@@ -58,37 +45,36 @@ function FormModal(props: any) {
       setIsLoading(true);
 
       let date: any = value?.date ? value.date.toDate() : null;
-      let slot: any = null;
-
+      if (!date) {
+        message.error("Please select a date");
+        setIsLoading(false);
+        return;
+      }
+      if (!slot?.startTime || !slot?.endTime) {
+        message.error("Please select a slot");
+        setIsLoading(false);
+        return;
+      }
+      if (slot.endTime <= slot.startTime) {
+        message.error("End time must be after start time");
+        setIsLoading(false);
+        return;
+      }
       if (doctorSlots.length) {
-        if (selectedSlotIdx === null || selectedSlotIdx === undefined) {
-          message.error("Please select a slot");
-          setIsLoading(false);
-          return;
-        }
-        const s = doctorSlots[selectedSlotIdx];
-        slot = { day: s.day, startTime: s.startTime, endTime: s.endTime };
-
-        if (!date) {
-          message.error("Please select a date");
-          setIsLoading(false);
-          return;
-        }
-        const targetDay = DAY_MAP.indexOf(s.day);
+        const targetDay = DAY_MAP.indexOf(slot.day || "");
         if (targetDay >= 0 && date.getDay() !== targetDay) {
-          message.error(`Selected date must be a ${s.day}`);
-          setIsLoading(false);
-          return;
-        }
-        const [h, m] = String(s.startTime).split(":");
-        date.setHours(Number(h || 0), Number(m || 0), 0, 0);
-      } else {
-        if (!date) {
-          message.error("Please select a date & time");
+          message.error(`Selected date must be a ${slot.day}`);
           setIsLoading(false);
           return;
         }
       }
+      const [h, m] = String(slot.startTime).split(":");
+      date.setHours(Number(h || 0), Number(m || 0), 0, 0);
+      const finalSlot = {
+        day: slot.day || DAY_MAP[date.getDay()],
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+      };
 
       const obj: any = {
         createdBy: props?.user?._id,
@@ -96,7 +82,7 @@ function FormModal(props: any) {
         patient: value?.patient,
         doctor: value?.doctor,
         date,
-        slot,
+        slot: finalSlot,
         fee: value?.fee ?? 0,
         notes: value?.notes,
         status: "upcoming",
@@ -178,29 +164,19 @@ function FormModal(props: any) {
             />
           </Form.Item>
 
-          {doctorSlots.length > 0 ? (
-            <Form.Item label="Slot" className="md:col-span-2">
-              <Select
-                placeholder="Select a slot"
-                value={selectedSlotIdx ?? undefined}
-                onChange={(v) => setSelectedSlotIdx(v)}
-                options={doctorSlots.map((s, idx) => ({
-                  label: `${s.day} · ${s.startTime} – ${s.endTime}`,
-                  value: idx,
-                }))}
-              />
-            </Form.Item>
-          ) : null}
-
           <Form.Item
-            label={doctorSlots.length ? "Date" : "Date & time"}
+            label="Date"
             name="date"
             rules={[{ required: true, message: "Required" }]}
           >
-            <DatePicker
-              className="w-full!"
-              showTime={doctorSlots.length ? false : { format: "HH:mm" }}
-              format={doctorSlots.length ? "YYYY-MM-DD" : "YYYY-MM-DD HH:mm"}
+            <DatePicker className="w-full!" format="YYYY-MM-DD" />
+          </Form.Item>
+
+          <Form.Item label="Slot" required>
+            <SlotPicker
+              slots={doctorSlots}
+              value={slot}
+              onChange={(v) => setSlot(v)}
             />
           </Form.Item>
 

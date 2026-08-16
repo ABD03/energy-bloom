@@ -24,10 +24,12 @@ function HistoryTab({
       title: "Token",
       dataIndex: "token",
       key: "token",
-      width: 70,
-      render: (item: any) => (
+      width: 90,
+      render: (item: any, record: any) => (
         <div className="font-mono text-[12px]">
-          {item ? `T${String(item).padStart(2, "0")}` : "-"}
+          {item
+            ? `${dayjs(record?.date).format("DDMM")}/${String(item).padStart(2, "0")}`
+            : "-"}
         </div>
       ),
     },
