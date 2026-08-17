@@ -36,7 +36,7 @@ function TimelineTab({
 
   const items = data.map((appt: any) => ({
     color: DOT_COLORS[appt?.status] || "gray",
-    children: (
+    content: (
       <div className="pb-2 flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 flex-wrap">

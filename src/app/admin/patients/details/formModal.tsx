@@ -74,7 +74,7 @@ function FormModal(props: any) {
       onClose={props?.onCancel}
       open={props.visible}
       placement="right"
-      width={720}
+      size={"large"}
       styles={{ body: { padding: 20 } }}
       footer={
         <div className="flex items-center justify-end gap-2 py-1">
@@ -125,11 +125,10 @@ function FormModal(props: any) {
         }}
       >
         <Form.Item label="Briefing">
-          <TextEditor value={briefing} onChange={(v: string) => setBriefing(v)} />
-        </Form.Item>
-
-        <Form.Item label="Remark" name="remark">
-          <Input.TextArea rows={3} placeholder="Short remark" />
+          <TextEditor
+            value={briefing}
+            onChange={(v: string) => setBriefing(v)}
+          />
         </Form.Item>
 
         <Form.Item label="Attachments">
@@ -154,6 +153,10 @@ function FormModal(props: any) {
             ) : null}
             <FilePicker url={null} onchange={addAttachment} />
           </div>
+        </Form.Item>
+
+        <Form.Item label="Remark" name="remark">
+          <Input.TextArea rows={3} placeholder="Short remark" />
         </Form.Item>
 
         <Form.Item label="Feedback" name="feedback">

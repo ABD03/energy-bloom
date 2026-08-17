@@ -78,7 +78,7 @@ function FormModal(props: any) {
       onClose={props?.onCancel}
       open={props.visible}
       placement="right"
-      width={670}
+      size="large"
       styles={{
         body: { padding: 20 },
       }}
