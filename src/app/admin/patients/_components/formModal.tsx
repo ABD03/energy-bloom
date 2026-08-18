@@ -26,6 +26,7 @@ function FormModal(props: any) {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [image_url, setImage_url] = useState(props?.data?.image);
+  const [status, setStatus] = useState<boolean>(props?.data?.status ?? true);
 
   const submit = async (value: any) => {
     try {
@@ -41,7 +42,7 @@ function FormModal(props: any) {
         image: image_url,
         bloodGroup: value?.bloodGroup,
         address: value?.address,
-        status: value?.status,
+        status,
       };
       const METHOD = props?.data?._id ? PUT : POST;
       const response: any = await METHOD(API.PATIENTS, obj);
@@ -71,18 +72,26 @@ function FormModal(props: any) {
       size="large"
       styles={{ body: { padding: 20 } }}
       footer={
-        <div className="flex items-center justify-end gap-2 py-1">
-          <Button size="large" onClick={() => props.onCancel()} danger>
-            Close
-          </Button>
-          <Button
-            size="large"
-            type="primary"
-            loading={isLoading}
-            onClick={() => form.submit()}
-          >
-            <FaRegSave/> Save
-          </Button>
+        <div className="flex items-center justify-between gap-2 py-1">
+          <Switch
+            checked={status}
+            onChange={setStatus}
+            checkedChildren="Active"
+            unCheckedChildren="Inactive"
+          />
+          <div className="flex items-center gap-2">
+            <Button size="large" onClick={() => props.onCancel()} danger>
+              Close
+            </Button>
+            <Button
+              size="large"
+              type="primary"
+              loading={isLoading}
+              onClick={() => form.submit()}
+            >
+              <FaRegSave /> Save
+            </Button>
+          </div>
         </div>
       }
     >
@@ -99,7 +108,6 @@ function FormModal(props: any) {
           bloodGroup: props?.data?.bloodGroup,
           address: props?.data?.address,
           image: props?.data?.image,
-          status: props?.data?.status ?? true,
         }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mb-2">
@@ -159,10 +167,6 @@ function FormModal(props: any) {
             />
           </Form.Item>
         </div>
-
-        <Form.Item label="Status" name="status" valuePropName="checked">
-          <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
-        </Form.Item>
       </Form>
     </Drawer>
   );

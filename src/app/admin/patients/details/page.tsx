@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Avatar, Button, Descriptions, message, Tabs, Tag } from "antd";
+import { Button, message, Tabs } from "antd";
 import { IoMdAdd } from "react-icons/io";
+import { MdOutlineEditNote } from "react-icons/md";
 
 import PageHeader from "../../_components/pageHeader";
 import Loading from "../../_components/loading";
@@ -11,20 +12,13 @@ import Empty from "../../_components/empty";
 import TimelineTab from "./timeline";
 import HistoryTab from "./history";
 import FormModal from "./formModal";
+import ProfileCard from "./profileCard";
 import AppointmentFormModal from "../../appointments/_components/formModal";
+import PatientFormModal from "../_components/formModal";
 import { UseAppSelector } from "@/redux/util/hooks";
 
 import { API } from "@/config/apis";
 import { GET } from "@/utils/apiCalls";
-import { dayjs } from "@/utils/common";
-import { ViewImage } from "@/utils/viewImage";
-
-const getAge = (dob: any) => {
-  if (!dob) return null;
-  const d = dayjs(dob);
-  if (!d.isValid()) return null;
-  return dayjs().diff(d, "year");
-};
 
 export default function PatientDetails() {
   const searchParams = useSearchParams();
@@ -36,6 +30,7 @@ export default function PatientDetails() {
   const [meta, setMeta] = useState<any>({});
   const [attendItem, setAttendItem] = useState<any>(null);
   const [newAppt, setNewAppt] = useState(false);
+  const [editPatient, setEditPatient] = useState(false);
   const Auth = UseAppSelector((state: any) => state?.Auth);
 
   useEffect(() => {
@@ -71,7 +66,17 @@ export default function PatientDetails() {
         showMenu={false}
         showMobileBack={true}
         showMobileMenu={false}
-      />
+      >
+        {patient ? (
+          <Button
+            type="primary"
+            onClick={() => setEditPatient(true)}
+            icon={<MdOutlineEditNote size={18} />}
+          >
+            <span className="text-[12px] hidden md:inline">Edit patient</span>
+          </Button>
+        ) : null}
+      </PageHeader>
       <div className="h-[92vh] overflow-y-auto overflow-x-hidden pb-[7vh]">
         {loading ? (
           <Loading />
@@ -79,56 +84,7 @@ export default function PatientDetails() {
           <Empty />
         ) : (
           <div className="p-4 space-y-6">
-            <div className="flex items-start gap-4 bg-white border border-gray-200 rounded p-4">
-              <Avatar
-                size={80}
-                src={ViewImage(patient?.image)}
-              >
-                {patient?.name?.[0]}
-              </Avatar>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <div className="text-xl font-semibold">{patient?.name}</div>
-                  {patient?.patientId ? (
-                    <Tag className="font-mono">{patient.patientId}</Tag>
-                  ) : null}
-                  <Tag color={patient?.status ? "green" : "red"}>
-                    {patient?.status ? "Active" : "Blocked"}
-                  </Tag>
-                </div>
-                <div className="text-[12px] text-gray-500 mt-1">
-                  {patient?.phone} {patient?.email ? ` · ${patient.email}` : ""}
-                </div>
-                <Descriptions
-                  size="small"
-                  column={{ xs: 1, sm: 2, md: 3 }}
-                  className="mt-4"
-                >
-                  <Descriptions.Item label="Gender">
-                    <span className="capitalize">
-                      {patient?.gender || "-"}
-                    </span>
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Age">
-                    {getAge(patient?.dob) ?? "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Blood Group">
-                    {patient?.bloodGroup || "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Date of Birth">
-                    {patient?.dob ? dayjs(patient.dob).format("ll") : "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Address" span={2}>
-                    {patient?.address || "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Created">
-                    {patient?.createdAt
-                      ? dayjs(patient.createdAt).format("ll")
-                      : "-"}
-                  </Descriptions.Item>
-                </Descriptions>
-              </div>
-            </div>
+            <ProfileCard patient={patient} />
 
             <Tabs
               defaultActiveKey="timeline"
@@ -179,6 +135,15 @@ export default function PatientDetails() {
                 data={{ patient }}
                 visible={newAppt}
                 onCancel={() => setNewAppt(false)}
+                onchange={() => load()}
+              />
+            ) : null}
+            {editPatient ? (
+              <PatientFormModal
+                user={Auth?.user}
+                data={patient}
+                visible={editPatient}
+                onCancel={() => setEditPatient(false)}
                 onchange={() => load()}
               />
             ) : null}
