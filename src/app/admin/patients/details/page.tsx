@@ -83,7 +83,7 @@ export default function PatientDetails() {
         ) : !patient ? (
           <Empty />
         ) : (
-          <div className="p-4 space-y-6">
+          <div className="p-4">
             <ProfileCard patient={patient} />
 
             <Tabs

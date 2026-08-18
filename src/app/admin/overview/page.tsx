@@ -10,6 +10,7 @@ import PageHeader from "../_components/pageHeader";
 import StaticCard from "./_components/cards";
 import CalendarView from "./_components/calender";
 import ApptChart from "./_components/apptChart";
+import TodayAppt from "./_components/todayAppt";
 
 import DynamicIcon from "@/utils/dynamicIcons";
 import { API } from "@/config/apis";
@@ -161,6 +162,7 @@ export default function OverView() {
           </div>
 
           <div className="flex flex-col gap-4">
+            <TodayAppt />
             <ApptChart />
             <CalendarView />
           </div>
