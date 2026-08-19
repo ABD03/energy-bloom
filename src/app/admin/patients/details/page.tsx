@@ -19,6 +19,7 @@ import { UseAppSelector } from "@/redux/util/hooks";
 
 import { API } from "@/config/apis";
 import { GET } from "@/utils/apiCalls";
+import Statics from "./statics";
 
 export default function PatientDetails() {
   const searchParams = useSearchParams();
@@ -69,7 +70,6 @@ export default function PatientDetails() {
       >
         {patient ? (
           <Button
-            type="primary"
             onClick={() => setEditPatient(true)}
             icon={<MdOutlineEditNote size={18} />}
           >
@@ -83,70 +83,75 @@ export default function PatientDetails() {
         ) : !patient ? (
           <Empty />
         ) : (
-          <div className="p-4">
-            <ProfileCard patient={patient} />
-
-            <Tabs
-              defaultActiveKey="timeline"
-              tabBarExtraContent={
-                <Button
-                  type="primary"
-                  onClick={() => setNewAppt(true)}
-                  className="p-2!"
-                >
-                  <IoMdAdd size={20} />
-                </Button>
-              }
-              items={[
-                {
-                  key: "timeline",
-                  label: `Timeline (${meta?.total || 0})`,
-                  children: (
-                    <TimelineTab
-                      data={appointments}
-                      onAttend={(a) => setAttendItem(a)}
-                    />
-                  ),
-                },
-                {
-                  key: "history",
-                  label: "History",
-                  children: (
-                    <HistoryTab
-                      data={appointments}
-                      loading={false}
-                      onAttend={(a) => setAttendItem(a)}
-                    />
-                  ),
-                },
-              ]}
-            />
-            {attendItem ? (
-              <FormModal
-                data={attendItem}
-                visible={!!attendItem}
-                onCancel={() => setAttendItem(null)}
-                onchange={() => load()}
+          <div className="p-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
+            <div className="flex-1">
+              <ProfileCard patient={patient} />
+              <Statics />
+            </div>
+            <div className="sm:flex-3 sm:ml-4">
+              <Tabs
+              size="small"
+                defaultActiveKey="timeline"
+                tabBarExtraContent={
+                  <Button
+                    type="primary"
+                    onClick={() => setNewAppt(true)}
+                    className="p-2!"
+                  >
+                    <IoMdAdd size={20} />
+                  </Button>
+                }
+                items={[
+                  {
+                    key: "timeline",
+                    label: `Timeline (${meta?.total || 0})`,
+                    children: (
+                      <TimelineTab
+                        data={appointments}
+                        onAttend={(a) => setAttendItem(a)}
+                      />
+                    ),
+                  },
+                  {
+                    key: "history",
+                    label: "History",
+                    children: (
+                      <HistoryTab
+                        data={appointments}
+                        loading={false}
+                        onAttend={(a) => setAttendItem(a)}
+                      />
+                    ),
+                  },
+                ]}
               />
-            ) : null}
-            {newAppt ? (
-              <AppointmentFormModal
-                user={Auth?.user}
-                data={{ patient }}
-                visible={newAppt}
-                onCancel={() => setNewAppt(false)}
-                onchange={() => load()}
-              />
-            ) : null}
-            {editPatient ? (
-              <PatientFormModal
-                user={Auth?.user}
-                data={patient}
-                visible={editPatient}
-                onCancel={() => setEditPatient(false)}
-                onchange={() => load()}
-              />
-            ) : null}
+              {attendItem ? (
+                <FormModal
+                  data={attendItem}
+                  visible={!!attendItem}
+                  onCancel={() => setAttendItem(null)}
+                  onchange={() => load()}
+                />
+              ) : null}
+              {newAppt ? (
+                <AppointmentFormModal
+                  user={Auth?.user}
+                  data={{ patient }}
+                  visible={newAppt}
+                  onCancel={() => setNewAppt(false)}
+                  onchange={() => load()}
+                />
+              ) : null}
+              {editPatient ? (
+                <PatientFormModal
+                  user={Auth?.user}
+                  data={patient}
+                  visible={editPatient}
+                  onCancel={() => setEditPatient(false)}
+                  onchange={() => load()}
+                />
+              ) : null}
+            </div>
           </div>
         )}
       </div>

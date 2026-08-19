@@ -148,7 +148,7 @@ function TimelineTab({
   }));
 
   return (
-    <div className="p-2">
+    <div>
       <Timeline items={items} />
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   DatePicker,
@@ -37,8 +37,13 @@ function FormModal(props: any) {
   const onDoctorSelect = (doc: any) => {
     setSelectedDoctor(doc || null);
     setSlot(null);
-    form.setFieldsValue({ fee: doc?.consultationFee ?? 0 });
   };
+
+  useEffect(() => {
+    if (selectedDoctor) {
+      form.setFieldValue("fee", selectedDoctor?.consultationFee ?? 0);
+    }
+  }, [selectedDoctor, form]);
 
   const submit = async (value: any) => {
     try {
@@ -50,31 +55,30 @@ function FormModal(props: any) {
         setIsLoading(false);
         return;
       }
-      if (!slot?.startTime || !slot?.endTime) {
-        message.error("Please select a slot");
-        setIsLoading(false);
-        return;
-      }
-      if (slot.endTime <= slot.startTime) {
-        message.error("End time must be after start time");
-        setIsLoading(false);
-        return;
-      }
-      if (doctorSlots.length) {
-        const targetDay = DAY_MAP.indexOf(slot.day || "");
-        if (targetDay >= 0 && date.getDay() !== targetDay) {
-          message.error(`Selected date must be a ${slot.day}`);
+
+      let finalSlot: any = null;
+      if (slot?.startTime && slot?.endTime) {
+        if (slot.endTime <= slot.startTime) {
+          message.error("End time must be after start time");
           setIsLoading(false);
           return;
         }
+        if (doctorSlots.length) {
+          const targetDay = DAY_MAP.indexOf(slot.day || "");
+          if (targetDay >= 0 && date.getDay() !== targetDay) {
+            message.error(`Selected date must be a ${slot.day}`);
+            setIsLoading(false);
+            return;
+          }
+        }
+        const [h, m] = String(slot.startTime).split(":");
+        date.setHours(Number(h || 0), Number(m || 0), 0, 0);
+        finalSlot = {
+          day: slot.day || DAY_MAP[date.getDay()],
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+        };
       }
-      const [h, m] = String(slot.startTime).split(":");
-      date.setHours(Number(h || 0), Number(m || 0), 0, 0);
-      const finalSlot = {
-        day: slot.day || DAY_MAP[date.getDay()],
-        startTime: slot.startTime,
-        endTime: slot.endTime,
-      };
 
       const obj: any = {
         createdBy: props?.user?._id,
@@ -172,7 +176,7 @@ function FormModal(props: any) {
             <DatePicker className="w-full!" format="YYYY-MM-DD" />
           </Form.Item>
 
-          <Form.Item label="Slot" required>
+          <Form.Item label="Slot">
             <SlotPicker
               slots={doctorSlots}
               value={slot}

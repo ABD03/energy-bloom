@@ -59,6 +59,7 @@ async function list(req: any) {
 
 async function checkConflict(req: any, excludeId?: string) {
   if (!req.doctor || !req.date) return null;
+  if (!req.slot?.startTime) return null;
   const dt = new Date(req.date);
   const dayStart = new Date(dt);
   dayStart.setHours(0, 0, 0, 0);
@@ -68,13 +69,9 @@ async function checkConflict(req: any, excludeId?: string) {
     doctor: req.doctor,
     date: { $gte: dayStart, $lte: dayEnd },
     status: { $ne: "cancelled" },
+    "slot.startTime": req.slot.startTime,
+    "slot.endTime": req.slot.endTime,
   };
-  if (req.slot?.startTime) {
-    filter["slot.startTime"] = req.slot.startTime;
-    filter["slot.endTime"] = req.slot.endTime;
-  } else {
-    filter.date = dt;
-  }
   if (excludeId) filter._id = { $ne: excludeId };
   return Appointments.findOne(filter);
 }
