@@ -227,4 +227,69 @@ async function calendar(req: any) {
   }
 }
 
-export { list, add, update, deleted, calendar };
+async function stats(req: any) {
+  try {
+    const patientId = req.get("patient") || null;
+    const doctorId = req.get("doctor") || null;
+    const match: any = {};
+    if (patientId) match.patient = new (require("mongoose").Types.ObjectId)(patientId);
+    if (doctorId) match.doctor = new (require("mongoose").Types.ObjectId)(doctorId);
+
+    const [row]: any = await Appointments.aggregate([
+      { $match: match },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          upcoming: {
+            $sum: { $cond: [{ $eq: ["$status", "upcoming"] }, 1, 0] },
+          },
+          attended: {
+            $sum: { $cond: [{ $eq: ["$status", "attended"] }, 1, 0] },
+          },
+          cancelled: {
+            $sum: { $cond: [{ $eq: ["$status", "cancelled"] }, 1, 0] },
+          },
+          expired: {
+            $sum: { $cond: [{ $eq: ["$status", "expired"] }, 1, 0] },
+          },
+          feedback: { $push: "$feedback" },
+        },
+      },
+    ]);
+
+    const byFeedback: Record<string, number> = {
+      helpful: 0,
+      better: 0,
+      no_improvement: 0,
+    };
+    if (row?.feedback) {
+      for (const arr of row.feedback) {
+        if (!Array.isArray(arr)) continue;
+        for (const v of arr) {
+          if (byFeedback[v] !== undefined) byFeedback[v] += 1;
+        }
+      }
+    }
+
+    return {
+      status: true,
+      data: {
+        total: row?.total || 0,
+        byStatus: {
+          upcoming: row?.upcoming || 0,
+          attended: row?.attended || 0,
+          cancelled: row?.cancelled || 0,
+          expired: row?.expired || 0,
+        },
+        byFeedback,
+      },
+      message: "stats",
+    };
+  } catch (err) {
+    console.log("appointments stats err", err);
+    return { status: false, data: {}, message: "something went wrong" };
+  }
+}
+
+export { list, add, update, deleted, calendar, stats };

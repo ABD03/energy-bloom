@@ -86,7 +86,7 @@ export default function PatientDetails() {
           <div className="p-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
             <div className="flex-1">
               <ProfileCard patient={patient} />
-              <Statics />
+              <Statics patientId={id} />
             </div>
             <div className="sm:flex-3 sm:ml-4">
               <Tabs
