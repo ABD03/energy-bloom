@@ -56,6 +56,10 @@ export const API = {
   GET_SETTINGS: "website/settings",
   //MASTERDATA (pages)
   GET_MASTERDATA: "website/masterdata",
+  //Public doctors
+  WEB_DOCTORS: "website/doctors",
+  //Book appointment
+  WEB_APPOINTMENTS: "website/appointments",
   //CONTACT
   POST_CONTACT: "website/contact",
   //PAGES

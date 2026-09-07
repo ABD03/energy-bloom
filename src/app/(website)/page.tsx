@@ -1,5 +1,17 @@
-
+import Hero from "./home/hero";
+import About from "./home/about";
+import Services from "./home/services";
+import Benefits from "./home/benefits";
+import CtaSection from "./home/ctaSection";
 
 export default async function Website() {
-  return <div className="min-h-screen w-full flex items-center justify-center">Comming Soon</div>;
+  return (
+    <>
+      <Hero />
+      <About />
+      <Services />
+      <Benefits />
+      <CtaSection />
+    </>
+  );
 }
