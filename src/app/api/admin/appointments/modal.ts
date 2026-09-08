@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const appointmentSchema = new Schema(
   {
     patient: { type: Schema.Types.ObjectId, ref: "patients", required: true },
-    doctor: { type: Schema.Types.ObjectId, ref: "doctors", required: true },
+    doctor: { type: Schema.Types.ObjectId, ref: "doctors" },
     date: { type: Date, required: true },
     slot: {
       day: String,

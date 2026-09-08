@@ -60,8 +60,8 @@ export default function Services() {
 
   return (
     <section id="services" className="py-20 bg-gray-50">
-      <div className="pl-4 sm:pl-8 lg:pl-16">
-        <div className="flex items-end justify-between pr-4 sm:pr-8 lg:pr-16">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-end justify-between ">
           <div>
             <h2 className="text-3xl md:text-5xl font-semibold text-gray-900 leading-tight">
               Why our practice is the best
@@ -112,7 +112,7 @@ export default function Services() {
           ))}
         </div>
 
-        <div className="mt-6 flex items-center justify-end gap-3 pr-4 sm:pr-8 lg:pr-16">
+        <div className="mt-6 flex items-center justify-end gap-3 ">
           <button
             type="button"
             onClick={() => scrollBy(-1)}
