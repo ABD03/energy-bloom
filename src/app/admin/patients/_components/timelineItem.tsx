@@ -1,9 +1,11 @@
 "use client";
+import { useState } from "react";
 import { Button, Tag } from "antd";
 import { dayjs } from "@/utils/common";
 import { IoEyeOutline } from "react-icons/io5";
 import { TfiMarkerAlt } from "react-icons/tfi";
 import { FaUserDoctor } from "react-icons/fa6";
+import DetailsModal from "./detailsModal";
 
 const FEEDBACK_LABELS: Record<string, string> = {
   helpful: "Helpful",
@@ -25,6 +27,8 @@ function TimelineItem({
   appt: any;
   onAttend?: (appt: any) => void;
 }) {
+  const [viewOpen, setViewOpen] = useState(false);
+
   return (
     <div className="bg-white p-2 rounded">
       <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
@@ -36,12 +40,17 @@ function TimelineItem({
         <div className="flex gap-2 items-center justify-end">
           <Button
             size="small"
-            className="p-2! bg-green-500! text-white!"
+            className={
+              appt?.status === "attended"
+                ? "p-2!"
+                : "p-2! bg-green-500! text-white!"
+            }
             onClick={() => onAttend?.(appt)}
           >
-            <TfiMarkerAlt /> Attend
+            <TfiMarkerAlt />
+            {appt?.status === "attended" ? "Edit" : "Attend"}
           </Button>
-          <Button size="small">
+          <Button size="small" onClick={() => setViewOpen(true)}>
             <IoEyeOutline />
           </Button>
         </div>
@@ -58,11 +67,13 @@ function TimelineItem({
         >
           {appt?.status}
         </Tag>
-        {(Array.isArray(appt?.feedback) ? appt.feedback : []).map((v: string) => (
-          <Tag key={v} color="blue">
-            {FEEDBACK_LABELS[v] || v}
-          </Tag>
-        ))}
+        {(Array.isArray(appt?.feedback) ? appt.feedback : []).map(
+          (v: string) => (
+            <Tag key={v} color="blue">
+              {FEEDBACK_LABELS[v] || v}
+            </Tag>
+          ),
+        )}
       </div>
       <div>
         <div className="px-1 flex items-center gap-1 text-[14px] font-medium">
@@ -71,6 +82,11 @@ function TimelineItem({
           </div>
 
           {appt?.doctor?.name || "Doctor"}
+          {appt?.fee ? (
+            <span className="ml-auto text-[13px] font-semibold text-gray-700">
+              ₹{appt.fee}
+            </span>
+          ) : null}
         </div>
         {appt?.notes ? (
           <div className="mt-2 border border-gray-200 p-2 rounded-lg">
@@ -92,6 +108,13 @@ function TimelineItem({
           </div>
         ) : null}
       </div>
+      {viewOpen ? (
+        <DetailsModal
+          data={appt}
+          visible={viewOpen}
+          onCancel={() => setViewOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }
