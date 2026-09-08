@@ -5,7 +5,7 @@ import { Alert, Divider, Form, Input } from "antd";
 export default function AwsS3Fields() {
   return (
     <>
-      <Divider orientation="left" plain>
+      <Divider titlePlacement="left" plain>
         AWS S3
       </Divider>
 
