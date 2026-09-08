@@ -1,15 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button, Drawer, Form, Input, message, Radio, Tag } from "antd";
 import { FaRegSave } from "react-icons/fa";
 import { IoCloseCircleOutline } from "react-icons/io5";
 
 import TextEditor from "../../_components/textEditor";
 import FilePicker from "../../_components/filePicker";
+import DoctorPicker from "../../doctors/_components/doctorPicker";
+import SlotPicker, { Slot } from "../../doctors/_components/slotPicker";
 
 import { API } from "@/config/apis";
 import { PUT } from "@/utils/apiCalls";
 import { dayjs } from "@/utils/common";
+
+const DAY_MAP = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 const FEEDBACK_OPTIONS = [
   { label: "Helpful", value: "helpful" },
@@ -22,10 +26,20 @@ function FormModal(props: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const appt = props?.data || {};
+  const needsDoctor = !appt?.doctor?._id;
 
   const [briefing, setBriefing] = useState<string>(appt?.briefing || "");
   const [attachments, setAttachments] = useState<string[]>(
     Array.isArray(appt?.attachments) ? appt.attachments : [],
+  );
+  const [selectedDoctor, setSelectedDoctor] = useState<any>(
+    appt?.doctor || null,
+  );
+  const [slot, setSlot] = useState<Slot | null>(appt?.slot || null);
+
+  const doctorSlots: any[] = useMemo(
+    () => (Array.isArray(selectedDoctor?.slots) ? selectedDoctor.slots : []),
+    [selectedDoctor],
   );
 
   const addAttachment = (value: any) => {
@@ -39,14 +53,35 @@ function FormModal(props: any) {
 
   const submit = async (value: any) => {
     try {
+      if (needsDoctor && !selectedDoctor?._id) {
+        message.error("Please select a doctor");
+        return;
+      }
+      if (
+        needsDoctor &&
+        doctorSlots.length &&
+        (!slot?.startTime || !slot?.endTime)
+      ) {
+        message.error("Please select a slot");
+        return;
+      }
+      if (needsDoctor && doctorSlots.length && slot?.day && appt?.date) {
+        const targetDay = DAY_MAP.indexOf(slot.day);
+        const apptDay = new Date(appt.date).getDay();
+        if (targetDay >= 0 && apptDay !== targetDay) {
+          message.error(`This slot is only available on ${slot.day}`);
+          return;
+        }
+      }
+
       setIsLoading(true);
       const obj: any = {
         _id: appt?._id,
         patient: appt?.patient?._id,
-        doctor: appt?.doctor?._id,
+        doctor: needsDoctor ? selectedDoctor?._id : appt?.doctor?._id,
         date: appt?.date,
-        slot: appt?.slot,
-        fee: appt?.fee,
+        slot: needsDoctor ? slot : appt?.slot,
+        fee: needsDoctor ? (selectedDoctor?.consultationFee ?? 0) : appt?.fee,
         notes: appt?.notes,
         briefing,
         remark: value?.remark,
@@ -71,12 +106,12 @@ function FormModal(props: any) {
 
   return (
     <Drawer
-      title="Attend appointment"
+      title="Attending"
       onClose={props?.onCancel}
       open={props.visible}
       placement="right"
       size={"large"}
-      styles={{ body: { padding: 20 } }}
+      styles={{ body: { padding: 20 }, header: { padding: 14 } }}
       footer={
         <div className="flex items-center justify-end gap-2 py-1">
           <Button size="large" onClick={() => props.onCancel()} danger>
@@ -92,6 +127,11 @@ function FormModal(props: any) {
           </Button>
         </div>
       }
+      extra={
+        !needsDoctor ? null : (
+          <Tag color="orange">Booked online — no doctor assigned</Tag>
+        )
+      }
     >
       <div className="mb-4 p-3 bg-gray-50 rounded border border-gray-200">
         <div className="flex items-center gap-2 flex-wrap">
@@ -100,11 +140,12 @@ function FormModal(props: any) {
               ? `${dayjs(appt?.date).format("DDMM")}/${String(appt.token).padStart(2, "0")}`
               : ""}
           </span>
-          <span className="font-semibold text-[13px]">
-            {appt?.doctor?.name}
-          </span>
-          {appt?.doctor?.specialization ? (
-            <Tag>{appt.doctor.specialization}</Tag>
+          {!needsDoctor ? (
+            <>
+              <span className="font-semibold text-[13px]">
+                {appt?.doctor?.name}
+              </span>
+            </>
           ) : null}
         </div>
         <div className="text-[12px] text-gray-600 mt-1">
@@ -122,11 +163,51 @@ function FormModal(props: any) {
         initialValues={{
           notes: appt?.notes || "",
           remark: appt?.remark || "",
+          doctor: selectedDoctor?._id,
           feedback: Array.isArray(appt?.feedback)
             ? appt.feedback[0]
             : undefined,
         }}
       >
+        {needsDoctor ? (
+          <div>
+            <Form.Item
+              label="Doctor"
+              name="doctor"
+              rules={[{ required: true, message: "Please select a doctor" }]}
+            >
+              <DoctorPicker
+                initial={selectedDoctor}
+                onSelect={(doc) => {
+                  setSelectedDoctor(doc || null);
+                  setSlot(null);
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Slot"
+              required
+              validateStatus={
+                doctorSlots.length && (!slot?.startTime || !slot?.endTime)
+                  ? "error"
+                  : undefined
+              }
+              help={
+                doctorSlots.length && (!slot?.startTime || !slot?.endTime)
+                  ? "Please select a slot"
+                  : undefined
+              }
+            >
+              <SlotPicker
+                slots={doctorSlots}
+                value={slot}
+                onChange={setSlot}
+                disabled={!selectedDoctor}
+              />
+            </Form.Item>
+          </div>
+        ) : null}
+
         <Form.Item label="Briefing">
           <TextEditor
             value={briefing}
@@ -163,10 +244,7 @@ function FormModal(props: any) {
         </div>
 
         <Form.Item label="Feedback" name="feedback">
-          <Radio.Group
-            options={FEEDBACK_OPTIONS}
-            buttonStyle="solid"
-          />
+          <Radio.Group options={FEEDBACK_OPTIONS} buttonStyle="solid" />
         </Form.Item>
       </Form>
     </Drawer>

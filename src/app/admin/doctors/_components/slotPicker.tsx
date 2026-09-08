@@ -35,6 +35,7 @@ function SlotPicker({ slots = [], value, onChange, disabled }: Props) {
         value={currentIdx >= 0 ? currentIdx : undefined}
         disabled={disabled}
         placeholder="Select a slot"
+         className="w-full!"
         onChange={(idx: number) => {
           const s = slots[idx];
           onChange?.({

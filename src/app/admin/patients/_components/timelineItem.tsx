@@ -72,7 +72,6 @@ function TimelineItem({
 
           {appt?.doctor?.name || "Doctor"}
         </div>
-        <div></div>
         {appt?.notes ? (
           <div className="mt-2 border border-gray-200 p-2 rounded-lg">
             <div className="text-[11px] font-semibold text-gray-500">Notes</div>
