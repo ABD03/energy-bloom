@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button, Checkbox, Drawer, Form, Input, message, Tag } from "antd";
+import { Button, Drawer, Form, Input, message, Radio, Tag } from "antd";
 import { FaRegSave } from "react-icons/fa";
 import { IoCloseCircleOutline } from "react-icons/io5";
 
@@ -47,10 +47,11 @@ function FormModal(props: any) {
         date: appt?.date,
         slot: appt?.slot,
         fee: appt?.fee,
+        notes: appt?.notes,
         briefing,
         remark: value?.remark,
         attachments,
-        feedback: value?.feedback || [],
+        feedback: value?.feedback ? [value.feedback] : [],
         status: "attended",
       };
       const response: any = await PUT(API.APPOINTMENTS, obj);
@@ -121,7 +122,9 @@ function FormModal(props: any) {
         initialValues={{
           notes: appt?.notes || "",
           remark: appt?.remark || "",
-          feedback: Array.isArray(appt?.feedback) ? appt.feedback : [],
+          feedback: Array.isArray(appt?.feedback)
+            ? appt.feedback[0]
+            : undefined,
         }}
       >
         <Form.Item label="Briefing">
@@ -130,37 +133,40 @@ function FormModal(props: any) {
             onChange={(v: string) => setBriefing(v)}
           />
         </Form.Item>
-
-        <Form.Item label="Attachments">
-          <div className="flex flex-col gap-2">
-            {attachments.length ? (
-              <div className="flex flex-wrap gap-2">
-                {attachments.map((f, idx) => (
-                  <Tag
-                    key={`${f}-${idx}`}
-                    className="flex items-center gap-1 py-1! px-2!"
-                  >
-                    <span className="text-[12px]">{f}</span>
-                    <IoCloseCircleOutline
-                      size={16}
-                      color="red"
-                      className="cursor-pointer"
-                      onClick={() => removeAttachment(idx)}
-                    />
-                  </Tag>
-                ))}
-              </div>
-            ) : null}
-            <FilePicker url={null} onchange={addAttachment} />
-          </div>
-        </Form.Item>
-
         <Form.Item label="Remark" name="remark">
-          <Input.TextArea rows={3} placeholder="Short remark" />
+          <Input.TextArea rows={4} placeholder="Short remark" />
         </Form.Item>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <Form.Item label="Attachments">
+            <div className="flex flex-col gap-2">
+              {attachments.length ? (
+                <div className="flex flex-wrap gap-2">
+                  {attachments.map((f, idx) => (
+                    <Tag
+                      key={`${f}-${idx}`}
+                      className="flex items-center gap-1 py-1! px-2!"
+                    >
+                      <span className="text-[12px]">{f}</span>
+                      <IoCloseCircleOutline
+                        size={16}
+                        color="red"
+                        className="cursor-pointer"
+                        onClick={() => removeAttachment(idx)}
+                      />
+                    </Tag>
+                  ))}
+                </div>
+              ) : null}
+              <FilePicker url={null} onchange={addAttachment} />
+            </div>
+          </Form.Item>
+        </div>
 
         <Form.Item label="Feedback" name="feedback">
-          <Checkbox.Group options={FEEDBACK_OPTIONS} />
+          <Radio.Group
+            options={FEEDBACK_OPTIONS}
+            buttonStyle="solid"
+          />
         </Form.Item>
       </Form>
     </Drawer>
