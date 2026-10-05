@@ -7,6 +7,7 @@ import GalleryModal from "../filePicker/galleryModal";
 
 import { GET } from "@/utils/apiCalls";
 import { API } from "@/config/apis";
+import { EDITOR_SCRIPT_SRC } from "@/config/editor";
 import { ViewImage } from "@/utils/viewImage";
 
 const Editor = dynamic(
@@ -77,7 +78,7 @@ export default function TextEditor(props: any) {
         }}
         value={props?.value}
         init={{
-          tinymceScriptSrc: "/_editor/tinymce.min.js",
+          tinymceScriptSrc: EDITOR_SCRIPT_SRC,
           promotion: false,
           extended_valid_elements: `${script_extended},${iframe_extended},style`,
           valid_elements: "*[*]",

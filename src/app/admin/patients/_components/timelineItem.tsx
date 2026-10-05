@@ -22,7 +22,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 const STATUS_ICONS: Record<string, { icon: React.ReactNode; color: string }> = {
-  upcoming: { icon: <IoTime />, color: "text-blue-500" },
+  upcoming: { icon: <IoTime />, color: "text-orange-400" },
   attended: { icon: <IoCheckmarkCircle />, color: "text-green-500" },
   cancelled: { icon: <IoCloseCircle />, color: "text-red-500" },
   expired: { icon: <IoAlertCircle />, color: "text-amber-500" },

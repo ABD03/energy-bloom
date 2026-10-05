@@ -5,6 +5,7 @@ import { StoreProvider } from "@/redux/util/StoreProvider";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import seoMetaData from "@/utils/seoMetaData";
 import { getSettings } from "@/app/(website)/service";
+import { EDITOR_SCRIPT_SRC } from "@/config/editor";
 
 import "./globals.css";
 
@@ -40,7 +41,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
-        <Script src={"/_editor/tinymce.min.js"} />
+        <Script src={EDITOR_SCRIPT_SRC} />
       </head>
       <body className={`${plusJakartaSans.variable} ${kumbhSans.variable}`}>
         <StoreProvider>
