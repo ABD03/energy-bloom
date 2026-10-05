@@ -9,7 +9,8 @@ import {
   InputNumber,
   message,
 } from "antd";
-import { FaRegSave } from "react-icons/fa";
+import { FaRegSave, FaWhatsapp } from "react-icons/fa";
+import { FiCopy, FiRotateCcw } from "react-icons/fi";
 
 import { API } from "@/config/apis";
 import { POST, PUT } from "@/utils/apiCalls";
@@ -20,14 +21,79 @@ import SlotPicker, { Slot } from "../../doctors/_components/slotPicker";
 
 const DAY_MAP = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
+// Prefixed to 10-digit numbers so wa.me can open the right chat.
+const DEFAULT_COUNTRY_CODE = "91";
+
+const toWhatsAppNumber = (phone?: string) => {
+  const digits = String(phone || "")
+    .replace(/\D/g, "")
+    .replace(/^0+/, "");
+  if (!digits) return "";
+  return digits.length === 10 ? DEFAULT_COUNTRY_CODE + digits : digits;
+};
+
+const to12h = (t?: string) => (t ? dayjs(t, "HH:mm").format("h:mm A") : "");
+
 function FormModal(props: any) {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
 
+  const [selectedPatient, setSelectedPatient] = useState<any>(
+    props?.data?.patient || null,
+  );
   const [selectedDoctor, setSelectedDoctor] = useState<any>(
     props?.data?.doctor || null,
   );
   const [slot, setSlot] = useState<Slot | null>(props?.data?.slot || null);
+
+  // null = follow the generated text; a string = the user has edited it
+  const [customMessage, setCustomMessage] = useState<string | null>(null);
+
+  const watchedDate = Form.useWatch("date", form);
+  const watchedFee = Form.useWatch("fee", form);
+
+  const shareMessage = useMemo(() => {
+    if (!selectedPatient || !selectedDoctor || !watchedDate) return "";
+    const lines = [
+      `Hello ${selectedPatient.name},`,
+      "",
+      "Your appointment details:",
+      "",
+      `Doctor: ${selectedDoctor.name}${
+        selectedDoctor.specialization ? ` (${selectedDoctor.specialization})` : ""
+      }`,
+      `Date: ${dayjs(watchedDate).format("dddd, D MMM YYYY")}`,
+    ];
+    if (slot?.startTime && slot?.endTime) {
+      lines.push(`Time: ${to12h(slot.startTime)} – ${to12h(slot.endTime)}`);
+    }
+    if (props?.data?.token) {
+      lines.push(
+        `Token: ${dayjs(props.data.date).format("DDMM")}/${String(props.data.token).padStart(2, "0")}`,
+      );
+    }
+    if (Number(watchedFee) > 0) lines.push(`Fee: ₹${watchedFee}`);
+    lines.push("", "Please let us know if you need to reschedule. Thank you!");
+    return lines.join("\n");
+  }, [selectedPatient, selectedDoctor, watchedDate, watchedFee, slot, props?.data]);
+
+  const messageText = customMessage ?? shareMessage;
+  const hasMessage = messageText.trim().length > 0;
+
+  const copyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(messageText);
+      message.success("Message copied");
+    } catch (err) {
+      message.error("Could not copy. Please select the text and copy manually.");
+    }
+  };
+
+  const shareOnWhatsApp = () => {
+    const number = toWhatsAppNumber(selectedPatient?.phone);
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(messageText)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   const doctorSlots: any[] = useMemo(
     () => (Array.isArray(selectedDoctor?.slots) ? selectedDoctor.slots : []),
@@ -155,7 +221,10 @@ function FormModal(props: any) {
             name="patient"
             rules={[{ required: true, message: "Required" }]}
           >
-            <PatientPicker initial={props?.data?.patient} />
+            <PatientPicker
+              initial={props?.data?.patient}
+              onChange={(_id, patient) => setSelectedPatient(patient || null)}
+            />
           </Form.Item>
           <Form.Item
             label="Doctor"
@@ -193,6 +262,59 @@ function FormModal(props: any) {
           </Form.Item>
         </div>
       </Form>
+
+      <div className="border border-gray-200 rounded-md overflow-hidden">
+        <div className="flex items-center justify-between gap-2 px-2 py-1 bg-gray-50 border-b border-gray-200">
+          <span className="text-[11px] font-semibold text-gray-600">
+            Message to patient
+            {customMessage !== null ? (
+              <span className="ml-1 font-normal text-amber-600">· edited</span>
+            ) : null}
+          </span>
+          <div className="flex items-center gap-1">
+            {customMessage !== null ? (
+              <Button
+                size="small"
+                type="text"
+                icon={<FiRotateCcw />}
+                title="Regenerate from the form details"
+                onClick={() => setCustomMessage(null)}
+              >
+                Reset
+              </Button>
+            ) : null}
+            {hasMessage ? (
+              <>
+                <Button size="small" icon={<FiCopy />} onClick={copyMessage}>
+                  Copy
+                </Button>
+                <Button
+                  size="small"
+                  type="primary"
+                  className="bg-green-500!"
+                  icon={<FaWhatsapp />}
+                  onClick={shareOnWhatsApp}
+                >
+                  WhatsApp
+                </Button>
+              </>
+            ) : null}
+          </div>
+        </div>
+        {messageText || customMessage !== null ? (
+          <Input.TextArea
+            value={messageText}
+            onChange={(e) => setCustomMessage(e.target.value)}
+            autoSize={{ minRows: 4, maxRows: 10 }}
+            variant="borderless"
+            className="text-[12px]! leading-snug!"
+          />
+        ) : (
+          <div className="px-2 py-1.5 text-[11px] text-gray-400">
+            Select patient, doctor and date to generate the message.
+          </div>
+        )}
+      </div>
     </Drawer>
   );
 }

@@ -233,70 +233,6 @@ async function profile(req: any) {
   });
 }
 
-async function verifyEmail(req: any) {
-  return new Promise(async (resolve) => {
-    try {
-      const user = await Users.findOne(
-        { email: req.email, type: "subscriber" },
-        { password: 0 },
-      );
-      if (user?._id) {
-        resolve({
-          status: true,
-          data: { email: user.email },
-          message: "Email verified",
-        });
-      } else {
-        resolve({
-          status: false,
-          data: {},
-          message: "No account found with this email",
-        });
-      }
-    } catch (err) {
-      console.log("err", err);
-      resolve({
-        status: false,
-        data: {},
-        message: "something went wrong",
-      });
-    }
-  });
-}
-
-async function resetPassword(req: any) {
-  return new Promise(async (resolve) => {
-    try {
-      const user = await Users.findOne({
-        email: req.email,
-        type: "subscriber",
-      });
-      if (user?._id) {
-        user.password = await hashPassword(req.password);
-        await user.save();
-        resolve({
-          status: true,
-          data: {},
-          message: "Password reset successfully",
-        });
-      } else {
-        resolve({
-          status: false,
-          data: {},
-          message: "No account found with this email",
-        });
-      }
-    } catch (err) {
-      console.log("err", err);
-      resolve({
-        status: false,
-        data: {},
-        message: "something went wrong",
-      });
-    }
-  });
-}
-
 export {
   login,
   logout,
@@ -305,6 +241,4 @@ export {
   update,
   deleteAccount,
   profile,
-  verifyEmail,
-  resetPassword,
 };

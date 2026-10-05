@@ -5,6 +5,7 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 
 import { API } from "@/config/apis";
 import { GET } from "@/utils/apiCalls";
+import { feedbackEmoji } from "../_components/feedback";
 
 ChartJS.register(ArcElement, Legend, Tooltip);
 
@@ -78,7 +79,7 @@ function Statics({ patientId }: Props) {
             data={
               feedbackTotal > 0
                 ? {
-                    labels: FEEDBACK_TILES.map((t) => t.label),
+                    labels: FEEDBACK_TILES.map((t) => `${t.label} ${feedbackEmoji(t.key)}`),
                     datasets: [
                       {
                         data: FEEDBACK_TILES.map(
@@ -131,7 +132,9 @@ function Statics({ patientId }: Props) {
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ background: t.dot }}
                 />
-                <span className="text-gray-600">{t.label}</span>
+                <span className="text-gray-600">
+                  {t.label} {feedbackEmoji(t.key)}
+                </span>
               </span>
               <span className="font-semibold text-gray-800">
                 {data.byFeedback?.[t.key] || 0}

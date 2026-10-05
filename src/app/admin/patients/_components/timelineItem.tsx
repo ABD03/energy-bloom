@@ -2,22 +2,30 @@
 import { useState } from "react";
 import { Button, Tag } from "antd";
 import { dayjs } from "@/utils/common";
-import { IoEyeOutline } from "react-icons/io5";
+import {
+  IoAlertCircle,
+  IoCheckmarkCircle,
+  IoCloseCircle,
+  IoEyeOutline,
+  IoTime,
+} from "react-icons/io5";
 import { TfiMarkerAlt } from "react-icons/tfi";
 import { FaUserDoctor } from "react-icons/fa6";
 import DetailsModal from "./detailsModal";
-
-const FEEDBACK_LABELS: Record<string, string> = {
-  helpful: "Helpful",
-  better: "Better",
-  no_improvement: "No improvement",
-};
+import { feedbackLabel } from "./feedback";
 
 const STATUS_COLORS: Record<string, string> = {
   upcoming: "blue",
   attended: "green",
   expired: "gold",
   cancelled: "red",
+};
+
+const STATUS_ICONS: Record<string, { icon: React.ReactNode; color: string }> = {
+  upcoming: { icon: <IoTime />, color: "text-blue-500" },
+  attended: { icon: <IoCheckmarkCircle />, color: "text-green-500" },
+  cancelled: { icon: <IoCloseCircle />, color: "text-red-500" },
+  expired: { icon: <IoAlertCircle />, color: "text-amber-500" },
 };
 
 function TimelineItem({
@@ -33,8 +41,16 @@ function TimelineItem({
     <div className="bg-white p-2 rounded">
       <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
         <div className="flex gap-2 items-center">
-          <div className="font-semibold">
+          <div className="font-semibold flex items-center gap-1.5">
             {appt?.date ? dayjs(appt.date).format("ll") : "-"}
+            {STATUS_ICONS[appt?.status] ? (
+              <span
+                title={appt.status}
+                className={`text-[16px] capitalize ${STATUS_ICONS[appt.status].color}`}
+              >
+                {STATUS_ICONS[appt.status].icon}
+              </span>
+            ) : null}
           </div>
         </div>
         <div className="flex gap-2 items-center justify-end">
@@ -70,7 +86,7 @@ function TimelineItem({
         {(Array.isArray(appt?.feedback) ? appt.feedback : []).map(
           (v: string) => (
             <Tag key={v} color="blue">
-              {FEEDBACK_LABELS[v] || v}
+              {feedbackLabel(v)}
             </Tag>
           ),
         )}

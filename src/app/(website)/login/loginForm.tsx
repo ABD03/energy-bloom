@@ -75,15 +75,6 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         />
       </Form.Item>
 
-      <div className="flex justify-end mb-4">
-        <Link
-          href="/forgot-password"
-          className="text-sm mt-2 mb-1 text-gray-500 font-medium  hover:text-primary"
-        >
-          Having trouble in sign in?
-        </Link>
-      </div>
-
       {error ? (
         <div className="text-center text-red-500 text-sm mb-4">{error}</div>
       ) : null}

@@ -44,7 +44,6 @@ export const API = {
   //AUTH APIS
   LOGIN: "auth",
   REGISTER: "auth/register",
-  FORGOT_PASSWORD: "auth/forgot-password",
   LOGOUT: "auth/logout",
   UPDATE_PROFILE: "auth/update",
   CHANGE_PASSWORD: "auth/change-password",

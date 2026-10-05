@@ -4,12 +4,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { FiPaperclip } from "react-icons/fi";
 import { dayjs } from "@/utils/common";
 import { ViewImage } from "@/utils/viewImage";
-
-const FEEDBACK_LABELS: Record<string, string> = {
-  helpful: "Helpful",
-  better: "Better",
-  no_improvement: "No improvement",
-};
+import { feedbackLabel } from "./feedback";
 
 const STATUS_COLORS: Record<string, string> = {
   upcoming: "blue",
@@ -180,7 +175,7 @@ function DetailsModal({
           <div className="flex flex-wrap gap-1">
             {appt.feedback.map((v: string) => (
               <Tag key={v} color="blue">
-                {FEEDBACK_LABELS[v] || v}
+                {feedbackLabel(v)}
               </Tag>
             ))}
           </div>

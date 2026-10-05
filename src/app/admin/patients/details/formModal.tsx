@@ -12,14 +12,19 @@ import SlotPicker, { Slot } from "../../doctors/_components/slotPicker";
 import { API } from "@/config/apis";
 import { PUT } from "@/utils/apiCalls";
 import { dayjs } from "@/utils/common";
+import { FEEDBACK } from "../_components/feedback";
 
 const DAY_MAP = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-const FEEDBACK_OPTIONS = [
-  { label: "Helpful", value: "helpful" },
-  { label: "Better", value: "better" },
-  { label: "No improvement", value: "no_improvement" },
-];
+const FEEDBACK_OPTIONS = FEEDBACK.map((f) => ({
+  value: f.value,
+  label: (
+    <span className="inline-flex items-center gap-1.5">
+      {f.label}
+      <span className="text-[18px] leading-none">{f.emoji}</span>
+    </span>
+  ),
+}));
 
 function FormModal(props: any) {
   const [form] = Form.useForm();

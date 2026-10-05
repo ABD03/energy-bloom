@@ -1,5 +1,6 @@
 import { dayjs } from "@/utils/common";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button, Pagination, Popconfirm, Table, Tag, Image } from "antd";
 import { IoTrashOutline } from "react-icons/io5";
 import { MdOutlineEditNote } from "react-icons/md";
@@ -54,8 +55,13 @@ function DataTable(props: any) {
       dataIndex: "name",
       key: "name",
       width: 220,
-      render: (item: any) => (
-        <div className="font-semibold text-[14px]">{item}</div>
+      render: (item: any, record: any) => (
+        <Link
+          href={`/admin/patients/details?id=${record?._id}`}
+          className="font-semibold text-[14px] hover:text-primary hover:underline"
+        >
+          {item}
+        </Link>
       ),
     },
     {
