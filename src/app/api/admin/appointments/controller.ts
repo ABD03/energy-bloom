@@ -185,40 +185,45 @@ async function calendar(req: any) {
     const endExp = new Date(end.getTime() + DAY);
     const monthKey = `${base.getFullYear()}-${String(base.getMonth() + 1).padStart(2, "0")}`;
 
-    const rows = await Appointments.aggregate([
-      { $match: { date: { $gte: startExp, $lt: endExp } } },
-      {
-        $group: {
-          _id: {
-            $dateToString: {
-              format: "%Y-%m-%d",
-              date: "$date",
-              timezone: tz,
-            },
-          },
-          count: { $sum: 1 },
-          upcoming: {
-            $sum: { $cond: [{ $eq: ["$status", "upcoming"] }, 1, 0] },
-          },
-          attended: {
-            $sum: { $cond: [{ $eq: ["$status", "attended"] }, 1, 0] },
-          },
-          cancelled: {
-            $sum: { $cond: [{ $eq: ["$status", "cancelled"] }, 1, 0] },
-          },
-        },
-      },
-    ]);
+    const rows: any[] = await Appointments.find(
+      { date: { $gte: startExp, $lt: endExp } },
+      { date: 1, status: 1 },
+    ).lean();
+
+    const makeFormatter = (timeZone: string) =>
+      new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    let formatter: Intl.DateTimeFormat;
+    try {
+      formatter = makeFormatter(tz);
+    } catch {
+      formatter = makeFormatter("UTC");
+    }
+    const dayKey = (d: Date) => {
+      const parts: Record<string, string> = {};
+      for (const part of formatter.formatToParts(d)) parts[part.type] = part.value;
+      return `${parts.year}-${parts.month}-${parts.day}`;
+    };
 
     const map: Record<string, any> = {};
     for (const r of rows) {
-      if (!String(r._id).startsWith(monthKey)) continue;
-      map[r._id] = {
-        count: r.count,
-        upcoming: r.upcoming,
-        attended: r.attended,
-        cancelled: r.cancelled,
-      };
+      const key = dayKey(new Date(r.date));
+      if (!key.startsWith(monthKey)) continue;
+      const day =
+        map[key] ??
+        (map[key] = { count: 0, upcoming: 0, attended: 0, cancelled: 0 });
+      day.count += 1;
+      if (
+        r.status === "upcoming" ||
+        r.status === "attended" ||
+        r.status === "cancelled"
+      ) {
+        day[r.status] += 1;
+      }
     }
     return { status: true, data: map, message: "calendar" };
   } catch (err) {
