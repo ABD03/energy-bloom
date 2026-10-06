@@ -46,7 +46,7 @@ export default function PatientDetails() {
         GET(`${API.APPOINTMENTS}?patient=${id}&page=1&limit=50`, null),
       ]);
       if (pRes?.status) setPatient(pRes.data);
-      else message.error(pRes?.message || "Patient not found");
+      else message.error(pRes?.message || "Client not found");
       if (aRes?.status) {
         setAppointments(aRes.data);
         setMeta(aRes.meta);
@@ -61,7 +61,7 @@ export default function PatientDetails() {
   return (
     <div>
       <PageHeader
-        title={"Patient details"}
+        title={"Client details"}
         icon={"PiUsersThree"}
         showBack={true}
         showMenu={false}
@@ -73,7 +73,7 @@ export default function PatientDetails() {
             onClick={() => setEditPatient(true)}
             icon={<MdOutlineEditNote size={18} />}
           >
-            <span className="text-[12px] hidden md:inline">Edit patient</span>
+            <span className="text-[12px] hidden md:inline">Edit client</span>
           </Button>
         ) : null}
       </PageHeader>

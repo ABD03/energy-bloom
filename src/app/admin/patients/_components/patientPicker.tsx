@@ -17,7 +17,7 @@ function PatientPicker({
   value,
   onChange,
   initial,
-  placeholder = "Search patient",
+  placeholder = "Search client",
   disabled,
 }: Props) {
   const [items, setItems] = useState<any[]>(initial ? [initial] : []);

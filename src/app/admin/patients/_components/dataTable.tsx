@@ -135,8 +135,8 @@ function DataTable(props: any) {
             <MdOutlineEditNote size={20} />
           </Button>
           <Popconfirm
-            title="Delete the patient"
-            description="Are you sure to delete this patient?"
+            title="Delete the client"
+            description="Are you sure to delete this client?"
             onConfirm={() => props?.onDelete(record)}
             okText="Yes"
             cancelText="No"

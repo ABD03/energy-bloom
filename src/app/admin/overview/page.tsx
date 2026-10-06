@@ -107,7 +107,7 @@ export default function OverView() {
             />
             <StaticCard
               loading={loading}
-              title={"Patients"}
+              title={"Clients"}
               value={counts?.patients || 0}
               icon={"PiUsersThree"}
             />

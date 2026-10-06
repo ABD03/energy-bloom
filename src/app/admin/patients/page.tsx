@@ -80,7 +80,7 @@ export default function Patients() {
       const response: any = await DELETE(`${API.PATIENTS}?id=${item?._id}`);
       if (response?.status) {
         getData();
-        message.success("Patient deleted successfully");
+        message.success("Client deleted successfully");
       } else {
         message.error("oops.something gone wrong.");
       }
@@ -92,7 +92,7 @@ export default function Patients() {
   return (
     <div>
       <PageHeader
-        title={"Patients"}
+        title={"Clients"}
         icon={"PiUsersThree"}
         showBack={true}
         showMenu={false}
@@ -101,7 +101,7 @@ export default function Patients() {
         total={meta?.total ? meta?.total : 0}
       >
         <Button type="primary" onClick={() => setFormModal(true)}>
-          <span className="text-[12px] hidden md:inline">New patient</span>
+          <span className="text-[12px] hidden md:inline">New client</span>
           <IoMdAdd size={20} />
         </Button>
         <Button onClick={() => reloadData()} loading={loading} className="p-2!">

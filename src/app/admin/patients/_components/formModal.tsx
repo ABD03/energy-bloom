@@ -48,7 +48,7 @@ function FormModal(props: any) {
       const response: any = await METHOD(API.PATIENTS, obj);
       if (response?.status) {
         message.success(
-          `Patient ${props?.data?._id ? "updated" : "created"} successfully`,
+          `Client ${props?.data?._id ? "updated" : "created"} successfully`,
         );
         props?.onchange();
         props?.onCancel();
@@ -65,7 +65,7 @@ function FormModal(props: any) {
 
   return (
     <Drawer
-      title={`${props?.data?._id ? "Edit" : "New"} patient`}
+      title={`${props?.data?._id ? "Edit" : "New"} client`}
       onClose={props?.onCancel}
       open={props.visible}
       placement="right"

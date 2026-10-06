@@ -19,7 +19,7 @@
       },
          {
         "id": 3,
-        "menu": "Patients",
+        "menu": "Clients",
         "icon": "PiUsersThree",
         "base": "/admin/patients",
         "route": "/admin/patients?page=1&limit=10"

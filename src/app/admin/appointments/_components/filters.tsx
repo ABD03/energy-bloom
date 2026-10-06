@@ -57,7 +57,7 @@ const Filters = (props: any) => {
         <div className="w-62.5">
           <Form.Item noStyle name={"query"}>
             <Input
-              placeholder="Search patient or doctor"
+              placeholder="Search client or doctor"
               allowClear
               prefix={<IoSearchOutline size={15} color="grey" />}
               className="w-62.5!"

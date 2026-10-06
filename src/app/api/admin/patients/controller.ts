@@ -55,7 +55,7 @@ async function add(req: any) {
     if (req.email) {
       const exists = await Patients.findOne({ email: req.email });
       if (exists?._id) {
-        return { status: false, data: {}, message: "Patient already exists" };
+        return { status: false, data: {}, message: "Client already exists" };
       }
     }
     const patient = new Patients();
@@ -71,7 +71,7 @@ async function add(req: any) {
     patient.address = req.address;
     patient.status = req.status ?? true;
     await patient.save();
-    return { status: true, data: patient, message: "Patient created" };
+    return { status: true, data: patient, message: "Client created" };
   } catch (err) {
     console.log("patients add err", err);
     return { status: false, data: {}, message: "something went wrong" };
@@ -82,7 +82,7 @@ async function update(req: any) {
   try {
     const patient = await Patients.findOne({ _id: req?._id });
     if (!patient?._id) {
-      return { status: false, data: {}, message: "Patient not found" };
+      return { status: false, data: {}, message: "Client not found" };
     }
     if (req.email && req.email !== patient.email) {
       const conflict = await Patients.findOne({
@@ -103,7 +103,7 @@ async function update(req: any) {
     patient.address = req.address;
     if (typeof req.status === "boolean") patient.status = req.status;
     await patient.save();
-    return { status: true, data: patient, message: "Patient updated" };
+    return { status: true, data: patient, message: "Client updated" };
   } catch (err) {
     console.log("patients update err", err);
     return { status: false, data: {}, message: "something went wrong" };
@@ -115,10 +115,10 @@ async function deleted(req: any) {
     const id = req.get("id");
     const patient = await Patients.findOne({ _id: id });
     if (!patient?._id) {
-      return { status: false, data: {}, message: "Patient not found" };
+      return { status: false, data: {}, message: "Client not found" };
     }
     await Patients.deleteOne({ _id: id });
-    return { status: true, data: patient, message: "Patient deleted" };
+    return { status: true, data: patient, message: "Client deleted" };
   } catch (err) {
     return { status: false, data: {}, message: "something went wrong" };
   }
@@ -129,7 +129,7 @@ async function details(req: any) {
     const id = req.get("id");
     if (!id) return { status: false, data: {}, message: "id required" };
     const data = await Patients.findById(id).lean();
-    if (!data) return { status: false, data: {}, message: "Patient not found" };
+    if (!data) return { status: false, data: {}, message: "Client not found" };
     return { status: true, data, message: "patient" };
   } catch (err) {
     console.log("patients details err", err);

@@ -86,7 +86,7 @@ function DetailsModal({
 
       <div className="border border-gray-100 rounded-lg px-3">
         <Row
-          label="Patient"
+          label="Client"
           value={
             <>
               {appt?.patient?.name}

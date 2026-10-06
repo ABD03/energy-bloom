@@ -39,7 +39,7 @@ function DataTable(props: any) {
       ),
     },
     {
-      title: "Patient",
+      title: "Client",
       dataIndex: "patient",
       key: "patient",
       width: 200,

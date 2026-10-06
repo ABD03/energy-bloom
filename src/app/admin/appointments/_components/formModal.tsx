@@ -217,7 +217,7 @@ function FormModal(props: any) {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
           <Form.Item
-            label="Patient"
+            label="Client"
             name="patient"
             rules={[{ required: true, message: "Required" }]}
           >
@@ -266,7 +266,7 @@ function FormModal(props: any) {
       <div className="border border-gray-200 rounded-md overflow-hidden">
         <div className="flex items-center justify-between gap-2 px-2 py-1 bg-gray-50 border-b border-gray-200">
           <span className="text-[11px] font-semibold text-gray-600">
-            Message to patient
+            Message to client
             {customMessage !== null ? (
               <span className="ml-1 font-normal text-amber-600">· edited</span>
             ) : null}
@@ -311,7 +311,7 @@ function FormModal(props: any) {
           />
         ) : (
           <div className="px-2 py-1.5 text-[11px] text-gray-400">
-            Select patient, doctor and date to generate the message.
+            Select client, doctor and date to generate the message.
           </div>
         )}
       </div>
