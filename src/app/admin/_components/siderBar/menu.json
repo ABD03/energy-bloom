@@ -26,7 +26,7 @@
       },
           {
         "id": 4,
-        "menu": "Doctors",
+        "menu": "Healers",
         "icon": "FaUserDoctor",
         "base": "/admin/doctors",
         "route": "/admin/doctors?page=1&limit=10"

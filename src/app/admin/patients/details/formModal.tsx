@@ -59,7 +59,7 @@ function FormModal(props: any) {
   const submit = async (value: any) => {
     try {
       if (needsDoctor && !selectedDoctor?._id) {
-        message.error("Please select a doctor");
+        message.error("Please select a healer");
         return;
       }
       if (
@@ -134,7 +134,7 @@ function FormModal(props: any) {
       }
       extra={
         !needsDoctor ? null : (
-          <Tag color="orange">Booked online — no doctor assigned</Tag>
+          <Tag color="orange">Booked online — no healer assigned</Tag>
         )
       }
     >
@@ -177,9 +177,9 @@ function FormModal(props: any) {
         {needsDoctor ? (
           <div>
             <Form.Item
-              label="Doctor"
+              label="Healer"
               name="doctor"
-              rules={[{ required: true, message: "Please select a doctor" }]}
+              rules={[{ required: true, message: "Please select a healer" }]}
             >
               <DoctorPicker
                 initial={selectedDoctor}

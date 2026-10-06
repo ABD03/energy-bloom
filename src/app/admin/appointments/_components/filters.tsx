@@ -57,7 +57,7 @@ const Filters = (props: any) => {
         <div className="w-62.5">
           <Form.Item noStyle name={"query"}>
             <Input
-              placeholder="Search client or doctor"
+              placeholder="Search client or healer"
               allowClear
               prefix={<IoSearchOutline size={15} color="grey" />}
               className="w-62.5!"
@@ -68,7 +68,7 @@ const Filters = (props: any) => {
           <Form.Item noStyle name={"doctor"}>
             <DoctorPicker
               initial={props?.doctorInitial}
-              placeholder="Filter doctor"
+              placeholder="Filter healer"
             />
           </Form.Item>
         </div>

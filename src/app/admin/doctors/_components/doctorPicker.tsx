@@ -19,7 +19,7 @@ function DoctorPicker({
   onChange,
   onSelect,
   initial,
-  placeholder = "Search doctor",
+  placeholder = "Search healer",
   disabled,
 }: Props) {
   const [items, setItems] = useState<any[]>(initial ? [initial] : []);

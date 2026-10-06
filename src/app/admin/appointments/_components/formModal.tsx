@@ -59,7 +59,7 @@ function FormModal(props: any) {
       "",
       "Your appointment details:",
       "",
-      `Doctor: ${selectedDoctor.name}${
+      `Healer: ${selectedDoctor.name}${
         selectedDoctor.specialization ? ` (${selectedDoctor.specialization})` : ""
       }`,
       `Date: ${dayjs(watchedDate).format("dddd, D MMM YYYY")}`,
@@ -227,7 +227,7 @@ function FormModal(props: any) {
             />
           </Form.Item>
           <Form.Item
-            label="Doctor"
+            label="Healer"
             name="doctor"
             rules={[{ required: true, message: "Required" }]}
           >
@@ -311,7 +311,7 @@ function FormModal(props: any) {
           />
         ) : (
           <div className="px-2 py-1.5 text-[11px] text-gray-400">
-            Select client, doctor and date to generate the message.
+            Select client, healer and date to generate the message.
           </div>
         )}
       </div>

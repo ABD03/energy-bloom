@@ -99,7 +99,7 @@ async function add(req: any) {
       return {
         status: false,
         data: {},
-        message: "This doctor already has an appointment for this slot",
+        message: "This healer already has an appointment for this slot",
       };
     }
     const appt = new Appointments();
@@ -131,7 +131,7 @@ async function update(req: any) {
       return {
         status: false,
         data: {},
-        message: "This doctor already has an appointment for this slot",
+        message: "This healer already has an appointment for this slot",
       };
     }
     const doctorChanged = req.doctor && String(req.doctor) !== String(appt.doctor);

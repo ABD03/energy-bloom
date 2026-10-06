@@ -75,7 +75,7 @@ function DetailsModal({
         </div>
         <div className="mt-2 flex items-center gap-1 text-[14px] font-medium">
           <FaUserDoctor className="text-gray-400" />
-          {appt?.doctor?.name || "No doctor assigned"}
+          {appt?.doctor?.name || "No healer assigned"}
           {appt?.doctor?.specialization ? (
             <span className="text-[12px] text-gray-500 font-normal">
               · {appt.doctor.specialization}

@@ -57,7 +57,7 @@ async function add(req: any) {
     if (req.email) {
       const exists = await Doctors.findOne({ email: req.email });
       if (exists?._id) {
-        return { status: false, data: {}, message: "Doctor already exists" };
+        return { status: false, data: {}, message: "Healer already exists" };
       }
     }
     const doctor = new Doctors();
@@ -76,7 +76,7 @@ async function add(req: any) {
     doctor.slots = Array.isArray(req.slots) ? req.slots : [];
     doctor.status = req.status ?? true;
     await doctor.save();
-    return { status: true, data: doctor, message: "Doctor created" };
+    return { status: true, data: doctor, message: "Healer created" };
   } catch (err) {
     console.log("doctors add err", err);
     return { status: false, data: {}, message: "something went wrong" };
@@ -87,7 +87,7 @@ async function update(req: any) {
   try {
     const doctor = await Doctors.findOne({ _id: req?._id });
     if (!doctor?._id) {
-      return { status: false, data: {}, message: "Doctor not found" };
+      return { status: false, data: {}, message: "Healer not found" };
     }
     if (req.email && req.email !== doctor.email) {
       const conflict = await Doctors.findOne({
@@ -111,7 +111,7 @@ async function update(req: any) {
     if (Array.isArray(req.slots)) doctor.slots = req.slots;
     if (typeof req.status === "boolean") doctor.status = req.status;
     await doctor.save();
-    return { status: true, data: doctor, message: "Doctor updated" };
+    return { status: true, data: doctor, message: "Healer updated" };
   } catch (err) {
     console.log("doctors update err", err);
     return { status: false, data: {}, message: "something went wrong" };
@@ -123,10 +123,10 @@ async function deleted(req: any) {
     const id = req.get("id");
     const doctor = await Doctors.findOne({ _id: id });
     if (!doctor?._id) {
-      return { status: false, data: {}, message: "Doctor not found" };
+      return { status: false, data: {}, message: "Healer not found" };
     }
     await Doctors.deleteOne({ _id: id });
-    return { status: true, data: doctor, message: "Doctor deleted" };
+    return { status: true, data: doctor, message: "Healer deleted" };
   } catch (err) {
     return { status: false, data: {}, message: "something went wrong" };
   }

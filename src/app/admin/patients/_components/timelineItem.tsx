@@ -97,7 +97,7 @@ function TimelineItem({
             <FaUserDoctor />
           </div>
 
-          {appt?.doctor?.name || "Doctor"}
+          {appt?.doctor?.name || "Healer"}
           {appt?.fee ? (
             <span className="ml-auto text-[13px] font-semibold text-gray-700">
               ₹{appt.fee}

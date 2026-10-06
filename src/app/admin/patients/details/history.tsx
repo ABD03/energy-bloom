@@ -34,7 +34,7 @@ function HistoryTab({
       ),
     },
     {
-      title: "Doctor",
+      title: "Healer",
       dataIndex: "doctor",
       key: "doctor",
       render: (item: any) => (
