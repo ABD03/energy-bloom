@@ -1,6 +1,7 @@
 "use client";
 import { Button, Table, Tag } from "antd";
 import Empty from "../../_components/empty";
+import FeeCell from "../../appointments/_components/feeCell";
 import { dayjs } from "@/utils/common";
 
 const STATUS_COLORS: Record<string, string> = {
@@ -75,8 +76,10 @@ function HistoryTab({
       title: "Fee",
       dataIndex: "fee",
       key: "fee",
-      width: 90,
-      render: (item: any) => <div>{item ?? "-"}</div>,
+      width: 100,
+      render: (item: any, record: any) => (
+        <FeeCell fee={item} otherFee={record?.otherFee} />
+      ),
     },
     {
       title: "Status",

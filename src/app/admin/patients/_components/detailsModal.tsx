@@ -108,7 +108,14 @@ function DetailsModal({
               : "No slot assigned"
           }
         />
-        <Row label="Fee" value={appt?.fee ?? null} />
+        {appt?.fee || appt?.otherFee ? (
+          <>
+            <Row label="Fee" value={appt?.fee || null} />
+            <Row label="Other fees" value={appt?.otherFee || null} />
+          </>
+        ) : (
+          <Row label="Payment" value="No payment" />
+        )}
       </div>
 
       {appt?.notes ? (

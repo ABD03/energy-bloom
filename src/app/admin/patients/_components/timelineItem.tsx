@@ -92,17 +92,36 @@ function TimelineItem({
         )}
       </div>
       <div>
-        <div className="px-1 flex items-center gap-1 text-[14px] font-medium">
+        <div className="px-1 flex flex-wrap items-center gap-1 text-[14px] font-medium">
           <div>
             <FaUserDoctor />
           </div>
 
           {appt?.doctor?.name || "Healer"}
-          {appt?.fee ? (
-            <span className="ml-auto text-[13px] font-semibold text-gray-700">
-              ₹{appt.fee}
+          {!appt?.fee && !appt?.otherFee ? (
+            <span className="ml-auto text-[12px] font-normal text-gray-400">
+              No payment
             </span>
-          ) : null}
+          ) : (
+            <span className="ml-auto flex items-center gap-3 text-[12px] font-normal text-gray-500">
+              {appt?.fee ? (
+                <span>
+                  Fee{" "}
+                  <span className="font-semibold text-gray-800">
+                    ₹{appt.fee}
+                  </span>
+                </span>
+              ) : null}
+              {appt?.otherFee ? (
+                <span>
+                  Other fees{" "}
+                  <span className="font-semibold text-gray-800">
+                    ₹{appt.otherFee}
+                  </span>
+                </span>
+              ) : null}
+            </span>
+          )}
         </div>
         {appt?.notes ? (
           <div className="mt-2 border border-gray-200 p-2 rounded-lg">

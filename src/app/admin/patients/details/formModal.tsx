@@ -1,6 +1,15 @@
 "use client";
 import { useMemo, useState } from "react";
-import { Button, Drawer, Form, Input, message, Radio, Tag } from "antd";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Radio,
+  Tag,
+} from "antd";
 import { FaRegSave } from "react-icons/fa";
 import { IoCloseCircleOutline } from "react-icons/io5";
 
@@ -86,7 +95,8 @@ function FormModal(props: any) {
         doctor: needsDoctor ? selectedDoctor?._id : appt?.doctor?._id,
         date: appt?.date,
         slot: needsDoctor ? slot : appt?.slot,
-        fee: needsDoctor ? (selectedDoctor?.consultationFee ?? 0) : appt?.fee,
+        fee: value?.fee ?? 0,
+        otherFee: value?.otherFee ?? 0,
         notes: appt?.notes,
         briefing,
         remark: value?.remark,
@@ -169,6 +179,8 @@ function FormModal(props: any) {
           notes: appt?.notes || "",
           remark: appt?.remark || "",
           doctor: selectedDoctor?._id,
+          fee: appt?.fee ?? 0,
+          otherFee: appt?.otherFee ?? 0,
           feedback: Array.isArray(appt?.feedback)
             ? appt.feedback[0]
             : undefined,
@@ -186,6 +198,7 @@ function FormModal(props: any) {
                 onSelect={(doc) => {
                   setSelectedDoctor(doc || null);
                   setSlot(null);
+                  if (doc) form.setFieldValue("fee", doc.consultationFee ?? 0);
                 }}
               />
             </Form.Item>
@@ -222,6 +235,16 @@ function FormModal(props: any) {
         <Form.Item label="Remark" name="remark">
           <Input.TextArea rows={4} placeholder="Short remark" />
         </Form.Item>
+
+
+        <div className="grid grid-cols-2 gap-x-4">
+          <Form.Item label="Fee" name="fee">
+            <InputNumber min={0} className="w-full!" />
+          </Form.Item>
+          <Form.Item label="Other fees" name="otherFee">
+            <InputNumber min={0} className="w-full!" />
+          </Form.Item>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <Form.Item label="Attachments">
             <div className="flex flex-col gap-2">
@@ -249,7 +272,7 @@ function FormModal(props: any) {
         </div>
 
         <Form.Item label="Feedback" name="feedback">
-          <Radio.Group options={FEEDBACK_OPTIONS} buttonStyle="solid" />
+          <Radio.Group vertical options={FEEDBACK_OPTIONS} buttonStyle="solid"/>
         </Form.Item>
       </Form>
     </Drawer>

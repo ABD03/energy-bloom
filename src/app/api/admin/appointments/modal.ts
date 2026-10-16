@@ -13,6 +13,7 @@ const appointmentSchema = new Schema(
     },
     token: { type: Number, default: 0 },
     fee: { type: Number, default: 0 },
+    otherFee: { type: Number, default: 0 },
     notes: String,
     briefing: String,
     remark: String,

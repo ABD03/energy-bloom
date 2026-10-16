@@ -110,6 +110,7 @@ async function add(req: any) {
     appt.slot = req.slot || undefined;
     appt.token = await nextToken(req.doctor, req.date);
     appt.fee = req.fee ?? 0;
+    appt.otherFee = req.otherFee ?? 0;
     if (req.notes !== undefined) appt.notes = req.notes;
     appt.status = req.status || "upcoming";
     await appt.save();
@@ -145,6 +146,7 @@ async function update(req: any) {
       appt.token = await nextToken(appt.doctor, appt.date);
     }
     if (typeof req.fee === "number") appt.fee = req.fee;
+    if (typeof req.otherFee === "number") appt.otherFee = req.otherFee;
     if (req.notes !== undefined) appt.notes = req.notes;
     if (req.briefing !== undefined) appt.briefing = req.briefing;
     if (req.remark !== undefined) appt.remark = req.remark;

@@ -51,6 +51,7 @@ function FormModal(props: any) {
 
   const watchedDate = Form.useWatch("date", form);
   const watchedFee = Form.useWatch("fee", form);
+  const watchedOtherFee = Form.useWatch("otherFee", form);
 
   const shareMessage = useMemo(() => {
     if (!selectedPatient || !selectedDoctor || !watchedDate) return "";
@@ -73,9 +74,14 @@ function FormModal(props: any) {
       );
     }
     if (Number(watchedFee) > 0) lines.push(`Fee: ₹${watchedFee}`);
+    if (Number(watchedOtherFee) > 0) {
+      lines.push(`Other fees: ₹${watchedOtherFee}`);
+      const total = Math.round((Number(watchedFee || 0) + Number(watchedOtherFee)) * 100) / 100;
+      lines.push(`Total: ₹${total}`);
+    }
     lines.push("", "Please let us know if you need to reschedule. Thank you!");
     return lines.join("\n");
-  }, [selectedPatient, selectedDoctor, watchedDate, watchedFee, slot, props?.data]);
+  }, [selectedPatient, selectedDoctor, watchedDate, watchedFee, watchedOtherFee, slot, props?.data]);
 
   const messageText = customMessage ?? shareMessage;
   const hasMessage = messageText.trim().length > 0;
@@ -154,6 +160,7 @@ function FormModal(props: any) {
         date,
         slot: finalSlot,
         fee: value?.fee ?? 0,
+        otherFee: value?.otherFee ?? 0,
         notes: value?.notes,
         status: "upcoming",
       };
@@ -211,6 +218,7 @@ function FormModal(props: any) {
           doctor: props?.data?.doctor?._id,
           date: initialDate,
           fee: props?.data?.fee ?? props?.data?.doctor?.consultationFee ?? 0,
+          otherFee: props?.data?.otherFee ?? 0,
           notes: props?.data?.notes,
           status: props?.data?.status || "upcoming",
         }}
@@ -254,6 +262,10 @@ function FormModal(props: any) {
           </Form.Item>
 
           <Form.Item label="Fee" name="fee">
+            <InputNumber min={0} className="w-full!" />
+          </Form.Item>
+
+          <Form.Item label="Other fees" name="otherFee">
             <InputNumber min={0} className="w-full!" />
           </Form.Item>
 

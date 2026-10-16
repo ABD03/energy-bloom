@@ -6,6 +6,7 @@ import { MdOutlineEditNote } from "react-icons/md";
 import Link from "next/link";
 
 import Empty from "../../_components/empty";
+import FeeCell from "./feeCell";
 
 const STATUS_COLORS: Record<string, string> = {
   upcoming: "blue",
@@ -93,8 +94,10 @@ function DataTable(props: any) {
       title: "Fee",
       dataIndex: "fee",
       key: "fee",
-      width: 90,
-      render: (item: any) => <div>{item ?? "-"}</div>,
+      width: 100,
+      render: (item: any, record: any) => (
+        <FeeCell fee={item} otherFee={record?.otherFee} />
+      ),
     },
     {
       title: "Status",
