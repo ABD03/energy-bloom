@@ -10,7 +10,11 @@ import { LiaDatabaseSolid } from "react-icons/lia";
 import { LuTicketSlash } from "react-icons/lu";
 import { PiUsersThree } from "react-icons/pi";
 import { FaUserDoctor } from "react-icons/fa6";
-import { MdOutlineQuestionAnswer, MdOutlineRateReview } from "react-icons/md";
+import {
+  MdOutlineAssessment,
+  MdOutlineQuestionAnswer,
+  MdOutlineRateReview,
+} from "react-icons/md";
 
 function DynamicIcon(props: any) {
   type IconName =
@@ -26,7 +30,8 @@ function DynamicIcon(props: any) {
     | "PiUsersThree"
     | "FaUserDoctor"
     | "MdOutlineQuestionAnswer"
-    | "MdOutlineRateReview";
+    | "MdOutlineRateReview"
+    | "MdOutlineAssessment";
 
   interface IconProps {
     iconName: IconName;
@@ -48,6 +53,7 @@ function DynamicIcon(props: any) {
       FaUserDoctor: FaUserDoctor,
       MdOutlineQuestionAnswer: MdOutlineQuestionAnswer,
       MdOutlineRateReview: MdOutlineRateReview,
+      MdOutlineAssessment: MdOutlineAssessment,
     };
     if (!icons.hasOwnProperty(iconName)) {
       console.warn(

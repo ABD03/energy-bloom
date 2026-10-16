@@ -38,7 +38,7 @@ function TimelineItem({
   const [viewOpen, setViewOpen] = useState(false);
 
   return (
-    <div className="bg-white p-2 rounded">
+    <div className="bg-white p-2 rounded-xl">
       <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
         <div className="flex gap-2 items-center">
           <div className="font-semibold flex items-center gap-1.5">
