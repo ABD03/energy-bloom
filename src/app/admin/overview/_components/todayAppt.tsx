@@ -92,7 +92,7 @@ function TodayAppt() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
         {items.map((i) => (
           <div
             key={i.key}

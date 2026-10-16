@@ -11,6 +11,7 @@ import StaticCard from "./_components/cards";
 import CalendarView from "./_components/calender";
 import ApptChart from "./_components/apptChart";
 import TodayAppt from "./_components/todayAppt";
+import FeedbackChart from "./_components/feedbackChart";
 
 import DynamicIcon from "@/utils/dynamicIcons";
 import { API } from "@/config/apis";
@@ -162,8 +163,13 @@ export default function OverView() {
           </div>
 
           <div className="flex flex-col gap-4">
+               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <TodayAppt />
-            <ApptChart />
+         
+              <FeedbackChart />
+
+            </div>
+                <ApptChart />
             <CalendarView />
           </div>
         </div>

@@ -23,7 +23,8 @@ export const API = {
   APPOINTMENTS: "admin/appointments",
   APPOINTMENTS_CALENDAR: "admin/appointments/calendar",
   APPOINTMENTS_STATS: "admin/appointments/stats",
-  APPOINTMENTS_REPORT: "admin/appointments/report",
+  //Reports
+  REPORTS: "admin/reports",
   //FAQs
   FAQS: "admin/faqs",
   //Reviews

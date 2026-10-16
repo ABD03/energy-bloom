@@ -89,7 +89,7 @@ export default function Reports() {
         tz,
       });
       if (tab !== "month") qp.set("month", String(effectiveMonth));
-      const res: any = await GET(`${API.APPOINTMENTS_REPORT}?${qp}`, null);
+      const res: any = await GET(`${API.REPORTS}?${qp}`, null);
       if (id !== requestId.current) return; // a newer request superseded this
       if (res?.status) {
         setReport(res.data);
