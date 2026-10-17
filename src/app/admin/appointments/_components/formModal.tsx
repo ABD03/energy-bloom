@@ -14,6 +14,7 @@ import { FiCopy, FiRotateCcw } from "react-icons/fi";
 
 import { API } from "@/config/apis";
 import { POST, PUT } from "@/utils/apiCalls";
+import { UseAppSelector } from "@/redux/util/hooks";
 import { dayjs } from "@/utils/common";
 import PatientPicker from "../../patients/_components/patientPicker";
 import DoctorPicker from "../../doctors/_components/doctorPicker";
@@ -34,10 +35,42 @@ const toWhatsAppNumber = (phone?: string) => {
 
 const to12h = (t?: string) => (t ? dayjs(t, "HH:mm").format("h:mm A") : "");
 
+// Slot times are the clinic's local time; clients abroad (e.g. the Gulf) need
+// the zone spelled out.
+const TIME_ZONE_LABEL = "IST";
+
+// Settings keeps the address one part per line. Re-flow it into at most two
+// lines for the message, breaking at the comma that balances them best.
+const twoLineAddress = (address: string): string[] => {
+  const parts = address
+    .split(/[\n,]+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (parts.length < 2) return parts;
+
+  let best = 1;
+  let bestGap = Infinity;
+  for (let k = 1; k < parts.length; k++) {
+    const gap = Math.abs(
+      parts.slice(0, k).join(", ").length - parts.slice(k).join(", ").length,
+    );
+    if (gap < bestGap) {
+      bestGap = gap;
+      best = k;
+    }
+  }
+  return [
+    `${parts.slice(0, best).join(", ")},`,
+    parts.slice(best).join(", "),
+  ];
+};
+
 function FormModal(props: any) {
   const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
+  const Data = UseAppSelector((state: any) => state?.Data);
+  const site = Data?.settings?.settings;
 
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<any>(
     props?.data?.patient || null,
   );
@@ -45,13 +78,8 @@ function FormModal(props: any) {
     props?.data?.doctor || null,
   );
   const [slot, setSlot] = useState<Slot | null>(props?.data?.slot || null);
-
-  // null = follow the generated text; a string = the user has edited it
   const [customMessage, setCustomMessage] = useState<string | null>(null);
-
   const watchedDate = Form.useWatch("date", form);
-  const watchedFee = Form.useWatch("fee", form);
-  const watchedOtherFee = Form.useWatch("otherFee", form);
 
   const shareMessage = useMemo(() => {
     if (!selectedPatient || !selectedDoctor || !watchedDate) return "";
@@ -60,28 +88,32 @@ function FormModal(props: any) {
       "",
       "Your appointment details:",
       "",
-      `Healer: ${selectedDoctor.name}${
-        selectedDoctor.specialization ? ` (${selectedDoctor.specialization})` : ""
-      }`,
+      `Healer: ${selectedDoctor.name}`,
       `Date: ${dayjs(watchedDate).format("dddd, D MMM YYYY")}`,
     ];
     if (slot?.startTime && slot?.endTime) {
-      lines.push(`Time: ${to12h(slot.startTime)} – ${to12h(slot.endTime)}`);
+      lines.push(
+        `Time: ${to12h(slot.startTime)} – ${to12h(slot.endTime)} ${TIME_ZONE_LABEL}`,
+      );
     }
     if (props?.data?.token) {
       lines.push(
         `Token: ${dayjs(props.data.date).format("DDMM")}/${String(props.data.token).padStart(2, "0")}`,
       );
     }
-    if (Number(watchedFee) > 0) lines.push(`Fee: ₹${watchedFee}`);
-    if (Number(watchedOtherFee) > 0) {
-      lines.push(`Other fees: ₹${watchedOtherFee}`);
-      const total = Math.round((Number(watchedFee || 0) + Number(watchedOtherFee)) * 100) / 100;
-      lines.push(`Total: ₹${total}`);
+
+    const whatsapp = String(site?.contact?.whatsapp || "").trim();
+    if (whatsapp) lines.push("", `WhatsApp: ${whatsapp}`);
+
+    const brand = String(site?.app?.name || "").trim();
+    const address = String(site?.contact?.address || "").trim();
+    if (brand || address) {
+      lines.push("");
+      if (brand) lines.push(brand);
+      if (address) lines.push(...twoLineAddress(address));
     }
-    lines.push("", "Please let us know if you need to reschedule. Thank you!");
     return lines.join("\n");
-  }, [selectedPatient, selectedDoctor, watchedDate, watchedFee, watchedOtherFee, slot, props?.data]);
+  }, [selectedPatient, selectedDoctor, watchedDate, slot, props?.data, site]);
 
   const messageText = customMessage ?? shareMessage;
   const hasMessage = messageText.trim().length > 0;
