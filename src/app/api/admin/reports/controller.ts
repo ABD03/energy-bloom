@@ -1,5 +1,6 @@
 "use server";
 import Appointments from "../appointments/modal";
+import Expenses from "../expenses/modal";
 
 const REPORT_STATUSES = ["all", "upcoming", "attended", "cancelled", "expired"];
 const REPORT_GROUPS = ["month", "day", "healer"];
@@ -50,6 +51,22 @@ async function report(req: any) {
     }
     const appts: any[] = await query.lean();
 
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const fromStr = month ? `${year}-${pad(month)}-01` : `${year}-01-01`;
+    const toStr = month
+      ? month === 12
+        ? `${year + 1}-01-01`
+        : `${year}-${pad(month + 1)}-01`
+      : `${year + 1}-01-01`;
+    const expenseQuery: any = Expenses.find(
+      { date: { $gte: fromStr, $lt: toStr } },
+      { date: 1, amount: 1, doctor: 1 },
+    );
+    if (group === "healer") {
+      expenseQuery.populate("doctor", "name doctorId specialization");
+    }
+    const expenses: any[] = await expenseQuery.lean();
+
     const makeFormatter = (timeZone: string) =>
       new Intl.DateTimeFormat("en-US", {
         timeZone,
@@ -72,6 +89,8 @@ async function report(req: any) {
       fee: number;
       otherFee: number;
       total: number;
+      expense: number;
+      balance: number;
     };
     const blank = (key: number | string, extra: Partial<Row> = {}): Row => ({
       key,
@@ -79,8 +98,21 @@ async function report(req: any) {
       fee: 0,
       otherFee: 0,
       total: 0,
+      expense: 0,
+      balance: 0,
       ...extra,
     });
+
+    const healerRow = (d: any): { key: string; extra: Partial<Row> } =>
+      d?._id
+        ? {
+            key: String(d._id),
+            extra: {
+              name: d.name,
+              sub: [d.doctorId, d.specialization].filter(Boolean).join(" · "),
+            },
+          }
+        : { key: "unassigned", extra: { name: "No healer assigned" } };
 
     const rows: Row[] = [];
     const byKey = new Map<number | string, Row>();
@@ -110,17 +142,8 @@ async function report(req: any) {
         key = Number(parts.month);
       } else if (group === "day") {
         key = Number(parts.day);
-      } else if (a.doctor?._id) {
-        key = String(a.doctor._id);
-        extra = {
-          name: a.doctor.name,
-          sub: [a.doctor.doctorId, a.doctor.specialization]
-            .filter(Boolean)
-            .join(" · "),
-        };
       } else {
-        key = "unassigned";
-        extra = { name: "No healer assigned" };
+        ({ key, extra } = healerRow(a.doctor));
       }
 
       let row = byKey.get(key);
@@ -134,18 +157,52 @@ async function report(req: any) {
       row.otherFee += Number(a.otherFee) || 0;
     }
 
-    const totals = { count: 0, fee: 0, otherFee: 0, total: 0 };
+    for (const e of expenses) {
+      const date = String(e.date);
+      let key: number | string;
+      let extra: Partial<Row> = {};
+      if (group === "month") {
+        key = Number(date.slice(5, 7));
+      } else if (group === "day") {
+        key = Number(date.slice(8, 10));
+      } else {
+        ({ key, extra } = healerRow(e.doctor));
+      }
+
+      let row = byKey.get(key);
+      if (!row) {
+        row = blank(key, extra);
+        rows.push(row);
+        byKey.set(key, row);
+      }
+      row.expense += Number(e.amount) || 0;
+    }
+
+    const totals = {
+      count: 0,
+      fee: 0,
+      otherFee: 0,
+      total: 0,
+      expense: 0,
+      balance: 0,
+    };
     for (const row of rows) {
       row.fee = round2(row.fee);
       row.otherFee = round2(row.otherFee);
       row.total = round2(row.fee + row.otherFee);
+      row.expense = round2(row.expense);
+      row.balance = round2(row.total - row.expense);
       totals.count += row.count;
       totals.fee += row.fee;
       totals.otherFee += row.otherFee;
+      totals.expense += row.expense;
     }
     totals.fee = round2(totals.fee);
     totals.otherFee = round2(totals.otherFee);
+    totals.expense = round2(totals.expense);
     totals.total = round2(totals.fee + totals.otherFee);
+    // Must come after the total is set.
+    totals.balance = round2(totals.total - totals.expense);
 
     if (group === "healer") {
       rows.sort(

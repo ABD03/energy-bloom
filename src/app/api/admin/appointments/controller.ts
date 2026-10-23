@@ -127,7 +127,9 @@ async function update(req: any) {
     if (!appt?._id) {
       return { status: false, data: {}, message: "Appointment not found" };
     }
-    const conflict = await checkConflict(req, req._id);
+    // A cancelled appointment frees its slot, so there is nothing to clash with.
+    const conflict =
+      req.status === "cancelled" ? null : await checkConflict(req, req._id);
     if (conflict?._id) {
       return {
         status: false,
@@ -141,7 +143,9 @@ async function update(req: any) {
     if (req.patient) appt.patient = req.patient;
     if (req.doctor) appt.doctor = req.doctor;
     if (req.date) appt.date = req.date;
-    appt.slot = req.slot || undefined;
+    // Only touch the slot when the request mentions it (null clears it), so a
+    // status-only update such as cancelling keeps the existing slot.
+    if (req.slot !== undefined) appt.slot = req.slot || undefined;
     if (doctorChanged || dateChanged) {
       appt.token = await nextToken(appt.doctor, appt.date);
     }

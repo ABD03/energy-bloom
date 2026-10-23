@@ -1,11 +1,15 @@
 "use client";
+import { useState } from "react";
 import { Button, Table, Tag } from "antd";
+import { IoEyeOutline } from "react-icons/io5";
+import { TfiMarkerAlt } from "react-icons/tfi";
 import Empty from "../../_components/empty";
 import FeeCell from "../../appointments/_components/feeCell";
+import DetailsModal from "../_components/detailsModal";
 import { dayjs } from "@/utils/common";
 
 const STATUS_COLORS: Record<string, string> = {
-  upcoming: "blue",
+  upcoming: "orange",
   attended: "green",
   expired: "gold",
   cancelled: "red",
@@ -20,6 +24,8 @@ function HistoryTab({
   loading?: boolean;
   onAttend?: (appt: any) => void;
 }) {
+  const [viewItem, setViewItem] = useState<any>(null);
+
   const columns = [
     {
       title: "Token",
@@ -95,32 +101,56 @@ function HistoryTab({
     {
       title: "",
       key: "action",
-      width: 90,
-      render: (_: any, record: any) =>
-        record?.status === "upcoming" ? (
+      width: 140,
+      render: (_: any, record: any) => (
+        <div className="flex items-center justify-end gap-2">
+          {record?.status === "upcoming" ? (
+            <Button
+              size="small"
+              type="primary"
+              className="bg-green-500!"
+              onClick={() => onAttend?.(record)}
+            >
+              <TfiMarkerAlt /> Attend
+            </Button>
+          ) : null}
+          {record?.status === "attended" ? (
+            <Button size="small" onClick={() => onAttend?.(record)}>
+              <TfiMarkerAlt /> Edit
+            </Button>
+          ) : null}
           <Button
             size="small"
-            type="primary"
-            className="bg-green-500!"
-            onClick={() => onAttend?.(record)}
+            title="View details"
+            onClick={() => setViewItem(record)}
           >
-            Attend
+            <IoEyeOutline />
           </Button>
-        ) : null,
+        </div>
+      ),
     },
   ];
 
   return (
-    <Table
-      size="small"
-      rowKey="_id"
-      dataSource={data}
-      columns={columns}
-      pagination={false}
-      loading={loading}
-      locale={{ emptyText: <Empty /> }}
-      scroll={{ x: "max-content" }}
-    />
+    <>
+      <Table
+        size="small"
+        rowKey="_id"
+        dataSource={data}
+        columns={columns}
+        pagination={false}
+        loading={loading}
+        locale={{ emptyText: <Empty /> }}
+        scroll={{ x: "max-content" }}
+      />
+      {viewItem ? (
+        <DetailsModal
+          data={viewItem}
+          visible={!!viewItem}
+          onCancel={() => setViewItem(null)}
+        />
+      ) : null}
+    </>
   );
 }
 

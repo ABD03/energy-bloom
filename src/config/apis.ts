@@ -25,6 +25,7 @@ export const API = {
   APPOINTMENTS_STATS: "admin/appointments/stats",
   //Reports
   REPORTS: "admin/reports",
+  EXPENSES: "admin/expenses",
   //FAQs
   FAQS: "admin/faqs",
   //Reviews

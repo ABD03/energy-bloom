@@ -12,6 +12,7 @@ import Patients from "@/app/api/admin/patients/modal";
 import Appointments from "@/app/api/admin/appointments/modal";
 import Faqs from "@/app/api/admin/faqs/modal";
 import Reviews from "@/app/api/admin/reviews/modal";
+import Expenses from "@/app/api/admin/expenses/modal";
 
 const DATABASE_URI: any = process.env.DATABASE_URI;
 
@@ -48,6 +49,7 @@ async function connectDB() {
     Appointments.init();
     Faqs.init();
     Reviews.init();
+    Expenses.init();
     return cached.conn;
   } catch (err) {
     console.log("DB-ERROR == == == == == == == == == == ==", err);

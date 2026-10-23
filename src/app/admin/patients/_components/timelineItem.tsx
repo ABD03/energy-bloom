@@ -15,7 +15,7 @@ import DetailsModal from "./detailsModal";
 import { feedbackLabel } from "./feedback";
 
 const STATUS_COLORS: Record<string, string> = {
-  upcoming: "blue",
+  upcoming: "orange",
   attended: "green",
   expired: "gold",
   cancelled: "red",

@@ -7,6 +7,7 @@ import {
   Input,
   InputNumber,
   message,
+  Popconfirm,
   Radio,
   Tag,
 } from "antd";
@@ -38,6 +39,7 @@ const FEEDBACK_OPTIONS = FEEDBACK.map((f) => ({
 function FormModal(props: any) {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   const appt = props?.data || {};
   const needsDoctor = !appt?.doctor?._id;
@@ -63,6 +65,28 @@ function FormModal(props: any) {
 
   const removeAttachment = (idx: number) => {
     setAttachments((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  // Status-only update: nothing else on the appointment is changed.
+  const cancelAppointment = async () => {
+    try {
+      setIsCancelling(true);
+      const response: any = await PUT(API.APPOINTMENTS, {
+        _id: appt?._id,
+        status: "cancelled",
+      });
+      if (response?.status) {
+        message.success("Appointment cancelled");
+        props?.onchange?.();
+        props?.onCancel?.();
+      } else {
+        message.error(response?.message);
+      }
+    } catch (err) {
+      message.error("oops.something gone wrong.");
+    } finally {
+      setIsCancelling(false);
+    }
   };
 
   const submit = async (value: any) => {
@@ -128,18 +152,38 @@ function FormModal(props: any) {
       size={"large"}
       styles={{ body: { padding: 20 }, header: { padding: 14 } }}
       footer={
-        <div className="flex items-center justify-end gap-2 py-1">
-          <Button size="large" onClick={() => props.onCancel()} danger>
-            Close
-          </Button>
-          <Button
-            size="large"
-            type="primary"
-            loading={isLoading}
-            onClick={() => form.submit()}
-          >
-            <FaRegSave /> Mark attended
-          </Button>
+        <div className="flex items-center justify-between gap-2 py-1">
+          {/* {appt?.status === "upcoming" ? (
+            <Popconfirm
+              title="Cancel this appointment?"
+              description="It will be marked as cancelled."
+              okText="Yes, cancel"
+              cancelText="No"
+              okButtonProps={{ danger: true }}
+              placement="topLeft"
+              onConfirm={cancelAppointment}
+            >
+              <Button size="large" danger loading={isCancelling}>
+                Cancel
+              </Button>
+            </Popconfirm>
+          ) : (
+            <span />
+          )} */}
+          <span></span>
+          <div className="flex items-center gap-2">
+            <Button size="large" onClick={() => props.onCancel()}>
+              Close
+            </Button>
+            <Button
+              size="large"
+              type="primary"
+              loading={isLoading}
+              onClick={() => form.submit()}
+            >
+              <FaRegSave /> Mark attended
+            </Button>
+          </div>
         </div>
       }
       extra={

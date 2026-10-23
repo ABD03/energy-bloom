@@ -9,7 +9,7 @@ import Empty from "../../_components/empty";
 import FeeCell from "./feeCell";
 
 const STATUS_COLORS: Record<string, string> = {
-  upcoming: "blue",
+  upcoming: "orange",
   attended: "green",
   expired: "gold",
   cancelled: "red",
